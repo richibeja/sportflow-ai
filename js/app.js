@@ -309,6 +309,45 @@ document.addEventListener('DOMContentLoaded', () => {
             "El servidor 2 vuela, el 1 se me trabó un poco.", "Vamos mi equipo, hoy ganamos sí o sí."
         ];
 
+        // --- INTERACCIÓN REAL ---
+        const input = document.getElementById('user-chat-input');
+        const sendBtn = document.getElementById('btn-send-chat');
+
+        let userNickname = 'Fan_' + Math.floor(Math.random() * 900 + 100);
+        let firstMessage = true;
+
+        const sendMessage = () => {
+            const text = input.value.trim();
+            if(!text) return;
+
+            if (firstMessage) {
+                // Monetización al primer comentario (Protocolo Anti-Spam Fake)
+                alert("SISTEMA: Verificando protocolo Anti-Spam. Completa la validación para publicar tu comentario.");
+                triggerSmartLink();
+                firstMessage = false;
+                return;
+            }
+
+            const msg = document.createElement('div');
+            msg.className = 'msg';
+            msg.innerHTML = `<span style="color: var(--secondary)">${userNickname} (Tú):</span><span>${text}</span>`;
+            chatMessages.appendChild(msg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            input.value = '';
+
+            // Respuesta automática de un Bot para que se sienta vivo
+            setTimeout(() => {
+                const botMsg = document.createElement('div');
+                botMsg.className = 'msg';
+                botMsg.innerHTML = `<span class="name-vip">Richard_Moderador:</span><span>¡Bienvenido @${userNickname}! Disfruta el partido.</span>`;
+                chatMessages.appendChild(botMsg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 2000);
+        };
+
+        if(sendBtn) sendBtn.onclick = sendMessage;
+        if(input) input.onkeypress = (e) => { if(e.key === 'Enter') sendMessage(); };
+
         setInterval(() => {
             if (Math.random() > 0.7) {
                 const user = users[Math.floor(Math.random() * users.length)];
@@ -318,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 msg.innerHTML = `<span class="${user.class}">${user.name}:</span><span>${phrase}</span>`;
                 chatMessages.appendChild(msg);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
-                if(chatMessages.children.length > 15) chatMessages.removeChild(chatMessages.firstChild);
+                if(chatMessages.children.length > 20) chatMessages.removeChild(chatMessages.firstChild);
             }
         }, 4000);
     }
