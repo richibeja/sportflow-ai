@@ -161,8 +161,8 @@
                 <div class="video-container-wrapper">
                     <div class="player-top-bar">
                         <div class="signal-shield">
-                            <i class="fas fa-satellite-dish"></i>
-                            <span id="signal-status">NASA UPLINK: SEARCHING...</span>
+                            <i class="fas fa-signal"></i>
+                            <span id="signal-status">OPTIMIZANDO CONEXIÓN...</span>
                             <div class="signal-bars">
                                 <span class="bar b1"></span><span class="bar b2"></span><span class="bar b3"></span>
                             </div>
@@ -176,28 +176,15 @@
                     </div>
 
                     <div id="video-overlay" class="video-overlay">
-                        <!-- Hacker Terminal Overlay -->
-                        <div id="hacker-terminal" class="hacker-terminal hidden">
-                            <div class="terminal-header">
-                                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
-                                <span class="terminal-title">ROOT@SPORTFLOW:~# SIGNAL_INTERCEPTOR --VERBOSE</span>
-                            </div>
-                            <div id="terminal-logs" class="terminal-logs">
-                                <!-- Interception logs will appear here -->
-                            </div>
+                        <div class="lock-icon-wrapper">
+                            <i class="fas fa-lock pulse-icon"></i>
                         </div>
-
-                        <div id="lock-screen" class="lock-screen">
-                            <div class="lock-icon-wrapper">
-                                <i class="fas fa-lock pulse-icon"></i>
-                            </div>
-                            <h3>Transmisión Protegida</h3>
-                            <p>Haz clic para verificar y desbloquear la señal <strong>Premium HD</strong> del partido.</p>
-                            <button id="unlock-stream-btn" class="btn-unlock-stream">
-                                <i class="fas fa-unlock-alt"></i> DESBLOQUEAR SEÑAL
-                            </button>
-                            <span class="secure-tag"><i class="fas fa-shield-alt"></i> Conexión Segura SSL</span>
-                        </div>
+                        <h3>Transmisión Protegida</h3>
+                        <p>Haz clic para verificar y desbloquear la señal <strong>Premium HD</strong> del partido.</p>
+                        <button id="unlock-stream-btn" class="btn-unlock-stream">
+                            <i class="fas fa-unlock-alt"></i> DESBLOQUEAR SEÑAL
+                        </button>
+                        <span class="secure-tag"><i class="fas fa-shield-alt"></i> Conexión Segura</span>
                     </div>
 
                     <div id="live-player" class="live-player hidden">
@@ -214,7 +201,7 @@
                 </div>
 
                 <div class="video-help">
-                    <p><i class="fas fa-microchip"></i> <strong>INTERCEPTOR V6.2:</strong> Utilizando nodos de baja latencia para saltar el firewall del Pentágono. Señal espejada vía satélite.</p>
+                    <p><i class="fas fa-info-circle"></i> <strong>SISTEMA DE REDUNDANCIA:</strong> Si una señal falla, intenta cambiar de servidor. El sistema busca fuentes estables automáticamente.</p>
                 </div>
 
                 <!-- Chat Simulado -->

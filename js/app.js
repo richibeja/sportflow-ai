@@ -280,43 +280,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(unlockBtn) {
         unlockBtn.onclick = async () => {
-            const hackerTerminal = document.getElementById('hacker-terminal');
-            const lockScreen = document.getElementById('lock-screen');
-            const terminalLogs = document.getElementById('terminal-logs');
-
-            if (hackerTerminal && lockScreen) {
-                lockScreen.classList.add('hidden');
-                hackerTerminal.classList.remove('hidden');
-                
-                const logs = [
-                    { t: "[INIT] Starting Signal Interceptor v7.2...", c: 'log-info' },
-                    { t: "[NET] Establishing Deep-Space Uplink (NASA-Node-9)...", c: 'log-info' },
-                    { t: "[SPOOF] Rotating IPv6 proxy pool...", c: 'log-info' },
-                    { t: "[HACK] Attempting Pentagon Firewall Bypass (Exploit: CVE-2024-X)...", c: 'log-warning' },
-                    { t: "[AUTH] Handshake successful. Token decrypted.", c: 'log-success' },
-                    { t: "[SCAN] Searching for active M3U8 chunklists...", c: 'log-info' },
-                    { t: "[FOUND] Multiplex stream detected: 1080p@60fps", c: 'log-success' },
-                    { t: "[LOAD] Decapsulating MPEG-TS signal...", c: 'log-info' },
-                    { t: "[READY] Signal stabilized. Booting Player.", c: 'log-success' }
-                ];
-
-                for (let i = 0; i < logs.length; i++) {
-                    const entry = document.createElement('div');
-                    entry.className = `log-entry ${logs[i].c}`;
-                    entry.textContent = `> ${logs[i].t}`;
-                    terminalLogs.appendChild(entry);
-                    terminalLogs.scrollTop = terminalLogs.scrollHeight;
-                    await new Promise(r => setTimeout(r, Math.random() * 400 + 200));
-                }
-
-                setTimeout(() => {
-                    videoOverlay.classList.add('hidden');
-                    livePlayer.classList.remove('hidden');
-                    loadServer(1);
-                    startAutoHeal();
-                    triggerSmartLink();
-                }, 1000);
-            }
+            unlockBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> CONECTANDO...';
+            triggerSmartLink();
+            
+            setTimeout(() => {
+                videoOverlay.classList.add('hidden');
+                livePlayer.classList.remove('hidden');
+                loadServer(1);
+                startAutoHeal();
+                unlockBtn.innerHTML = '<i class="fas fa-unlock-alt"></i> DESBLOQUEAR SEÑAL';
+            }, 1000);
         };
     }
 
@@ -340,22 +313,17 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadServer(serverNum) {
         if (!activeMatch) return;
         
-        signalStatus.textContent = "NASA UPLINK: CONNECTING...";
-        signalStatus.style.color = "#00d4ff"; // Azul NASA
+        signalStatus.textContent = "CONECTANDO A SERVIDOR...";
+        signalStatus.style.color = "var(--secondary)";
         streamIframe.src = ''; 
 
         const finalUrl = await findLiveStream(`${activeMatch.homeTeam} vs ${activeMatch.awayTeam}`, serverNum);
         
         setTimeout(() => {
-            signalStatus.textContent = "PENTAGON BYPASS: SUCCESS";
-            signalStatus.style.color = "var(--secondary)";
-            
-            setTimeout(() => {
-                streamIframe.src = finalUrl;
-                signalStatus.textContent = "SIGNAL OPTIMIZED (SAT-6)";
-                signalStatus.style.color = "var(--accent)";
-            }, 800);
-        }, 1000);
+            streamIframe.src = finalUrl;
+            signalStatus.textContent = "SEÑAL ESTABLE (HD)";
+            signalStatus.style.color = "var(--accent)";
+        }, 500);
     }
 
     function startAutoHeal() {
