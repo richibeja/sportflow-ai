@@ -105,42 +105,67 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function syncMatches() {
-        console.log('Sincronizando partidos reales...');
-        try {
-            // Usamos ScoreBat API (Filtramos para hoy)
-            const response = await fetch('https://www.scorebat.com/video-api/v3/feed/');
-            const data = await response.json();
-            
-            if (data && data.response && data.response.length > 0) {
-                // Transformamos los datos de la API a nuestro formato
-                const realMatches = data.response.slice(0, 5).map((m, index) => ({
-                    id: `live-${index}`,
-                    league: m.competition,
-                    homeTeam: m.title.split(' - ')[0],
-                    awayTeam: m.title.split(' - ')[1],
-                    homeLogo: `https://flagsapi.com/BE/flat/64.png`, // Placeholder
-                    awayLogo: `https://flagsapi.com/FR/flat/64.png`, // Placeholder
-                    homeScore: 0, 
-                    awayScore: 0,
-                    time: new Date(m.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-                    status: new Date(m.date) > new Date() ? 'PRÓXIMAMENTE' : 'FINALIZADO',
-                    streamUrl: m.matchviewUrl
-                }));
+        console.log('Sincronizando partidos reales desde ESPN...');
+        
+        // Ligas de interés para Richard
+        const leagues = [
+            { id: 'mex.1', name: 'Liga MX' },
+            { id: 'eng.1', name: 'Premier League' },
+            { id: 'uefa.champions', name: 'Champions League' },
+            { id: 'esp.1', name: 'La Liga' }
+        ];
 
-                // Si hay partidos, actualizamos la lista
-                if (realMatches.length > 0) {
-                    matches.length = 0; // Limpiar anteriores
-                    matches.push(...realMatches);
+        try {
+            let allMatches = [];
+
+            for (const league of leagues) {
+                try {
+                    const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${league.id}/scoreboard`);
+                    const data = await response.json();
                     
-                    // Si el partido activo ya no existe, ponemos el primero
-                    if (!activeMatch || !matches.find(m => m.id === activeMatch.id)) {
-                        activeMatch = matches[0];
+                    if (data && data.events) {
+                        const leagueMatches = data.events.map(event => {
+                            const competitorHome = event.competitions[0].competitors.find(c => c.homeAway === 'home');
+                            const competitorAway = event.competitions[0].competitors.find(c => c.homeAway === 'away');
+                            
+                            return {
+                                id: event.id,
+                                league: league.name,
+                                homeTeam: competitorHome.team.displayName,
+                                awayTeam: competitorAway.team.displayName,
+                                homeLogo: competitorHome.team.logo,
+                                awayLogo: competitorAway.team.logo,
+                                homeScore: competitorHome.score,
+                                awayScore: competitorAway.score,
+                                time: event.status.type.shortDetail,
+                                status: event.status.type.state === 'in' ? 'EN VIVO' : 
+                                        event.status.type.state === 'pre' ? 'PRÓXIMAMENTE' : 'FINALIZADO',
+                                streamUrl: '' // Se genera dinámicamente en findLiveStream
+                            };
+                        });
+                        allMatches = [...allMatches, ...leagueMatches];
                     }
+                } catch (err) {
+                    console.error(`Error cargando liga ${league.name}:`, err);
+                }
+            }
+
+            if (allMatches.length > 0) {
+                // Ordenar: primero los EN VIVO, luego PRÓXIMAMENTE
+                allMatches.sort((a, b) => {
+                    const priority = { 'EN VIVO': 0, 'PRÓXIMAMENTE': 1, 'FINALIZADO': 2 };
+                    return priority[a.status] - priority[b.status];
+                });
+
+                matches.length = 0;
+                matches.push(...allMatches.slice(0, 10)); // Top 10 partidos importantes
+
+                if (!activeMatch || !matches.find(m => m.id === activeMatch.id)) {
+                    activeMatch = matches[0];
                 }
             }
         } catch (error) {
-            console.warn('Error al sincronizar datos reales, usando datos de respaldo:', error);
-            // Si falla, mantenemos los hardcoded
+            console.warn('Error general en sincronización:', error);
         }
         
         renderMatchSelector();
@@ -160,8 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span style="color: ${match.status === 'EN VIVO' ? 'var(--accent)' : 'inherit'}">${match.status}</span>
                 </div>
                 <div class="mini-teams">
-                    <div class="mini-team"><span>${match.homeTeam}</span></div>
-                    <div class="mini-team"><span>${match.awayTeam}</span></div>
+                    <div class="mini-team"><span>${match.homeTeam}</span><img src="${match.homeLogo}"></div>
+                    <div class="mini-team"><span>${match.awayTeam}</span><img src="${match.awayLogo}"></div>
                 </div>
             `;
             card.onclick = () => {
