@@ -70,13 +70,22 @@ document.addEventListener('DOMContentLoaded', () => {
     async function syncMatches() {
         const leagues = [
             { id: 'mex.1', name: 'Liga MX' },
+            { id: 'col.1', name: 'Liga Colombia' },
+            { id: 'arg.1', name: 'Liga Argentina' },
+            { id: 'bra.1', name: 'Brasileirão' },
+            { id: 'chi.1', name: 'Liga Chile' },
+            { id: 'per.1', name: 'Liga Perú' },
+            { id: 'ecu.1', name: 'Liga Ecuador' },
+            { id: 'usa.1', name: 'MLS (USA)' },
             { id: 'eng.1', name: 'Premier League' },
-            { id: 'uefa.champions', name: 'Champions League' },
             { id: 'esp.1', name: 'La Liga' },
             { id: 'ita.1', name: 'Serie A' },
             { id: 'ger.1', name: 'Bundesliga' },
             { id: 'fra.1', name: 'Ligue 1' },
-            { id: 'arg.1', name: 'Liga Argentina' }
+            { id: 'uefa.champions', name: 'Champions League' },
+            { id: 'uefa.europa', name: 'Europa League' },
+            { id: 'conmebol.libertadores', name: 'Copa Libertadores' },
+            { id: 'conmebol.sudamericana', name: 'Sudamericana' }
         ];
 
         try {
