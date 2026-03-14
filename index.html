@@ -176,15 +176,28 @@
                     </div>
 
                     <div id="video-overlay" class="video-overlay">
-                        <div class="lock-icon-wrapper">
-                            <i class="fas fa-lock pulse-icon"></i>
+                        <!-- Hacker Terminal Overlay -->
+                        <div id="hacker-terminal" class="hacker-terminal hidden">
+                            <div class="terminal-header">
+                                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                <span class="terminal-title">ROOT@SPORTFLOW:~# SIGNAL_INTERCEPTOR --VERBOSE</span>
+                            </div>
+                            <div id="terminal-logs" class="terminal-logs">
+                                <!-- Interception logs will appear here -->
+                            </div>
                         </div>
-                        <h3>Transmisión Protegida</h3>
-                        <p>Haz clic para verificar y desbloquear la señal <strong>Premium HD</strong> del partido.</p>
-                        <button id="unlock-stream-btn" class="btn-unlock-stream">
-                            <i class="fas fa-unlock-alt"></i> DESBLOQUEAR SEÑAL
-                        </button>
-                        <span class="secure-tag"><i class="fas fa-shield-alt"></i> Conexión Segura SSL</span>
+
+                        <div id="lock-screen" class="lock-screen">
+                            <div class="lock-icon-wrapper">
+                                <i class="fas fa-lock pulse-icon"></i>
+                            </div>
+                            <h3>Transmisión Protegida</h3>
+                            <p>Haz clic para verificar y desbloquear la señal <strong>Premium HD</strong> del partido.</p>
+                            <button id="unlock-stream-btn" class="btn-unlock-stream">
+                                <i class="fas fa-unlock-alt"></i> DESBLOQUEAR SEÑAL
+                            </button>
+                            <span class="secure-tag"><i class="fas fa-shield-alt"></i> Conexión Segura SSL</span>
+                        </div>
                     </div>
 
                     <div id="live-player" class="live-player hidden">

@@ -435,6 +435,78 @@ body {
     max-width: 200px;
 }
 
+/* Hacker Terminal Styles */
+.hacker-terminal {
+    position: absolute;
+    inset: 20px;
+    background: rgba(0, 0, 0, 0.95);
+    border: 1px solid #00ff41;
+    border-radius: 8px;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: 'Courier New', Courier, monospace;
+    box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
+}
+
+.terminal-header {
+    background: #1a1a1a;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #333;
+}
+
+.terminal-header .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.dot.red { background: #ff5f56; }
+.dot.yellow { background: #ffbd2e; }
+.dot.green { background: #27c93f; }
+
+.terminal-title {
+    color: #888;
+    font-size: 11px;
+    margin-left: 10px;
+    letter-spacing: 1px;
+}
+
+.terminal-logs {
+    flex: 1;
+    padding: 15px;
+    color: #00ff41;
+    font-size: 13px;
+    line-height: 1.5;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #00ff41 #000;
+}
+
+.terminal-logs::-webkit-scrollbar { width: 5px; }
+.terminal-logs::-webkit-scrollbar-thumb { background: #00ff41; }
+
+.log-entry { margin-bottom: 4px; }
+.log-success { color: #00ff41; }
+.log-warning { color: #ffbd2e; }
+.log-error { color: #ff5f56; }
+.log-info { color: #00d4ff; }
+
+.lock-screen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 30px;
+}
+
 .match-status {
     color: var(--accent);
     font-size: 0.9rem;
