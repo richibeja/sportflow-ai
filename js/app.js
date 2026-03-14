@@ -280,16 +280,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(unlockBtn) {
         unlockBtn.onclick = async () => {
-            unlockBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> CONECTANDO...';
             triggerSmartLink();
-            
-            setTimeout(() => {
-                videoOverlay.classList.add('hidden');
-                livePlayer.classList.remove('hidden');
-                loadServer(1);
-                startAutoHeal();
-                unlockBtn.innerHTML = '<i class="fas fa-unlock-alt"></i> DESBLOQUEAR SEÑAL';
-            }, 1000);
+            videoOverlay.classList.add('hidden');
+            livePlayer.classList.remove('hidden');
+            loadServer(1);
+            startAutoHeal();
         };
     }
 
@@ -313,17 +308,15 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadServer(serverNum) {
         if (!activeMatch) return;
         
-        signalStatus.textContent = "CONECTANDO A SERVIDOR...";
+        signalStatus.textContent = "CARGANDO CANAL HD...";
         signalStatus.style.color = "var(--secondary)";
         streamIframe.src = ''; 
 
         const finalUrl = await findLiveStream(`${activeMatch.homeTeam} vs ${activeMatch.awayTeam}`, serverNum);
         
-        setTimeout(() => {
-            streamIframe.src = finalUrl;
-            signalStatus.textContent = "SEÑAL ESTABLE (HD)";
-            signalStatus.style.color = "var(--accent)";
-        }, 500);
+        streamIframe.src = finalUrl;
+        signalStatus.textContent = "SEÑAL ESTABLE (HD)";
+        signalStatus.style.color = "var(--accent)";
     }
 
     function startAutoHeal() {
