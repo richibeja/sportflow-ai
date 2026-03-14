@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
             homeScore: 0,
             awayScore: 0,
             time: '21:00',
-            status: 'PRÓXIMAMENTE'
+            status: 'PRÓXIMAMENTE',
+            streamUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ' // Ejemplo, cambiar por señal real
         },
         {
             id: 'mx-01',
@@ -31,7 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
             homeScore: 2,
             awayScore: 1,
             time: '67\'',
-            status: 'EN VIVO'
+            status: 'EN VIVO',
+            streamUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ' // Ejemplo, cambiar por señal real
         },
         {
             id: 'epl-01',
@@ -43,7 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
             homeScore: 0,
             awayScore: 0,
             time: '14:30',
-            status: 'HOY'
+            status: 'HOY',
+            streamUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ' // Ejemplo, cambiar por señal real
         }
     ];
 
@@ -121,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 activeMatch = match;
                 document.querySelectorAll('.match-card-mini').forEach(c => c.classList.remove('active'));
                 card.classList.add('active');
+                resetVideoPlayer();
                 renderHero(activeMatch);
             };
             matchSelector.appendChild(card);
@@ -142,11 +146,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="team away"><div class="team-logo"><img src="${match.awayLogo}"></div><h3>${match.awayTeam}</h3></div>
             </div>
             <div class="match-actions">
-                <button class="btn-primary" id="btn-watch-hd"><i class="fas fa-play"></i> VER SEÑAL HD</button>
-                <button class="btn-secondary"><i class="fas fa-volume-up"></i> COMENTARIOS</button>
+                <button class="btn-primary" id="btn-watch-hd"><i class="fas fa-play"></i> VER EN VIVO</button>
+                <button class="btn-secondary"><i class="fas fa-chart-bar"></i> ESTADÍSTICAS</button>
             </div>
         `;
-        document.getElementById('btn-watch-hd').onclick = () => window.open(CONFIG.smartLink, '_blank');
+        document.getElementById('btn-watch-hd').onclick = () => {
+            // Activar la pestaña de video
+            const videoTab = document.querySelector('[data-tab="video"]');
+            if(videoTab) videoTab.click();
+            
+            // Hacer scroll hasta el reproductor
+            document.querySelector('.match-details').scrollIntoView({ behavior: 'smooth' });
+        };
         
         // Listener para el botón de la Madrina
         const madrinaWatch = document.getElementById('btn-madrina-watch');
@@ -187,6 +198,27 @@ document.addEventListener('DOMContentLoaded', () => {
             tabContents.forEach(c => c.id === `tab-${tab.dataset.tab}` ? c.classList.remove('hidden') : c.classList.add('hidden'));
         };
     });
+
+    // Video Unlock Logic
+    const unlockBtn = document.getElementById('unlock-stream-btn');
+    const videoOverlay = document.getElementById('video-overlay');
+    const livePlayer = document.getElementById('live-player');
+    const streamIframe = document.getElementById('stream-iframe');
+
+    if(unlockBtn) {
+        unlockBtn.onclick = () => {
+            window.open(CONFIG.smartLink, '_blank');
+            videoOverlay.classList.add('hidden');
+            livePlayer.classList.remove('hidden');
+            streamIframe.src = activeMatch.streamUrl;
+        };
+    }
+
+    function resetVideoPlayer() {
+        if(videoOverlay) videoOverlay.classList.remove('hidden');
+        if(livePlayer) livePlayer.classList.add('hidden');
+        if(streamIframe) streamIframe.src = '';
+    }
 
     // Simulación de Goles
     setInterval(() => {

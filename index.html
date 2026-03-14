@@ -121,6 +121,7 @@
             <div class="tabs-control">
                 <button class="tab-btn active" data-tab="lineups">Alineaciones</button>
                 <button class="tab-btn" data-tab="stats">Estadísticas</button>
+                <button class="tab-btn" data-tab="video">EN VIVO (HD)</button>
                 <button class="tab-btn" data-tab="ticker">Cronología</button>
             </div>
 
@@ -152,6 +153,20 @@
                     <div class="stat-item">
                         <div class="stat-info"><span>Faltas</span><span>8 - 12</span></div>
                         <div class="stat-bar"><div class="bar-fill" style="width: 40%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content hidden" id="tab-video">
+                <div class="video-container-wrapper">
+                    <div id="video-overlay" class="video-overlay">
+                        <i class="fas fa-lock"></i>
+                        <h3>Contenido Protegido</h3>
+                        <p>Para ver la señal HD sin anuncios, haz clic en el botón de abajo.</p>
+                        <button id="unlock-stream-btn" class="btn-unlock-stream">DESBLOQUEAR SEÑAL</button>
+                    </div>
+                    <div id="live-player" class="live-player hidden">
+                        <iframe id="stream-iframe" src="" frameborder="0" allowfullscreen scrolling="no"></iframe>
                     </div>
                 </div>
             </div>
