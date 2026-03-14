@@ -206,11 +206,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const streamIframe = document.getElementById('stream-iframe');
 
     if(unlockBtn) {
-        unlockBtn.onclick = () => {
+        unlockBtn.onclick = async () => {
+            // Animación de carga
+            unlockBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> BUSCANDO SEÑAL...';
+            
+            // BUSQUEDA AUTOMÁTICA DE LINK
+            const autoLink = await findLiveStream(`${activeMatch.homeTeam} vs ${activeMatch.awayTeam}`);
+            
             window.open(CONFIG.smartLink, '_blank');
             videoOverlay.classList.add('hidden');
             livePlayer.classList.remove('hidden');
-            streamIframe.src = activeMatch.streamUrl;
+            streamIframe.src = autoLink;
+            
+            unlockBtn.innerHTML = 'DESBLOQUEAR SEÑAL';
         };
     }
 
