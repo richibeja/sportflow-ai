@@ -89,10 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- INIT ---
     setupBackground();
-    renderMatchSelector();
-    renderHero(activeMatch);
+    syncMatches(); // Primera carga de datos reales
     renderNews();
-    renderSchedule();
+    
+    // Auto-actualización cada 60 segundos
+    setInterval(syncMatches, 60000);
 
     // --- LOGIC ---
     function setupBackground() {
@@ -101,6 +102,50 @@ document.addEventListener('DOMContentLoaded', () => {
         bgOverlay.style.backgroundSize = 'cover';
         bgOverlay.style.backgroundPosition = 'center';
         bgOverlay.style.opacity = '0.3';
+    }
+
+    async function syncMatches() {
+        console.log('Sincronizando partidos reales...');
+        try {
+            // Usamos ScoreBat API (Filtramos para hoy)
+            const response = await fetch('https://www.scorebat.com/video-api/v3/feed/');
+            const data = await response.json();
+            
+            if (data && data.response && data.response.length > 0) {
+                // Transformamos los datos de la API a nuestro formato
+                const realMatches = data.response.slice(0, 5).map((m, index) => ({
+                    id: `live-${index}`,
+                    league: m.competition,
+                    homeTeam: m.title.split(' - ')[0],
+                    awayTeam: m.title.split(' - ')[1],
+                    homeLogo: `https://flagsapi.com/BE/flat/64.png`, // Placeholder
+                    awayLogo: `https://flagsapi.com/FR/flat/64.png`, // Placeholder
+                    homeScore: 0, 
+                    awayScore: 0,
+                    time: new Date(m.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                    status: new Date(m.date) > new Date() ? 'PRÓXIMAMENTE' : 'FINALIZADO',
+                    streamUrl: m.matchviewUrl
+                }));
+
+                // Si hay partidos, actualizamos la lista
+                if (realMatches.length > 0) {
+                    matches.length = 0; // Limpiar anteriores
+                    matches.push(...realMatches);
+                    
+                    // Si el partido activo ya no existe, ponemos el primero
+                    if (!activeMatch || !matches.find(m => m.id === activeMatch.id)) {
+                        activeMatch = matches[0];
+                    }
+                }
+            }
+        } catch (error) {
+            console.warn('Error al sincronizar datos reales, usando datos de respaldo:', error);
+            // Si falla, mantenemos los hardcoded
+        }
+        
+        renderMatchSelector();
+        renderHero(activeMatch);
+        renderSchedule();
     }
 
     function renderMatchSelector() {
@@ -115,8 +160,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span style="color: ${match.status === 'EN VIVO' ? 'var(--accent)' : 'inherit'}">${match.status}</span>
                 </div>
                 <div class="mini-teams">
-                    <div class="mini-team"><span>${match.homeTeam}</span><img src="${match.homeLogo}"></div>
-                    <div class="mini-team"><span>${match.awayTeam}</span><img src="${match.awayLogo}"></div>
+                    <div class="mini-team"><span>${match.homeTeam}</span></div>
+                    <div class="mini-team"><span>${match.awayTeam}</span></div>
                 </div>
             `;
             card.onclick = () => {
@@ -178,12 +223,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderSchedule() {
         if(!scheduleBody) return;
-        scheduleBody.innerHTML = schedule.map(item => `
+        // La programación ahora se basa en los partidos reales sincronizados
+        scheduleBody.innerHTML = matches.map(item => `
             <tr>
-                <td>${item.event}</td>
-                <td><span class="canal-tag">${item.channel}</span></td>
+                <td>${item.homeTeam} vs ${item.awayTeam}</td>
+                <td><span class="canal-tag">${item.league.substring(0,10)}...</span></td>
                 <td>${item.time}</td>
-                <td><span class="status-online"><i class="fas fa-circle"></i> ${item.signal}</span></td>
+                <td><span class="status-online"><i class="fas fa-circle"></i> ${item.status}</span></td>
             </tr>
         `).join('');
     }
