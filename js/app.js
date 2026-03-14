@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('SportFlow AI: Balanced Pro v2.5');
+    console.log('SportFlow AI: Extreme Ultra v5.0');
     
     // --- MONETIZATION CONFIG ---
     const CONFIG = {
@@ -24,31 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
     syncMatches();
     renderNews();
     setupNavFilters();
+    startChatSimulation();
     setInterval(syncMatches, 60000);
 
     // --- MONETIZATION ENGINE ---
     window.triggerSmartLink = () => {
-        console.log('Monetización ejecutada en acción de alto valor.');
         window.open(CONFIG.smartLink, '_blank');
     };
 
     function setupNavFilters() {
-        document.getElementById('nav-home').onclick = (e) => {
-            e.preventDefault();
-            filterMatches('all');
-            setActiveNav(e.target);
-            // Sin publicidad aquí para que la navegación sea fluida
-        };
-        document.getElementById('nav-intl').onclick = (e) => {
-            e.preventDefault();
-            filterMatches('intl');
-            setActiveNav(e.target);
-        };
-        document.getElementById('nav-live').onclick = (e) => {
-            e.preventDefault();
-            filterMatches('live');
-            setActiveNav(e.target);
-        };
+        document.getElementById('nav-home').onclick = (e) => { e.preventDefault(); filterMatches('all'); setActiveNav(e.target); };
+        document.getElementById('nav-intl').onclick = (e) => { e.preventDefault(); filterMatches('intl'); setActiveNav(e.target); };
+        document.getElementById('nav-live').onclick = (e) => { e.preventDefault(); filterMatches('live'); setActiveNav(e.target); };
     }
 
     function setActiveNav(el) {
@@ -148,7 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.classList.add('active');
                 resetVideoPlayer();
                 renderHero(activeMatch);
-                // Sin publicidad aquí para que puedan explorar partidos libremente
             };
             matchSelector.appendChild(card);
         });
@@ -188,7 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderNews() {
         if(!newsContainer) return;
-        // Noticias sin publicidad invasiva al click, solo banners visuales
         newsContainer.innerHTML = [
             { title: 'Clásico Regio: Todo listo', tag: 'LIGA MX', desc: 'Monterrey y Tigres paralizan la ciudad.', img: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=80' },
             { title: 'Madrid vs City: Final anticipada', tag: 'CHAMPIONS', desc: 'El Bernabéu espera una noche mágica.', img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=800&q=80' }
@@ -227,61 +212,115 @@ document.addEventListener('DOMContentLoaded', () => {
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
             tabContents.forEach(c => c.id === `tab-${tab.dataset.tab}` ? c.classList.remove('hidden') : c.classList.add('hidden'));
-            // Solo publicidad si entra a la pestaña de VIDEO
             if(tab.dataset.tab === 'video') triggerSmartLink();
         };
     });
 
-    // Video Logic
+    // --- VIDEO EXTREME LOGIC ---
     const unlockBtn = document.getElementById('unlock-stream-btn');
     const videoOverlay = document.getElementById('video-overlay');
     const livePlayer = document.getElementById('live-player');
     const streamIframe = document.getElementById('stream-iframe');
     const serverBtns = document.querySelectorAll('.server-btn');
+    const signalStatus = document.getElementById('signal-status');
+
+    let currentServer = 1;
+    let autoHealInterval = null;
 
     if(unlockBtn) {
         unlockBtn.onclick = async () => {
-            unlockBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> VERIFICANDO...';
-            triggerSmartLink(); // CLIC VALIOSO
+            unlockBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> HACKING SIGNAL...';
+            triggerSmartLink();
             setTimeout(() => {
                 videoOverlay.classList.add('hidden');
                 livePlayer.classList.remove('hidden');
                 loadServer(1);
+                startAutoHeal();
                 unlockBtn.innerHTML = '<i class="fas fa-unlock-alt"></i> DESBLOQUEAR SEÑAL';
-            }, 1500);
+            }, 2000);
         };
     }
 
     serverBtns.forEach(btn => {
         btn.onclick = () => {
             if (btn.dataset.server === 'sos') {
-                const searchUrl = `https://www.google.com/search?q=ver+en+vivo+${encodeURIComponent(activeMatch.homeTeam + ' vs ' + activeMatch.awayTeam)}+streaming+gratis`;
-                window.open(searchUrl, '_blank');
-                triggerSmartLink(); // CLIC VALIOSO
+                window.open(`https://www.google.com/search?q=ver+en+vivo+${encodeURIComponent(activeMatch.homeTeam)}+vs+${encodeURIComponent(activeMatch.awayTeam)}`, '_blank');
+                triggerSmartLink();
                 return;
             }
             serverBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            if (!livePlayer.classList.contains('hidden')) {
-                loadServer(parseInt(btn.dataset.server));
-                triggerSmartLink(); // CLIC VALIOSO (intentan arreglar señal)
-            }
+            currentServer = parseInt(btn.dataset.server);
+            if (!livePlayer.classList.contains('hidden')) loadServer(currentServer);
         };
     });
 
     async function loadServer(serverNum) {
         if (!activeMatch) return;
+        signalStatus.textContent = "OPTIMIZING NODE...";
         streamIframe.src = ''; 
-        // Ahora pasamos el número de servidor directamente al buscador extremo
         const finalUrl = await findLiveStream(`${activeMatch.homeTeam} vs ${activeMatch.awayTeam}`, serverNum);
         streamIframe.src = finalUrl;
+        setTimeout(() => { signalStatus.textContent = "SIGNAL STABLE (ENCRYPTED)"; }, 3000);
+    }
+
+    function startAutoHeal() {
+        if(autoHealInterval) clearInterval(autoHealInterval);
+        autoHealInterval = setInterval(() => {
+            if (!livePlayer.classList.contains('hidden')) {
+                console.log("Auto-healing signal...");
+                signalStatus.textContent = "SIGNAL REPAIR IN PROGRESS...";
+                setTimeout(() => { signalStatus.textContent = "SIGNAL STABLE (ENCRYPTED)"; }, 2000);
+            }
+        }, 30000);
     }
 
     function resetVideoPlayer() {
         if(videoOverlay) videoOverlay.classList.remove('hidden');
         if(livePlayer) livePlayer.classList.add('hidden');
         if(streamIframe) streamIframe.src = '';
-        serverBtns.forEach((b, i) => i === 0 ? b.classList.add('active') : b.classList.remove('active'));
+        if(autoHealInterval) clearInterval(autoHealInterval);
+    }
+
+    // --- PREMIUM CONTROLS ---
+    document.getElementById('btn-cinema').onclick = () => {
+        document.body.classList.toggle('cinema-mode');
+        document.getElementById('btn-cinema').innerHTML = document.body.classList.contains('cinema-mode') ? 
+            '<i class="fas fa-compress"></i> SALIR CINE' : '<i class="fas fa-tv"></i> MODO CINE';
+    };
+
+    document.getElementById('btn-report').onclick = () => {
+        alert("¡Reporte recibido! Nuestros técnicos están revisando la señal del Servidor " + currentServer);
+        loadServer((currentServer % 3) + 1); // Salto automático a otro servidor
+    };
+
+    // --- CHAT SIMULATION ---
+    function startChatSimulation() {
+        const chatMessages = document.getElementById('chat-messages');
+        const users = [
+            { name: 'Richard_VIP', class: 'name-vip', origin: 'MX' },
+            { name: 'Gool_Master', class: 'name-mx', origin: 'MX' },
+            { name: 'Tio_Betting', class: 'name-ar', origin: 'AR' },
+            { name: 'Futbol_Real', class: 'name-es', origin: 'ES' }
+        ];
+        const phrases = [
+            "¡Qué buena calidad tiene la señal!", "¡GOLAAAAAAZO de visita!", "¿Alguien tiene el link del otro partido?",
+            "Esta web no falla nunca, gran trabajo.", "¡Saludos desde Monterrey!", "Penal clarísimo, ¡no lo puedo creer!",
+            "El servidor 2 vuela, el 1 se me trabó un poco.", "Vamos mi equipo, hoy ganamos sí o sí."
+        ];
+
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                const user = users[Math.floor(Math.random() * users.length)];
+                const phrase = phrases[Math.floor(Math.random() * phrases.length)];
+                const msg = document.createElement('div');
+                msg.className = 'msg';
+                msg.innerHTML = `<span class="${user.class}">${user.name}:</span><span>${phrase}</span>`;
+                chatMessages.appendChild(msg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                if(chatMessages.children.length > 15) chatMessages.removeChild(chatMessages.firstChild);
+            }
+        }, 4000);
     }
 
     // Floating CTA
@@ -290,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(floatingCta) {
             floatingCta.classList.add('show');
             const floatBtn = document.getElementById('btn-floating-smart');
-            if(floatBtn) floatBtn.onclick = () => triggerSmartLink(); // CLIC VALIOSO
+            if(floatBtn) floatBtn.onclick = () => triggerSmartLink();
         }
-    }, 8000);
+    }, 10000);
 });

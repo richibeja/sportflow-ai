@@ -159,12 +159,20 @@
 
             <div class="tab-content hidden" id="tab-video">
                 <div class="video-container-wrapper">
-                    <!-- Selector de Servidores -->
-                    <div class="server-selector">
-                        <button class="server-btn active" data-server="1">Servidor 1</button>
-                        <button class="server-btn" data-server="2">Servidor 2</button>
-                        <button class="server-btn" data-server="3">Servidor 3</button>
-                        <button class="server-btn sos-btn" data-server="sos"><i class="fas fa-search"></i> BUSCAR SEÑAL</button>
+                    <div class="player-top-bar">
+                        <div class="signal-shield">
+                            <i class="fas fa-shield-virus"></i>
+                            <span id="signal-status">BYPASSING BLOCKS...</span>
+                            <div class="signal-bars">
+                                <span class="bar b1"></span><span class="bar b2"></span><span class="bar b3"></span>
+                            </div>
+                        </div>
+                        <div class="server-selector">
+                            <button class="server-btn active" data-server="1">SV1</button>
+                            <button class="server-btn" data-server="2">SV2</button>
+                            <button class="server-btn" data-server="3">SV3</button>
+                            <button class="server-btn sos-btn" data-server="sos"><i class="fas fa-search"></i> SOS</button>
+                        </div>
                     </div>
 
                     <div id="video-overlay" class="video-overlay">
@@ -186,8 +194,29 @@
                         <iframe id="stream-iframe" src="" frameborder="0" allowfullscreen scrolling="no"></iframe>
                     </div>
                 </div>
+                <div class="player-controls">
+                    <button id="btn-cinema" class="ctrl-btn"><i class="fas fa-tv"></i> MODO CINE</button>
+                    <button id="btn-report" class="ctrl-btn"><i class="fas fa-exclamation-triangle"></i> REPORTAR FALLA</button>
+                    <button id="btn-share" class="ctrl-btn"><i class="fas fa-share-alt"></i> COMPARTIR</button>
+                </div>
+
                 <div class="video-help">
-                    <p><i class="fas fa-info-circle"></i> Si la señal se detiene, intenta cambiar de servidor arriba.</p>
+                    <p><i class="fas fa-info-circle"></i> <strong>SISTEMA AUTO-REPARABLE:</strong> Si una señal falla, el sistema buscará un nodo alternativo automáticamente cada 10 segundos.</p>
+                </div>
+
+                <!-- Chat Simulado -->
+                <div class="live-chat-box">
+                    <div class="chat-header">
+                        <span><i class="fas fa-comments"></i> CHAT EN VIVO</span>
+                        <span class="chat-users"><i class="fas fa-circle"></i> 14,203 Online</span>
+                    </div>
+                    <div class="chat-messages" id="chat-messages">
+                        <!-- Messages via JS -->
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" placeholder="Escribe un mensaje..." readonly>
+                        <button><i class="fas fa-paper-plane"></i></button>
+                    </div>
                 </div>
             </div>
         </section>
