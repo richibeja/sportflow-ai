@@ -69,13 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
-    // --- DATA: Schedule ---
-    const schedule = [
-        { event: 'Real Madrid vs Man City', channel: 'TNT Sports', time: '21:00', signal: 'ONLINE HD' },
-        { event: 'Monterrey vs Tigres', channel: 'TUDN / VIX+', time: '21:10', signal: 'EN VIVO' },
-        { event: 'Lakers vs Warriors', channel: 'ESPN', time: '22:00', signal: 'PRÓXIMAMENTE' }
-    ];
-
     let activeMatch = matches[1];
 
     // --- ELEMENTS ---
@@ -101,16 +94,19 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             filterMatches('all');
             setActiveNav(e.target);
+            triggerSmartLink(); // Adsterra al navegar
         };
         document.getElementById('nav-intl').onclick = (e) => {
             e.preventDefault();
             filterMatches('intl');
             setActiveNav(e.target);
+            triggerSmartLink(); // Adsterra al navegar
         };
         document.getElementById('nav-live').onclick = (e) => {
             e.preventDefault();
             filterMatches('live');
             setActiveNav(e.target);
+            triggerSmartLink(); // Adsterra al navegar
         };
     }
 
@@ -121,7 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function filterMatches(type) {
         console.log(`Filtrando: ${type}`);
-        // Lógica de filtrado se aplicará en el render
         window.currentFilter = type;
         renderMatchSelector();
         renderSchedule();
@@ -138,8 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function syncMatches() {
         console.log('Sincronizando partidos reales desde ESPN...');
-        
-        // Ligas de interés para Richard
         const leagues = [
             { id: 'mex.1', name: 'Liga MX' },
             { id: 'eng.1', name: 'Premier League' },
@@ -149,17 +142,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             let allMatches = [];
-
             for (const league of leagues) {
                 try {
                     const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${league.id}/scoreboard`);
                     const data = await response.json();
-                    
                     if (data && data.events) {
                         const leagueMatches = data.events.map(event => {
                             const competitorHome = event.competitions[0].competitors.find(c => c.homeAway === 'home');
                             const competitorAway = event.competitions[0].competitors.find(c => c.homeAway === 'away');
-                            
                             return {
                                 id: event.id,
                                 league: league.name,
@@ -172,34 +162,23 @@ document.addEventListener('DOMContentLoaded', () => {
                                 time: event.status.type.shortDetail,
                                 status: event.status.type.state === 'in' ? 'EN VIVO' : 
                                         event.status.type.state === 'pre' ? 'PRÓXIMAMENTE' : 'FINALIZADO',
-                                streamUrl: '' // Se genera dinámicamente en findLiveStream
+                                streamUrl: ''
                             };
                         });
                         allMatches = [...allMatches, ...leagueMatches];
                     }
-                } catch (err) {
-                    console.error(`Error cargando liga ${league.name}:`, err);
-                }
+                } catch (err) { console.error(`Error cargando liga ${league.name}:`, err); }
             }
-
             if (allMatches.length > 0) {
-                // Ordenar: primero los EN VIVO, luego PRÓXIMAMENTE
                 allMatches.sort((a, b) => {
                     const priority = { 'EN VIVO': 0, 'PRÓXIMAMENTE': 1, 'FINALIZADO': 2 };
                     return priority[a.status] - priority[b.status];
                 });
-
                 matches.length = 0;
-                matches.push(...allMatches.slice(0, 10)); // Top 10 partidos importantes
-
-                if (!activeMatch || !matches.find(m => m.id === activeMatch.id)) {
-                    activeMatch = matches[0];
-                }
+                matches.push(...allMatches.slice(0, 10));
+                if (!activeMatch || !matches.find(m => m.id === activeMatch.id)) activeMatch = matches[0];
             }
-        } catch (error) {
-            console.warn('Error general en sincronización:', error);
-        }
-        
+        } catch (error) { console.warn('Error general en sincronización:', error); }
         renderMatchSelector();
         renderHero(activeMatch);
         renderSchedule();
@@ -208,15 +187,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderMatchSelector() {
         if(!matchSelector) return;
         matchSelector.innerHTML = '';
-
         let filtered = matches;
         const filter = window.currentFilter || 'all';
-        
-        if (filter === 'intl') {
-            filtered = matches.filter(m => m.league !== 'Liga MX');
-        } else if (filter === 'live') {
-            filtered = matches.filter(m => m.status === 'EN VIVO');
-        }
+        if (filter === 'intl') filtered = matches.filter(m => m.league !== 'Liga MX');
+        else if (filter === 'live') filtered = matches.filter(m => m.status === 'EN VIVO');
 
         filtered.forEach(match => {
             const card = document.createElement('div');
@@ -237,6 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.classList.add('active');
                 resetVideoPlayer();
                 renderHero(activeMatch);
+                triggerSmartLink(); // Adsterra al seleccionar partido
             };
             matchSelector.appendChild(card);
         });
@@ -259,25 +234,32 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="match-actions">
                 <button class="btn-primary" id="btn-watch-hd"><i class="fas fa-play"></i> VER EN VIVO</button>
-                <button class="btn-secondary"><i class="fas fa-chart-bar"></i> ESTADÍSTICAS</button>
+                <button class="btn-secondary" id="btn-stats-hero"><i class="fas fa-chart-bar"></i> ESTADÍSTICAS</button>
             </div>
         `;
         document.getElementById('btn-watch-hd').onclick = () => {
             const videoTab = document.querySelector('[data-tab="video"]');
             if(videoTab) videoTab.click();
             document.querySelector('.match-details').scrollIntoView({ behavior: 'smooth' });
+            triggerSmartLink(); // Adsterra al ir a video
+        };
+        document.getElementById('btn-stats-hero').onclick = () => {
+            const statsTab = document.querySelector('[data-tab="stats"]');
+            if(statsTab) statsTab.click();
+            document.querySelector('.match-details').scrollIntoView({ behavior: 'smooth' });
+            triggerSmartLink(); // Adsterra al ir a estadísticas
         };
         
         const madrinaWatch = document.getElementById('btn-madrina-watch');
         if(madrinaWatch) {
-            madrinaWatch.onclick = () => window.open(CONFIG.smartLink, '_blank');
+            madrinaWatch.onclick = () => triggerSmartLink(); 
         }
     }
 
     function renderNews() {
         if(!newsContainer) return;
         newsContainer.innerHTML = news.map(item => `
-            <div class="news-card">
+            <div class="news-card" onclick="window.triggerSmartLink()">
                 <div class="news-img" style="background-image: url('${item.img}')"></div>
                 <div class="news-content">
                     <span class="news-tag">${item.tag}</span>
@@ -290,18 +272,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderSchedule() {
         if(!scheduleBody) return;
-        
         let filtered = matches;
         const filter = window.currentFilter || 'all';
-        
-        if (filter === 'intl') {
-            filtered = matches.filter(m => m.league !== 'Liga MX');
-        } else if (filter === 'live') {
-            filtered = matches.filter(m => m.status === 'EN VIVO');
-        }
+        if (filter === 'intl') filtered = matches.filter(m => m.league !== 'Liga MX');
+        else if (filter === 'live') filtered = matches.filter(m => m.status === 'EN VIVO');
 
         scheduleBody.innerHTML = filtered.map(item => `
-            <tr>
+            <tr onclick="window.triggerSmartLink()">
                 <td>${item.homeTeam} vs ${item.awayTeam}</td>
                 <td><span class="canal-tag">${item.league.substring(0,10)}...</span></td>
                 <td>${item.time}</td>
@@ -310,16 +287,23 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
     }
 
+    // --- MONETIZATION ENGINE ---
+    window.triggerSmartLink = () => {
+        console.log('Monetizando clic...');
+        window.open(CONFIG.smartLink, '_blank');
+    };
+
     // Tab Logic
     tabs.forEach(tab => {
         tab.onclick = () => {
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
             tabContents.forEach(c => c.id === `tab-${tab.dataset.tab}` ? c.classList.remove('hidden') : c.classList.add('hidden'));
+            if(tab.dataset.tab !== 'video') triggerSmartLink(); // Monetizar cambio de tab (excepto video que ya tiene su botón)
         };
     });
 
-    // Video Unlock & Server Logic
+    // Video Logic
     const unlockBtn = document.getElementById('unlock-stream-btn');
     const videoOverlay = document.getElementById('video-overlay');
     const livePlayer = document.getElementById('live-player');
@@ -331,8 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(unlockBtn) {
         unlockBtn.onclick = async () => {
             unlockBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> VERIFICANDO...';
-            const autoLink = await findLiveStream(`${activeMatch.homeTeam} vs ${activeMatch.awayTeam}`);
-            window.open(CONFIG.smartLink, '_blank');
+            triggerSmartLink(); // Adsterra al desbloquear
             setTimeout(() => {
                 videoOverlay.classList.add('hidden');
                 livePlayer.classList.remove('hidden');
@@ -347,6 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (btn.dataset.server === 'sos') {
                 const searchUrl = `https://www.google.com/search?q=ver+en+vivo+${encodeURIComponent(activeMatch.homeTeam + ' vs ' + activeMatch.awayTeam)}+streaming+gratis`;
                 window.open(searchUrl, '_blank');
+                triggerSmartLink();
                 return;
             }
             serverBtns.forEach(b => b.classList.remove('active'));
@@ -355,6 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (activeMatch && !livePlayer.classList.contains('hidden')) {
                 loadServer(currentServer);
             }
+            triggerSmartLink(); // Monetizar cambio de servidor
         };
     });
 
@@ -374,34 +359,13 @@ document.addEventListener('DOMContentLoaded', () => {
         currentServer = 1;
     }
 
-    // Simulación de Goles
-    setInterval(() => {
-        if (activeMatch && activeMatch.status === 'EN VIVO' && Math.random() > 0.98) {
-            activeMatch.homeScore++;
-            const homeScoreEl = document.getElementById('home-score');
-            if(homeScoreEl) homeScoreEl.textContent = activeMatch.homeScore;
-            notifyGoal(activeMatch.homeTeam);
-        }
-    }, 15000);
-
-    function notifyGoal(team) {
-        const toast = document.createElement('div');
-        toast.className = 'goal-toast';
-        toast.innerHTML = `🏁 ¡GOL DE ${team.toUpperCase()}!`;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 4000);
-    }
-
-    const style = document.createElement('style');
-    style.innerHTML = `.goal-toast { position: fixed; top: 100px; right: 20px; background: var(--accent); color: var(--bg-dark); padding: 15px 30px; border-radius: 12px; font-weight: 800; box-shadow: 0 10px 30px rgba(57, 255, 20, 0.5); animation: slideIn 0.5s ease-out; z-index: 9999; } @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }`;
-    document.head.appendChild(style);
-
+    // Floating Ad
     setTimeout(() => {
         const floatingCta = document.getElementById('floating-cta');
         if(floatingCta) {
             floatingCta.classList.add('show');
             const floatBtn = document.getElementById('btn-floating-smart');
-            if(floatBtn) floatBtn.onclick = () => window.open(CONFIG.smartLink, '_blank');
+            if(floatBtn) floatBtn.onclick = () => triggerSmartLink();
         }
     }, 6000);
 });
