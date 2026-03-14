@@ -226,10 +226,18 @@ body {
 .mini-header {
     display: flex;
     justify-content: space-between;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 700;
     color: var(--text-muted);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    gap: 10px;
+}
+
+.mini-header span:first-child {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
 }
 
 .mini-teams {
@@ -421,6 +429,10 @@ body {
 .tournament {
     color: var(--text-muted);
     font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
 }
 
 .match-status {
@@ -829,21 +841,82 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .main-content {
+        margin: 20px auto;
+    }
+
+    .match-card {
+        padding: 25px 15px;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+    }
+
+    .match-scroll {
+        gap: 12px;
+    }
+
+    .match-card-mini {
+        min-width: 200px;
+        padding: 12px;
+    }
+
     .teams-container {
         grid-template-columns: 1fr;
-        gap: 30px;
+        gap: 20px;
     }
     
+    .team-logo {
+        width: 70px;
+        height: 70px;
+        padding: 10px;
+    }
+
+    .team h3 {
+        font-size: 1.2rem;
+    }
+
     .score-board {
         order: -1;
     }
     
     .score {
-        font-size: 3rem;
+        font-size: 2.5rem;
+    }
+
+    .match-time {
+        font-size: 0.9rem;
+        padding: 4px 12px;
     }
     
     .match-actions {
         flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-primary, .btn-secondary {
+        padding: 15px;
+        font-size: 1rem;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .match-details {
+        padding: 15px;
+        border-radius: 15px;
+    }
+
+    .tabs-control {
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+
+    .tab-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        white-space: nowrap;
     }
     
     .navbar .logo-text {
@@ -852,6 +925,21 @@ body {
     
     .nav-links, .nav-actions .btn-telegram {
         display: none;
+    }
+
+    .floating-cta {
+        width: 90%;
+        padding: 15px 20px;
+        gap: 15px;
+    }
+
+    .floating-cta p {
+        font-size: 0.9rem;
+    }
+
+    .btn-smart {
+        padding: 10px 15px;
+        font-size: 0.8rem;
     }
 }
 

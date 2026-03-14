@@ -91,9 +91,41 @@ document.addEventListener('DOMContentLoaded', () => {
     setupBackground();
     syncMatches(); // Primera carga de datos reales
     renderNews();
+    setupNavFilters();
     
     // Auto-actualización cada 60 segundos
     setInterval(syncMatches, 60000);
+
+    function setupNavFilters() {
+        document.getElementById('nav-home').onclick = (e) => {
+            e.preventDefault();
+            filterMatches('all');
+            setActiveNav(e.target);
+        };
+        document.getElementById('nav-intl').onclick = (e) => {
+            e.preventDefault();
+            filterMatches('intl');
+            setActiveNav(e.target);
+        };
+        document.getElementById('nav-live').onclick = (e) => {
+            e.preventDefault();
+            filterMatches('live');
+            setActiveNav(e.target);
+        };
+    }
+
+    function setActiveNav(el) {
+        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    function filterMatches(type) {
+        console.log(`Filtrando: ${type}`);
+        // Lógica de filtrado se aplicará en el render
+        window.currentFilter = type;
+        renderMatchSelector();
+        renderSchedule();
+    }
 
     // --- LOGIC ---
     function setupBackground() {
@@ -176,7 +208,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderMatchSelector() {
         if(!matchSelector) return;
         matchSelector.innerHTML = '';
-        matches.forEach(match => {
+
+        let filtered = matches;
+        const filter = window.currentFilter || 'all';
+        
+        if (filter === 'intl') {
+            filtered = matches.filter(m => m.league !== 'Liga MX');
+        } else if (filter === 'live') {
+            filtered = matches.filter(m => m.status === 'EN VIVO');
+        }
+
+        filtered.forEach(match => {
             const card = document.createElement('div');
             card.className = `match-card-mini ${match.id === activeMatch.id ? 'active' : ''}`;
             card.innerHTML = `
@@ -248,8 +290,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderSchedule() {
         if(!scheduleBody) return;
-        // La programación ahora se basa en los partidos reales sincronizados
-        scheduleBody.innerHTML = matches.map(item => `
+        
+        let filtered = matches;
+        const filter = window.currentFilter || 'all';
+        
+        if (filter === 'intl') {
+            filtered = matches.filter(m => m.league !== 'Liga MX');
+        } else if (filter === 'live') {
+            filtered = matches.filter(m => m.status === 'EN VIVO');
+        }
+
+        scheduleBody.innerHTML = filtered.map(item => `
             <tr>
                 <td>${item.homeTeam} vs ${item.awayTeam}</td>
                 <td><span class="canal-tag">${item.league.substring(0,10)}...</span></td>
