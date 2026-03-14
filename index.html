@@ -159,15 +159,35 @@
 
             <div class="tab-content hidden" id="tab-video">
                 <div class="video-container-wrapper">
-                    <div id="video-overlay" class="video-overlay">
-                        <i class="fas fa-lock"></i>
-                        <h3>Contenido Protegido</h3>
-                        <p>Para ver la señal HD sin anuncios, haz clic en el botón de abajo.</p>
-                        <button id="unlock-stream-btn" class="btn-unlock-stream">DESBLOQUEAR SEÑAL</button>
+                    <!-- Selector de Servidores -->
+                    <div class="server-selector">
+                        <button class="server-btn active" data-server="1">Servidor 1</button>
+                        <button class="server-btn" data-server="2">Servidor 2</button>
+                        <button class="server-btn" data-server="3">Servidor 3</button>
+                        <button class="server-btn sos-btn" data-server="sos"><i class="fas fa-search"></i> BUSCAR SEÑAL</button>
                     </div>
+
+                    <div id="video-overlay" class="video-overlay">
+                        <div class="lock-icon-wrapper">
+                            <i class="fas fa-lock pulse-icon"></i>
+                        </div>
+                        <h3>Transmisión Protegida</h3>
+                        <p>Haz clic para verificar y desbloquear la señal <strong>Premium HD</strong> del partido.</p>
+                        <button id="unlock-stream-btn" class="btn-unlock-stream">
+                            <i class="fas fa-unlock-alt"></i> DESBLOQUEAR SEÑAL
+                        </button>
+                        <span class="secure-tag"><i class="fas fa-shield-alt"></i> Conexión Segura SSL</span>
+                    </div>
+
                     <div id="live-player" class="live-player hidden">
+                        <div class="player-loading">
+                            <i class="fas fa-spinner fa-spin"></i> Cargando señal...
+                        </div>
                         <iframe id="stream-iframe" src="" frameborder="0" allowfullscreen scrolling="no"></iframe>
                     </div>
+                </div>
+                <div class="video-help">
+                    <p><i class="fas fa-info-circle"></i> Si la señal se detiene, intenta cambiar de servidor arriba.</p>
                 </div>
             </div>
         </section>

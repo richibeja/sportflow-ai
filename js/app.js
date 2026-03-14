@@ -19,8 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             homeScore: 0,
             awayScore: 0,
             time: '21:00',
-            status: 'PRÓXIMAMENTE',
-            streamUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ' // Ejemplo, cambiar por señal real
+            status: 'PRÓXIMAMENTE'
         },
         {
             id: 'mx-01',
@@ -32,8 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
             homeScore: 2,
             awayScore: 1,
             time: '67\'',
-            status: 'EN VIVO',
-            streamUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ' // Ejemplo, cambiar por señal real
+            status: 'EN VIVO'
         },
         {
             id: 'epl-01',
@@ -45,8 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             homeScore: 0,
             awayScore: 0,
             time: '14:30',
-            status: 'HOY',
-            streamUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ' // Ejemplo, cambiar por señal real
+            status: 'HOY'
         }
     ];
 
@@ -99,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- LOGIC ---
     function setupBackground() {
+        if(!bgOverlay) return;
         bgOverlay.style.backgroundImage = `url(sportflow_hero_bg.png)`;
         bgOverlay.style.backgroundSize = 'cover';
         bgOverlay.style.backgroundPosition = 'center';
@@ -106,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderMatchSelector() {
+        if(!matchSelector) return;
         matchSelector.innerHTML = '';
         matches.forEach(match => {
             const card = document.createElement('div');
@@ -132,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderHero(match) {
+        if(!heroContent) return;
         heroContent.innerHTML = `
             <div class="match-header">
                 <span class="tournament">${match.league}</span>
@@ -151,15 +151,11 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
         document.getElementById('btn-watch-hd').onclick = () => {
-            // Activar la pestaña de video
             const videoTab = document.querySelector('[data-tab="video"]');
             if(videoTab) videoTab.click();
-            
-            // Hacer scroll hasta el reproductor
             document.querySelector('.match-details').scrollIntoView({ behavior: 'smooth' });
         };
         
-        // Listener para el botón de la Madrina
         const madrinaWatch = document.getElementById('btn-madrina-watch');
         if(madrinaWatch) {
             madrinaWatch.onclick = () => window.open(CONFIG.smartLink, '_blank');
@@ -167,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderNews() {
+        if(!newsContainer) return;
         newsContainer.innerHTML = news.map(item => `
             <div class="news-card">
                 <div class="news-img" style="background-image: url('${item.img}')"></div>
@@ -180,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderSchedule() {
+        if(!scheduleBody) return;
         scheduleBody.innerHTML = schedule.map(item => `
             <tr>
                 <td>${item.event}</td>
@@ -199,40 +197,67 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
-    // Video Unlock Logic
+    // Video Unlock & Server Logic
     const unlockBtn = document.getElementById('unlock-stream-btn');
     const videoOverlay = document.getElementById('video-overlay');
     const livePlayer = document.getElementById('live-player');
     const streamIframe = document.getElementById('stream-iframe');
+    const serverBtns = document.querySelectorAll('.server-btn');
+
+    let currentServer = 1;
 
     if(unlockBtn) {
         unlockBtn.onclick = async () => {
-            // Animación de carga
-            unlockBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> BUSCANDO SEÑAL...';
-            
-            // BUSQUEDA AUTOMÁTICA DE LINK
+            unlockBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> VERIFICANDO...';
             const autoLink = await findLiveStream(`${activeMatch.homeTeam} vs ${activeMatch.awayTeam}`);
-            
             window.open(CONFIG.smartLink, '_blank');
-            videoOverlay.classList.add('hidden');
-            livePlayer.classList.remove('hidden');
-            streamIframe.src = autoLink;
-            
-            unlockBtn.innerHTML = 'DESBLOQUEAR SEÑAL';
+            setTimeout(() => {
+                videoOverlay.classList.add('hidden');
+                livePlayer.classList.remove('hidden');
+                loadServer(currentServer);
+                unlockBtn.innerHTML = '<i class="fas fa-unlock-alt"></i> DESBLOQUEAR SEÑAL';
+            }, 1000);
         };
+    }
+
+    serverBtns.forEach(btn => {
+        btn.onclick = () => {
+            if (btn.dataset.server === 'sos') {
+                const searchUrl = `https://www.google.com/search?q=ver+en+vivo+${encodeURIComponent(activeMatch.homeTeam + ' vs ' + activeMatch.awayTeam)}+streaming+gratis`;
+                window.open(searchUrl, '_blank');
+                return;
+            }
+            serverBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentServer = parseInt(btn.dataset.server);
+            if (activeMatch && !livePlayer.classList.contains('hidden')) {
+                loadServer(currentServer);
+            }
+        };
+    });
+
+    async function loadServer(serverNum) {
+        if (!activeMatch) return;
+        streamIframe.src = ''; 
+        const baseLink = await findLiveStream(`${activeMatch.homeTeam} vs ${activeMatch.awayTeam}`);
+        const finalUrl = baseLink.includes('?') ? `${baseLink}&s=${serverNum}` : `${baseLink}?s=${serverNum}`;
+        streamIframe.src = finalUrl;
     }
 
     function resetVideoPlayer() {
         if(videoOverlay) videoOverlay.classList.remove('hidden');
         if(livePlayer) livePlayer.classList.add('hidden');
         if(streamIframe) streamIframe.src = '';
+        serverBtns.forEach((b, i) => i === 0 ? b.classList.add('active') : b.classList.remove('active'));
+        currentServer = 1;
     }
 
     // Simulación de Goles
     setInterval(() => {
-        if (activeMatch.status === 'EN VIVO' && Math.random() > 0.98) {
+        if (activeMatch && activeMatch.status === 'EN VIVO' && Math.random() > 0.98) {
             activeMatch.homeScore++;
-            document.getElementById('home-score').textContent = activeMatch.homeScore;
+            const homeScoreEl = document.getElementById('home-score');
+            if(homeScoreEl) homeScoreEl.textContent = activeMatch.homeScore;
             notifyGoal(activeMatch.homeTeam);
         }
     }, 15000);
@@ -243,11 +268,8 @@ document.addEventListener('DOMContentLoaded', () => {
         toast.innerHTML = `🏁 ¡GOL DE ${team.toUpperCase()}!`;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 4000);
-        const audio = new Audio('https://www.soundjay.com/buttons/sounds/button-3.mp3');
-        audio.play().catch(() => {});
     }
 
-    // Styles for Goal Toast in JS to keep it dynamic
     const style = document.createElement('style');
     style.innerHTML = `.goal-toast { position: fixed; top: 100px; right: 20px; background: var(--accent); color: var(--bg-dark); padding: 15px 30px; border-radius: 12px; font-weight: 800; box-shadow: 0 10px 30px rgba(57, 255, 20, 0.5); animation: slideIn 0.5s ease-out; z-index: 9999; } @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }`;
     document.head.appendChild(style);
@@ -256,7 +278,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const floatingCta = document.getElementById('floating-cta');
         if(floatingCta) {
             floatingCta.classList.add('show');
-            document.getElementById('btn-floating-smart').onclick = () => window.open(CONFIG.smartLink, '_blank');
+            const floatBtn = document.getElementById('btn-floating-smart');
+            if(floatBtn) floatBtn.onclick = () => window.open(CONFIG.smartLink, '_blank');
         }
     }, 6000);
 });

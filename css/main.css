@@ -863,8 +863,48 @@ body {
     background: #000;
     border-radius: 12px;
     overflow: hidden;
-    margin-top: 20px;
+    margin-top: 10px;
     border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.server-selector {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 20;
+    display: flex;
+    gap: 8px;
+}
+
+.server-btn {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.server-btn:hover {
+    background: var(--primary);
+}
+
+.sos-btn {
+    border-color: #ff4757;
+    color: #ff4757;
+}
+
+.sos-btn:hover {
+    background: #ff4757;
+    color: white;
+}
+
+.server-btn.active {
+    background: var(--accent);
+    color: var(--bg-dark);
 }
 
 .video-overlay {
@@ -877,52 +917,116 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.85);
+    background: radial-gradient(circle, rgba(20, 20, 20, 0.9) 0%, rgba(0, 0, 0, 0.98) 100%);
     z-index: 10;
     text-align: center;
-    padding: 20px;
+    padding: 30px;
 }
 
-.video-overlay i {
-    font-size: 3rem;
-    color: var(--primary);
-    margin-bottom: 15px;
+.lock-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background: rgba(57, 255, 20, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    border: 2px solid var(--accent);
+}
+
+.pulse-icon {
+    font-size: 2.5rem;
+    color: var(--accent);
+    animation: iconPulse 2s infinite;
+}
+
+@keyframes iconPulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
 .video-overlay h3 {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     margin-bottom: 10px;
     color: white;
+    font-weight: 800;
 }
 
 .video-overlay p {
-    color: #ccc;
-    margin-bottom: 20px;
+    color: #bbb;
+    margin-bottom: 25px;
+    max-width: 400px;
+    line-height: 1.5;
+}
+
+.secure-tag {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .btn-unlock-stream {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
+    background: linear-gradient(135deg, var(--accent), #2ecc71);
+    color: var(--bg-dark);
     border: none;
-    padding: 12px 30px;
-    border-radius: 30px;
-    font-weight: 700;
+    padding: 15px 40px;
+    border-radius: 35px;
+    font-weight: 800;
+    font-size: 1.1rem;
     cursor: pointer;
-    transition: transform 0.3s;
+    box-shadow: 0 0 25px rgba(57, 255, 20, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
 }
 
 .btn-unlock-stream:hover {
-    transform: scale(1.05);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 0 40px rgba(57, 255, 20, 0.6);
+}
+
+.player-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--accent);
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
 .live-player {
     width: 100%;
     height: 100%;
+    background: #000;
 }
 
 .live-player iframe {
     width: 100%;
     height: 100%;
+    position: relative;
+    z-index: 5;
+}
+
+.video-help {
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 10px 20px;
+    border-radius: 10px;
+    border-left: 3px solid var(--accent);
 }
 
 .hidden {
