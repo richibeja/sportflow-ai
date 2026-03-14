@@ -1,10 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('SportFlow AI: Extreme Ultra v5.0');
     
-    // --- MONETIZATION CONFIG ---
+    // --- MASTER CONFIG (Control total de Richard) ---
     const CONFIG = {
         smartLink: 'https://www.effectivegatecpm.com/jm7f9ypm?key=b8f95870742d9bd9e730551fa23f4398',
-        socialBar: true
+        madrinaMessage: '"¡Hola Richard! Te dejé mi link VIP para el partido aquí abajo... ⚽✨"',
+        chatPhrases: [
+            "¡Qué buena calidad tiene la señal!", 
+            "¡GOLAAAAAAZO de visita!", 
+            "Esta web no falla nunca, gran trabajo.", 
+            "¡Saludos desde Monterrey!", 
+            "El servidor 2 vuela, el 1 se me trabó un poco.", 
+            "¡Vamos mi equipo, hoy ganamos!"
+        ]
     };
 
     const matches = [];
@@ -18,8 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const scheduleBody = document.getElementById('schedule-body');
     const tabs = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
+    const madrinaP = document.querySelector('.madrina-text p');
 
     // --- INIT ---
+    if(madrinaP) madrinaP.textContent = CONFIG.madrinaMessage;
     setupBackground();
     syncMatches();
     renderNews();
@@ -70,18 +80,21 @@ document.addEventListener('DOMContentLoaded', () => {
             for (const league of leagues) {
                 try {
                     const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${league.id}/scoreboard`);
+                    if (!response.ok) throw new Error('Network error');
                     const data = await response.json();
-                    if (data && data.events) {
+                    
+                    if (data && data.events && data.events.length > 0) {
                         const leagueMatches = data.events.map(event => {
                             const competitorHome = event.competitions[0].competitors.find(c => c.homeAway === 'home');
                             const competitorAway = event.competitions[0].competitors.find(c => c.homeAway === 'away');
+                            
                             return {
                                 id: event.id,
                                 league: league.name,
                                 homeTeam: competitorHome.team.displayName,
                                 awayTeam: competitorAway.team.displayName,
-                                homeLogo: competitorHome.team.logo,
-                                awayLogo: competitorAway.team.logo,
+                                homeLogo: competitorHome.team.logo || 'https://via.placeholder.com/50',
+                                awayLogo: competitorAway.team.logo || 'https://via.placeholder.com/50',
                                 homeScore: competitorHome.score,
                                 awayScore: competitorAway.score,
                                 time: event.status.type.shortDetail,
@@ -91,18 +104,32 @@ document.addEventListener('DOMContentLoaded', () => {
                         });
                         allMatches = [...allMatches, ...leagueMatches];
                     }
-                } catch (err) {}
+                } catch (err) {
+                    console.warn(`Error en liga ${league.name}:`, err);
+                }
             }
+
             if (allMatches.length > 0) {
                 allMatches.sort((a, b) => {
                     const priority = { 'EN VIVO': 0, 'PRÓXIMAMENTE': 1, 'FINALIZADO': 2 };
                     return priority[a.status] - priority[b.status];
                 });
+
                 matches.length = 0;
-                matches.push(...allMatches.slice(0, 10));
-                if (!activeMatch || !matches.find(m => m.id === activeMatch.id)) activeMatch = matches[0];
+                matches.push(...allMatches.slice(0, 15)); // Un poco más de margen
+
+                if (!activeMatch || !matches.find(m => m.id === activeMatch.id)) {
+                    activeMatch = matches[0];
+                }
+            } else {
+                // Si no hay partidos en ninguna liga
+                if(heroContent) heroContent.innerHTML = '<div class="loading-state">No hay partidos programados para hoy en estas ligas. ¡Vuelve más tarde!</div>';
             }
-        } catch (error) {}
+        } catch (error) {
+            console.error('Error crítico de sincronización:', error);
+            if(heroContent) heroContent.innerHTML = '<div class="loading-state">Error al conectar con el servidor de deportes.</div>';
+        }
+        
         renderMatchSelector();
         renderHero(activeMatch);
         renderSchedule();
@@ -142,6 +169,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderHero(match) {
         if(!heroContent) return;
+        
+        // Actualizar mensaje de la Madrina en automático según el partido
+        const madrinaPhrases = [
+            `⚽ ¡Richard! ¿Ya viste el partido de ${match.homeTeam} vs ${match.awayTeam}? Está riquísimo, dale clic abajo...`,
+            `✨ Richard, te conseguí el link HD para el ${match.homeTeam}. ¡No te lo pierdas!`,
+            `🔥 ¡Apúrate Richard! La señal del ${match.league} ya está activa. Entra aquí:`,
+            `💖 Richard, ¿vas con el ${match.homeTeam} o el ${match.awayTeam}? Avísame en el chat...`
+        ];
+        if(madrinaP) {
+            madrinaP.textContent = madrinaPhrases[Math.floor(Math.random() * madrinaPhrases.length)];
+        }
+
         heroContent.innerHTML = `
             <div class="match-header">
                 <span class="tournament">${match.league}</span>
