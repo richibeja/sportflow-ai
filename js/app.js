@@ -272,8 +272,8 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadServer(serverNum) {
         if (!activeMatch) return;
         streamIframe.src = ''; 
-        const baseLink = await findLiveStream(`${activeMatch.homeTeam} vs ${activeMatch.awayTeam}`);
-        const finalUrl = baseLink.includes('?') ? `${baseLink}&s=${serverNum}` : `${baseLink}?s=${serverNum}`;
+        // Ahora pasamos el número de servidor directamente al buscador extremo
+        const finalUrl = await findLiveStream(`${activeMatch.homeTeam} vs ${activeMatch.awayTeam}`, serverNum);
         streamIframe.src = finalUrl;
     }
 
@@ -281,6 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(videoOverlay) videoOverlay.classList.remove('hidden');
         if(livePlayer) livePlayer.classList.add('hidden');
         if(streamIframe) streamIframe.src = '';
+        serverBtns.forEach((b, i) => i === 0 ? b.classList.add('active') : b.classList.remove('active'));
     }
 
     // Floating CTA
