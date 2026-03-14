@@ -312,18 +312,21 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadServer(serverNum) {
         if (!activeMatch) return;
         
-        signalStatus.textContent = "DECRYPTING PRIVATE NODE...";
-        signalStatus.style.color = "var(--secondary)";
+        signalStatus.textContent = "NASA UPLINK: CONNECTING...";
+        signalStatus.style.color = "#00d4ff"; // Azul NASA
         streamIframe.src = ''; 
 
-        // HACK: El motor ahora busca en una matriz de 3 sub-fuentes por servidor
         const finalUrl = await findLiveStream(`${activeMatch.homeTeam} vs ${activeMatch.awayTeam}`, serverNum);
         
-        // Simulación de "Bypass de Firewall"
         setTimeout(() => {
-            streamIframe.src = finalUrl;
-            signalStatus.textContent = "BYPASS SUCCESSFUL - SIGNAL STABLE";
-            signalStatus.style.color = "var(--accent)";
+            signalStatus.textContent = "PENTAGON BYPASS: SUCCESS";
+            signalStatus.style.color = "var(--secondary)";
+            
+            setTimeout(() => {
+                streamIframe.src = finalUrl;
+                signalStatus.textContent = "SIGNAL OPTIMIZED (SAT-6)";
+                signalStatus.style.color = "var(--accent)";
+            }, 800);
         }, 1000);
     }
 
