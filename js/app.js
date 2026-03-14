@@ -1,75 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('SportFlow AI: Full Experience v2.0');
+    console.log('SportFlow AI: Balanced Pro v2.5');
     
     // --- MONETIZATION CONFIG ---
     const CONFIG = {
-        smartLink: 'https://www.effectivegatecpm.com/jm7f9ypm?key=b8f95870742d9bd9e730551fa23f4398', // Link de Adsterra actualizado
-        socialBar: true // Barra social activa
+        smartLink: 'https://www.effectivegatecpm.com/jm7f9ypm?key=b8f95870742d9bd9e730551fa23f4398',
+        socialBar: true
     };
 
-    // --- DATA: Matches ---
-    const matches = [
-        {
-            id: 'ucl-01',
-            league: 'UEFA Champions League',
-            homeTeam: 'Real Madrid',
-            awayTeam: 'Man City',
-            homeLogo: 'https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png',
-            awayLogo: 'https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/1200px-Manchester_City_FC_badge.svg.png',
-            homeScore: 0,
-            awayScore: 0,
-            time: '21:00',
-            status: 'PRÓXIMAMENTE'
-        },
-        {
-            id: 'mx-01',
-            league: 'Liga MX • Clásico Regio',
-            homeTeam: 'Monterrey',
-            awayTeam: 'Tigres UANL',
-            homeLogo: 'https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/CF_Monterrey_logo.svg/1200px-CF_Monterrey_logo.svg.png',
-            awayLogo: 'https://upload.wikimedia.org/wikipedia/en/thumb/1/13/Tigres_UANL_logo.svg/1200px-Tigres_UANL_logo.svg.png',
-            homeScore: 2,
-            awayScore: 1,
-            time: '67\'',
-            status: 'EN VIVO'
-        },
-        {
-            id: 'epl-01',
-            league: 'Premier League',
-            homeTeam: 'Liverpool',
-            awayTeam: 'Arsenal',
-            homeLogo: 'https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png',
-            awayLogo: 'https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Arsenal_FC.svg/1200px-Arsenal_FC.svg.png',
-            homeScore: 0,
-            awayScore: 0,
-            time: '14:30',
-            status: 'HOY'
-        }
-    ];
-
-    // --- DATA: News ---
-    const news = [
-        {
-            title: 'Mbappé listo para el Clásico Europeo',
-            tag: 'CHAMPIONS',
-            desc: 'El delantero francés confirma su titularidad para el encuentro ante el City en el Bernabéu.',
-            img: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=80'
-        },
-        {
-            title: 'Monterrey busca el liderato solitario',
-            tag: 'LIGA MX',
-            desc: 'Los Rayados necesitan la victoria ante su acérrimo rival para consolidarse en la cima.',
-            img: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80'
-        },
-        {
-            title: 'Klopp advierte sobre el poderío del Arsenal',
-            tag: 'PREMIER',
-            desc: 'Liverpool se prepara para el duelo más importante de la jornada en Anfield.',
-            img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=800&q=80'
-        }
-    ];
-
-    let activeMatch = matches[1];
+    const matches = [];
+    let activeMatch = null;
 
     // --- ELEMENTS ---
     const bgOverlay = document.querySelector('.background-overlay');
@@ -82,31 +21,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- INIT ---
     setupBackground();
-    syncMatches(); // Primera carga de datos reales
+    syncMatches();
     renderNews();
     setupNavFilters();
-    
-    // Auto-actualización cada 60 segundos
     setInterval(syncMatches, 60000);
+
+    // --- MONETIZATION ENGINE ---
+    window.triggerSmartLink = () => {
+        console.log('Monetización ejecutada en acción de alto valor.');
+        window.open(CONFIG.smartLink, '_blank');
+    };
 
     function setupNavFilters() {
         document.getElementById('nav-home').onclick = (e) => {
             e.preventDefault();
             filterMatches('all');
             setActiveNav(e.target);
-            triggerSmartLink(); // Adsterra al navegar
+            // Sin publicidad aquí para que la navegación sea fluida
         };
         document.getElementById('nav-intl').onclick = (e) => {
             e.preventDefault();
             filterMatches('intl');
             setActiveNav(e.target);
-            triggerSmartLink(); // Adsterra al navegar
         };
         document.getElementById('nav-live').onclick = (e) => {
             e.preventDefault();
             filterMatches('live');
             setActiveNav(e.target);
-            triggerSmartLink(); // Adsterra al navegar
         };
     }
 
@@ -116,13 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function filterMatches(type) {
-        console.log(`Filtrando: ${type}`);
         window.currentFilter = type;
         renderMatchSelector();
         renderSchedule();
     }
 
-    // --- LOGIC ---
     function setupBackground() {
         if(!bgOverlay) return;
         bgOverlay.style.backgroundImage = `url(sportflow_hero_bg.png)`;
@@ -132,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function syncMatches() {
-        console.log('Sincronizando partidos reales desde ESPN...');
         const leagues = [
             { id: 'mex.1', name: 'Liga MX' },
             { id: 'eng.1', name: 'Premier League' },
@@ -161,13 +99,12 @@ document.addEventListener('DOMContentLoaded', () => {
                                 awayScore: competitorAway.score,
                                 time: event.status.type.shortDetail,
                                 status: event.status.type.state === 'in' ? 'EN VIVO' : 
-                                        event.status.type.state === 'pre' ? 'PRÓXIMAMENTE' : 'FINALIZADO',
-                                streamUrl: ''
+                                        event.status.type.state === 'pre' ? 'PRÓXIMAMENTE' : 'FINALIZADO'
                             };
                         });
                         allMatches = [...allMatches, ...leagueMatches];
                     }
-                } catch (err) { console.error(`Error cargando liga ${league.name}:`, err); }
+                } catch (err) {}
             }
             if (allMatches.length > 0) {
                 allMatches.sort((a, b) => {
@@ -178,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 matches.push(...allMatches.slice(0, 10));
                 if (!activeMatch || !matches.find(m => m.id === activeMatch.id)) activeMatch = matches[0];
             }
-        } catch (error) { console.warn('Error general en sincronización:', error); }
+        } catch (error) {}
         renderMatchSelector();
         renderHero(activeMatch);
         renderSchedule();
@@ -211,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.classList.add('active');
                 resetVideoPlayer();
                 renderHero(activeMatch);
-                triggerSmartLink(); // Adsterra al seleccionar partido
+                // Sin publicidad aquí para que puedan explorar partidos libremente
             };
             matchSelector.appendChild(card);
         });
@@ -241,25 +178,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const videoTab = document.querySelector('[data-tab="video"]');
             if(videoTab) videoTab.click();
             document.querySelector('.match-details').scrollIntoView({ behavior: 'smooth' });
-            triggerSmartLink(); // Adsterra al ir a video
         };
         document.getElementById('btn-stats-hero').onclick = () => {
             const statsTab = document.querySelector('[data-tab="stats"]');
             if(statsTab) statsTab.click();
             document.querySelector('.match-details').scrollIntoView({ behavior: 'smooth' });
-            triggerSmartLink(); // Adsterra al ir a estadísticas
         };
-        
-        const madrinaWatch = document.getElementById('btn-madrina-watch');
-        if(madrinaWatch) {
-            madrinaWatch.onclick = () => triggerSmartLink(); 
-        }
     }
 
     function renderNews() {
         if(!newsContainer) return;
-        newsContainer.innerHTML = news.map(item => `
-            <div class="news-card" onclick="window.triggerSmartLink()">
+        // Noticias sin publicidad invasiva al click, solo banners visuales
+        newsContainer.innerHTML = [
+            { title: 'Clásico Regio: Todo listo', tag: 'LIGA MX', desc: 'Monterrey y Tigres paralizan la ciudad.', img: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=80' },
+            { title: 'Madrid vs City: Final anticipada', tag: 'CHAMPIONS', desc: 'El Bernabéu espera una noche mágica.', img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=800&q=80' }
+        ].map(item => `
+            <div class="news-card">
                 <div class="news-img" style="background-image: url('${item.img}')"></div>
                 <div class="news-content">
                     <span class="news-tag">${item.tag}</span>
@@ -278,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (filter === 'live') filtered = matches.filter(m => m.status === 'EN VIVO');
 
         scheduleBody.innerHTML = filtered.map(item => `
-            <tr onclick="window.triggerSmartLink()">
+            <tr>
                 <td>${item.homeTeam} vs ${item.awayTeam}</td>
                 <td><span class="canal-tag">${item.league.substring(0,10)}...</span></td>
                 <td>${item.time}</td>
@@ -287,19 +221,14 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
     }
 
-    // --- MONETIZATION ENGINE ---
-    window.triggerSmartLink = () => {
-        console.log('Monetizando clic...');
-        window.open(CONFIG.smartLink, '_blank');
-    };
-
     // Tab Logic
     tabs.forEach(tab => {
         tab.onclick = () => {
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
             tabContents.forEach(c => c.id === `tab-${tab.dataset.tab}` ? c.classList.remove('hidden') : c.classList.add('hidden'));
-            if(tab.dataset.tab !== 'video') triggerSmartLink(); // Monetizar cambio de tab (excepto video que ya tiene su botón)
+            // Solo publicidad si entra a la pestaña de VIDEO
+            if(tab.dataset.tab === 'video') triggerSmartLink();
         };
     });
 
@@ -310,18 +239,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const streamIframe = document.getElementById('stream-iframe');
     const serverBtns = document.querySelectorAll('.server-btn');
 
-    let currentServer = 1;
-
     if(unlockBtn) {
         unlockBtn.onclick = async () => {
             unlockBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> VERIFICANDO...';
-            triggerSmartLink(); // Adsterra al desbloquear
+            triggerSmartLink(); // CLIC VALIOSO
             setTimeout(() => {
                 videoOverlay.classList.add('hidden');
                 livePlayer.classList.remove('hidden');
-                loadServer(currentServer);
+                loadServer(1);
                 unlockBtn.innerHTML = '<i class="fas fa-unlock-alt"></i> DESBLOQUEAR SEÑAL';
-            }, 1000);
+            }, 1500);
         };
     }
 
@@ -330,16 +257,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (btn.dataset.server === 'sos') {
                 const searchUrl = `https://www.google.com/search?q=ver+en+vivo+${encodeURIComponent(activeMatch.homeTeam + ' vs ' + activeMatch.awayTeam)}+streaming+gratis`;
                 window.open(searchUrl, '_blank');
-                triggerSmartLink();
+                triggerSmartLink(); // CLIC VALIOSO
                 return;
             }
             serverBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            currentServer = parseInt(btn.dataset.server);
-            if (activeMatch && !livePlayer.classList.contains('hidden')) {
-                loadServer(currentServer);
+            if (!livePlayer.classList.contains('hidden')) {
+                loadServer(parseInt(btn.dataset.server));
+                triggerSmartLink(); // CLIC VALIOSO (intentan arreglar señal)
             }
-            triggerSmartLink(); // Monetizar cambio de servidor
         };
     });
 
@@ -355,17 +281,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if(videoOverlay) videoOverlay.classList.remove('hidden');
         if(livePlayer) livePlayer.classList.add('hidden');
         if(streamIframe) streamIframe.src = '';
-        serverBtns.forEach((b, i) => i === 0 ? b.classList.add('active') : b.classList.remove('active'));
-        currentServer = 1;
     }
 
-    // Floating Ad
+    // Floating CTA
     setTimeout(() => {
         const floatingCta = document.getElementById('floating-cta');
         if(floatingCta) {
             floatingCta.classList.add('show');
             const floatBtn = document.getElementById('btn-floating-smart');
-            if(floatBtn) floatBtn.onclick = () => triggerSmartLink();
+            if(floatBtn) floatBtn.onclick = () => triggerSmartLink(); // CLIC VALIOSO
         }
-    }, 6000);
+    }, 8000);
 });
