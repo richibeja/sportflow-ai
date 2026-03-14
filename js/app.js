@@ -72,7 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'mex.1', name: 'Liga MX' },
             { id: 'eng.1', name: 'Premier League' },
             { id: 'uefa.champions', name: 'Champions League' },
-            { id: 'esp.1', name: 'La Liga' }
+            { id: 'esp.1', name: 'La Liga' },
+            { id: 'ita.1', name: 'Serie A' },
+            { id: 'ger.1', name: 'Bundesliga' },
+            { id: 'fra.1', name: 'Ligue 1' },
+            { id: 'arg.1', name: 'Liga Argentina' }
         ];
 
         try {
@@ -116,13 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 matches.length = 0;
-                matches.push(...allMatches.slice(0, 15)); // Un poco más de margen
+                matches.push(...allMatches.slice(0, 20)); // Más capacidad para que siempre haya qué ver
 
                 if (!activeMatch || !matches.find(m => m.id === activeMatch.id)) {
                     activeMatch = matches[0];
                 }
             } else {
-                // Si no hay partidos en ninguna liga
                 if(heroContent) heroContent.innerHTML = '<div class="loading-state">No hay partidos programados para hoy en estas ligas. ¡Vuelve más tarde!</div>';
             }
         } catch (error) {
@@ -283,7 +286,8 @@ document.addEventListener('DOMContentLoaded', () => {
     serverBtns.forEach(btn => {
         btn.onclick = () => {
             if (btn.dataset.server === 'sos') {
-                window.open(`https://www.google.com/search?q=ver+en+vivo+${encodeURIComponent(activeMatch.homeTeam)}+vs+${encodeURIComponent(activeMatch.awayTeam)}`, '_blank');
+                // S.O.S ya no te saca de la web, busca internamente en el nodo de emergencia
+                loadServer(4);
                 triggerSmartLink();
                 return;
             }
