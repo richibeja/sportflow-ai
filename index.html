@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportFlow AI | Transmisión Deportiva y Resultados en Vivo</title>
+    <meta name="description" content="Sigue la Champions League, Liga MX y Premier League en vivo. Resultados, alineaciones, estadísticas y noticias de último minuto en alta definición.">
+    <!-- Open Graph for Facebook -->
+    <meta property="og:title" content="SportFlow AI | Deportes en Vivo">
+    <meta property="og:description" content="No te pierdas los mejores partidos hoy. Cobertura completa en HD.">
+    <meta property="og:image" content="sportflow_hero_bg.png">
+    <meta property="og:url" content="https://tudominio.com">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Adsterra Social Bar -->
+    <script src="https://pl28916004.effectivegatecpm.com/d7/b4/d8/d7b4d83e17f56a4aabebc13769bc93a2.js"></script>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <span class="logo-icon"><i class="fas fa-bolt"></i></span>
+                <span class="logo-text">SPORT<span>FLOW</span></span>
+            </div>
+            <nav class="nav-links">
+                <a href="#" class="active" id="nav-home">Inicio</a>
+                <a href="#" id="nav-intl">Internacional</a>
+                <a href="#" id="nav-live">Resultados</a>
+                <a href="./models/index.html" class="nav-madrina" target="_blank"><i class="fas fa-heart"></i> Madrina VIP</a>
+            </nav>
+            <div class="nav-actions">
+                <div class="live-indicator">
+                    <span class="pulse"></span> 4 EN VIVO
+                </div>
+                <a href="https://t.me/yourtelegram" target="_blank" class="btn-telegram">
+                    <i class="fab fa-telegram"></i> Grupo VIP
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Top Ad Slot -->
+        <div class="madrina-widget" id="madrina-widget">
+            <div class="madrina-img">
+                <img src="madrina.png" alt="Madrina del Equipo">
+                <span class="madrina-badge">TIPS DE HOY</span>
+            </div>
+            <div class="madrina-text">
+                <p>"¡Hola Richard! Te dejé mi link VIP para el partido aquí abajo... ⚽✨"</p>
+                <div class="madrina-actions">
+                    <button class="btn-madrina-link" id="btn-madrina-watch">VER TRANSMISIÓN HD</button>
+                    <a href="./models/index.html" class="btn-madrina-photos" target="_blank">VER MIS FOTOS</a>
+                </div>
+            </div>
+            <button class="close-madrina" onclick="document.getElementById('madrina-widget').style.display='none'">&times;</button>
+        </div>
+
+        <div class="ad-slot top-ad">
+            <div class="ad-responsive-container">
+                <!-- Desktop: 728x90 Billboard -->
+                <div class="ad-unit ad-pc" id="ad-top-pc">
+                    <script type="text/javascript">
+                        atOptions = {
+                            'key' : 'd73933b8cfbbda3517bd62db85dfa4bf',
+                            'format' : 'iframe',
+                            'height' : 90,
+                            'width' : 728,
+                            'params' : {}
+                        };
+                    </script>
+                    <script type="text/javascript" src="https://www.highperformanceformat.com/d73933b8cfbbda3517bd62db85dfa4bf/invoke.js"></script>
+                </div>
+                <!-- Mobile: 320x50 Banner -->
+                <div class="ad-unit ad-mobile" id="ad-top-mobile">
+                    <script type="text/javascript">
+                        atOptions = {
+                            'key' : '0d6323163d0bf049f77d24605b7baf54',
+                            'format' : 'iframe',
+                            'height' : 50,
+                            'width' : 320,
+                            'params' : {}
+                        };
+                    </script>
+                    <script type="text/javascript" src="https://www.highperformanceformat.com/0d6323163d0bf049f77d24605b7baf54/invoke.js"></script>
+                </div>
+            </div>
+        </div>
+
+        <section class="intl-ticker">
+            <div class="ticker-wrapper">
+                <div class="ticker-item"><i class="fas fa-trophy"></i> Champions League</div>
+                <div class="ticker-item"><i class="fas fa-star"></i> Premier League</div>
+                <div class="ticker-item"><i class="fas fa-globe"></i> Eliminatorias Mundial</div>
+                <div class="ticker-item"><i class="fas fa-fire"></i> La Liga</div>
+            </div>
+        </section>
+
+        <section class="match-selector">
+            <h2 class="section-title">Grandes Eventos Hoy</h2>
+            <div class="match-scroll" id="upcoming-matches">
+                <!-- Matches will be injected here -->
+            </div>
+        </section>
+
+        <section class="hero-match" id="main-match-hero">
+            <div class="match-card">
+                <div id="hero-match-content">
+                    <!-- Dynamic Hero Content -->
+                    <div class="loading-state">Selecciona un partido para ver detalles...</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="match-details">
+            <div class="tabs-control">
+                <button class="tab-btn active" data-tab="lineups">Alineaciones</button>
+                <button class="tab-btn" data-tab="stats">Estadísticas</button>
+                <button class="tab-btn" data-tab="ticker">Cronología</button>
+            </div>
+
+            <div class="tab-content" id="tab-lineups">
+                <div class="field-container">
+                    <!-- Dynamic Lineup Grid -->
+                    <div class="football-field">
+                        <div class="team-formation-home">
+                            <!-- Players will be injected by JS -->
+                        </div>
+                        <div class="field-center"></div>
+                        <div class="team-formation-away">
+                            <!-- Players will be injected by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content hidden" id="tab-stats">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-info"><span>Posesión</span><span>52% - 48%</span></div>
+                        <div class="stat-bar"><div class="bar-fill" style="width: 52%"></div></div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-info"><span>Tiros al Arco</span><span>6 - 4</span></div>
+                        <div class="stat-bar"><div class="bar-fill" style="width: 60%"></div></div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-info"><span>Faltas</span><span>8 - 12</span></div>
+                        <div class="stat-bar"><div class="bar-fill" style="width: 40%"></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Floating SmartLink Ad -->
+        <div class="floating-cta" id="floating-cta">
+            <p>¡No te pierdas los goles!</p>
+            <button class="btn-smart" id="btn-floating-smart">DESBLOQUEAR STREAMING</button>
+        </div>
+        <section class="news-section">
+            <h2 class="section-title">Últimas Noticias</h2>
+            <div class="news-grid" id="news-container">
+                <!-- News items injected here -->
+            </div>
+        </section>
+
+        <section class="schedule-section">
+            <h2 class="section-title">Programación de TV</h2>
+            <div class="schedule-table-wrapper">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Evento</th>
+                            <th>Canal</th>
+                            <th>Hora</th>
+                            <th>Señal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="schedule-body">
+                        <!-- Schedule injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 SportFlow AI. Todos los derechos reservados.</p>
+        <div class="social-links">
+            <i class="fab fa-facebook"></i>
+            <i class="fab fa-twitter"></i>
+            <i class="fab fa-instagram"></i>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
