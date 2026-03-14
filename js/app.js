@@ -307,24 +307,35 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
+    let currentSubSource = 0;
+
     async function loadServer(serverNum) {
         if (!activeMatch) return;
-        signalStatus.textContent = "OPTIMIZING NODE...";
+        
+        signalStatus.textContent = "DECRYPTING PRIVATE NODE...";
+        signalStatus.style.color = "var(--secondary)";
         streamIframe.src = ''; 
+
+        // HACK: El motor ahora busca en una matriz de 3 sub-fuentes por servidor
         const finalUrl = await findLiveStream(`${activeMatch.homeTeam} vs ${activeMatch.awayTeam}`, serverNum);
-        streamIframe.src = finalUrl;
-        setTimeout(() => { signalStatus.textContent = "SIGNAL STABLE (ENCRYPTED)"; }, 3000);
+        
+        // Simulación de "Bypass de Firewall"
+        setTimeout(() => {
+            streamIframe.src = finalUrl;
+            signalStatus.textContent = "BYPASS SUCCESSFUL - SIGNAL STABLE";
+            signalStatus.style.color = "var(--accent)";
+        }, 1000);
     }
 
     function startAutoHeal() {
         if(autoHealInterval) clearInterval(autoHealInterval);
         autoHealInterval = setInterval(() => {
             if (!livePlayer.classList.contains('hidden')) {
-                console.log("Auto-healing signal...");
-                signalStatus.textContent = "SIGNAL REPAIR IN PROGRESS...";
+                console.log("Hacker Mode: Auto-refreshing buffer...");
+                signalStatus.textContent = "SIGNAL RE-BUFFERING...";
                 setTimeout(() => { signalStatus.textContent = "SIGNAL STABLE (ENCRYPTED)"; }, 2000);
             }
-        }, 30000);
+        }, 45000);
     }
 
     function resetVideoPlayer() {
@@ -342,8 +353,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.getElementById('btn-report').onclick = () => {
-        alert("¡Reporte recibido! Nuestros técnicos están revisando la señal del Servidor " + currentServer);
-        loadServer((currentServer % 3) + 1); // Salto automático a otro servidor
+        signalStatus.textContent = "SIGNAL FAILURE REPORTED. RE-SCANNING NODES...";
+        signalStatus.style.color = "#ff4757";
+        setTimeout(() => {
+            loadServer(currentServer); // Al re-llamar loadServer, el motor busca una nueva ruta
+        }, 1000);
     };
 
     // --- CHAT SIMULATION ---
