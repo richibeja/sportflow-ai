@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.innerHTML = `
                 <div class="mini-header">
                     <span>${match.league}</span>
-                    <span class="match-time-badge">${match.time}</span>
+                    <div class="match-time-badge">${match.date} - ${match.time}</div>
                 </div>
                 <div class="mini-teams">
                     <div class="mini-team"><span>${match.homeTeam}</span><img src="${match.homeLogo}"></div>
