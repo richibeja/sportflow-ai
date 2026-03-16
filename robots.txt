@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sportflow-ai-snowy.vercel.app/sitemap.xml

@@ -22,23 +22,25 @@ async function findLiveStream(matchTitle, serverIndex = 1) {
     // Matriz de Nodos de Intercepción (Fuentes de Alta Resistencia)
     const engineMatrix = {
         1: [ 
-            `https://vidsrc.me/embed/soccer?match=${encodeURIComponent(matchTitle)}`,
-            `https://streamed.su/watch/${home}-${away}`,
-            `https://fnetrip.com/embed/${home}-vs-${away}`
+            `https://television.libre.futbol/tv6/`,
+            `https://television.libre.futbol/tv1/`,
+            `https://television.libre.futbol/`,
+            `https://librefutbol.net/`,
+            `https://pelotalibre.org/`
         ],
         2: [ 
-            `https://embedstream.me/${home}-vs-${away}`,
-            `https://titres.tv/embed/event/${home}-${away}`,
-            `https://clon.tv/v3/${home}`
+            `https://futbollibre.surf/`,
+            `https://futbollibretv.net/`,
+            `https://futbollibretv.su/`
         ],
         3: [ 
-            `https://sport-streams.xyz/embed/${home}-vs-${away}`,
-            `https://allinone-stream.me/soccer/${home}`,
-            `https://embed.stream/v2/match/${home}-${away}`
+            `https://www.rojadirectatv.me/`,
+            `https://pirlotvonline.com.mx/`,
+            `https://futbollibre.lol/`
         ],
         4: [ 
-            `https://v3.vidsrc.cc/v3/embed/soccer/${home}-${away}`,
-            `https://www.google.com/search?q=ver+en+vivo+${encodeURIComponent(matchTitle)}+hd`
+            `https://televisionlibre.net/`,
+            `https://television-libre.online/`
         ]
     };
 

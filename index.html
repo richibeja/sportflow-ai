@@ -9,14 +9,14 @@
     <meta property="og:title" content="SportFlow AI | Deportes en Vivo">
     <meta property="og:description" content="No te pierdas los mejores partidos hoy. Cobertura completa en HD.">
     <meta property="og:image" content="sportflow_hero_bg.png">
-    <meta property="og:url" content="https://tudominio.com">
+    <meta property="og:url" content="https://sportflow-ai-snowy.vercel.app">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/main.css?v=1.4">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Adsterra Social Bar -->
-    <script src="https://pl28916004.effectivegatecpm.com/d7/b4/d8/d7b4d83e17f56a4aabebc13769bc93a2.js"></script>
+    <!-- Google Site Verification -->
+    <meta name="google-site-verification" content="Nk14dnzempk4mLbI6VsiV_zA5fy1VE1aDSGY85CdaFE" />
 </head>
 <body>
     <div class="background-overlay"></div>
@@ -29,15 +29,12 @@
             </div>
             <nav class="nav-links">
                 <a href="#" class="active" id="nav-home">Inicio</a>
-                <a href="#" id="nav-intl">Internacional</a>
-                <a href="#" id="nav-live">Resultados</a>
-                <a href="./models/index.html" class="nav-madrina" target="_blank"><i class="fas fa-heart"></i> Madrina VIP</a>
             </nav>
             <div class="nav-actions">
                 <div class="live-indicator">
                     <span class="pulse"></span> 4 EN VIVO
                 </div>
-                <a href="https://t.me/yourtelegram" target="_blank" class="btn-telegram">
+                <a href="https://t.me/SportFlowVIP" target="_blank" class="btn-telegram">
                     <i class="fab fa-telegram"></i> Grupo VIP
                 </a>
             </div>
@@ -46,25 +43,11 @@
 
     <main class="main-content">
         <!-- Top Ad Slot -->
-        <div class="madrina-widget" id="madrina-widget">
-            <div class="madrina-img">
-                <img src="madrina.png" alt="Madrina del Equipo">
-                <span class="madrina-badge">TIPS DE HOY</span>
-            </div>
-            <div class="madrina-text">
-                <p>"¡Hola Richard! Te dejé mi link VIP para el partido aquí abajo... ⚽✨"</p>
-                <div class="madrina-actions">
-                    <button class="btn-madrina-link" id="btn-madrina-watch">VER TRANSMISIÓN HD</button>
-                    <a href="./models/index.html" class="btn-madrina-photos" target="_blank">VER MIS FOTOS</a>
-                </div>
-            </div>
-            <button class="close-madrina" onclick="document.getElementById('madrina-widget').style.display='none'">&times;</button>
-        </div>
+
 
         <div class="ad-slot top-ad">
             <div class="ad-responsive-container">
-                <!-- Desktop: 728x90 Billboard -->
-                <div class="ad-unit ad-pc" id="ad-top-pc">
+                <div class="ad-unit ad-pc">
                     <script type="text/javascript">
                         atOptions = {
                             'key' : 'd73933b8cfbbda3517bd62db85dfa4bf',
@@ -75,19 +58,6 @@
                         };
                     </script>
                     <script type="text/javascript" src="https://www.highperformanceformat.com/d73933b8cfbbda3517bd62db85dfa4bf/invoke.js"></script>
-                </div>
-                <!-- Mobile: 320x50 Banner -->
-                <div class="ad-unit ad-mobile" id="ad-top-mobile">
-                    <script type="text/javascript">
-                        atOptions = {
-                            'key' : '0d6323163d0bf049f77d24605b7baf54',
-                            'format' : 'iframe',
-                            'height' : 50,
-                            'width' : 320,
-                            'params' : {}
-                        };
-                    </script>
-                    <script type="text/javascript" src="https://www.highperformanceformat.com/0d6323163d0bf049f77d24605b7baf54/invoke.js"></script>
                 </div>
             </div>
         </div>
@@ -102,7 +72,13 @@
         </section>
 
         <section class="match-selector">
-            <h2 class="section-title">Grandes Eventos Hoy</h2>
+            <div class="section-header">
+                <h2 class="section-title">Grandes Eventos Hoy</h2>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="match-search" placeholder="Buscar equipo o liga...">
+                </div>
+            </div>
             <div class="match-scroll" id="upcoming-matches">
                 <!-- Matches will be injected here -->
             </div>
@@ -119,119 +95,200 @@
 
         <section class="match-details">
             <div class="tabs-control">
-                <button class="tab-btn active" data-tab="lineups">Alineaciones</button>
-                <button class="tab-btn" data-tab="stats">Estadísticas</button>
-                <button class="tab-btn" data-tab="video">EN VIVO (HD)</button>
-                <button class="tab-btn" data-tab="ticker">Cronología</button>
+                <button class="tab-btn active" data-tab="video"><i class="fas fa-play"></i> SEÑAL EN VIVO</button>
             </div>
 
-            <div class="tab-content" id="tab-lineups">
-                <div class="field-container">
-                    <!-- Dynamic Lineup Grid -->
-                    <div class="football-field">
-                        <div class="team-formation-home">
-                            <!-- Players will be injected by JS -->
+
+            <div class="tab-content" id="tab-video">
+                <div class="branded-player-zone">
+                    <!-- Anuncio Superior Pegado -->
+                    <div class="ad-slot top-video-ad sticky-ad-top">
+                        <span class="sponsor-notice"><i class="fas fa-handshake"></i> PUBLICIDAD PATROCINADA</span>
+                        <div class="ad-responsive-container">
+                            <script type="text/javascript">
+                                atOptions = {
+                                    'key' : 'd73933b8cfbbda3517bd62db85dfa4bf',
+                                    'format' : 'iframe',
+                                    'height' : 90,
+                                    'width' : 728,
+                                    'params' : {}
+                                };
+                            </script>
+                            <script type="text/javascript" src="https://www.highperformanceformat.com/d73933b8cfbbda3517bd62db85dfa4bf/invoke.js"></script>
                         </div>
-                        <div class="field-center"></div>
-                        <div class="team-formation-away">
-                            <!-- Players will be injected by JS -->
-                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="tab-content hidden" id="tab-stats">
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-info"><span>Posesión</span><span>52% - 48%</span></div>
-                        <div class="stat-bar"><div class="bar-fill" style="width: 52%"></div></div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-info"><span>Tiros al Arco</span><span>6 - 4</span></div>
-                        <div class="stat-bar"><div class="bar-fill" style="width: 60%"></div></div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-info"><span>Faltas</span><span>8 - 12</span></div>
-                        <div class="stat-bar"><div class="bar-fill" style="width: 40%"></div></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-content hidden" id="tab-video">
-                <div class="video-container-wrapper">
-                    <div class="player-top-bar">
-                        <div class="signal-shield">
-                            <i class="fas fa-signal"></i>
-                            <span id="signal-status">OPTIMIZANDO CONEXIÓN...</span>
-                            <div class="signal-bars">
-                                <span class="bar b1"></span><span class="bar b2"></span><span class="bar b3"></span>
+                    <div class="video-container-wrapper">
+                        <div class="player-top-bar">
+                            <div class="signal-shield">
+                                <i class="fas fa-signal"></i>
+                                <span id="signal-status">OPTIMIZANDO CONEXIÓN...</span>
+                                <div class="signal-bars">
+                                    <span class="bar b1"></span><span class="bar b2"></span><span class="bar b3"></span>
+                                </div>
+                            </div>
+                            <div class="server-selector">
+                                <button class="server-btn active" data-server="1">1</button>
+                                <button class="server-btn" data-server="2">2</button>
+                                <button class="server-btn" data-server="3">3</button>
+                                <button class="server-btn" data-server="sos"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
-                        <div class="server-selector">
-                            <button class="server-btn active" data-server="1">SV1</button>
-                            <button class="server-btn" data-server="2">SV2</button>
-                            <button class="server-btn" data-server="3">SV3</button>
-                            <button class="server-btn sos-btn" data-server="sos"><i class="fas fa-search"></i> SOS</button>
+
+                        <div id="video-overlay" class="video-overlay">
+                            <!-- Step 1: Guide & Initial Unlock -->
+                            <div id="overlay-step-1" class="overlay-step grid-layout">
+                                <div class="overlay-video-container" id="video-unmute-trigger">
+                                    <video id="overlay-guide-video" loop muted playsinline poster="sportflow_hero_bg.png">
+                                        <source src="aura_guide.mp4" type="video/mp4">
+                                    </video>
+                                    <div class="video-scanline"></div>
+                                    <div class="unmute-overlay">
+                                        <i class="fas fa-volume-mute"></i>
+                                        <span>TOCA PARA ESCUCHAR</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="overlay-content">
+                                    <h3 class="step-title">PASO 1/2</h3>
+                                    <p>Verificación de seguridad requerida.</p>
+                                    
+                                    <button id="unlock-step-1-btn" class="btn-unlock-stream">
+                                        <i class="fas fa-shield-alt"></i> DESBLOQUEAR
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Final Verify (Original Flow) -->
+                            <div id="overlay-step-2" class="overlay-step hidden">
+                                <div class="overlay-content" style="max-width: 100%; text-align: center;">
+                                    <div class="lock-icon" style="font-size: 2rem; color: var(--secondary); margin-bottom: 10px;">
+                                        <i class="fas fa-user-shield"></i>
+                                    </div>
+                                    <h3 class="step-title">PASO 2/2</h3>
+                                    <p>Presiona el botón final para decodificar la señal y empezar a ver.</p>
+                                    
+                                    <button id="unlock-step-2-btn" class="btn-unlock-stream" style="background: linear-gradient(45deg, #ff4757, #ff6b81); box-shadow: 0 0 20px rgba(255, 71, 87, 0.4);">
+                                        <i class="fas fa-check-circle"></i> COMPLETAR DESBLOQUEO
+                                    </button>
+                                </div>
+                            </div>
                         </div>
+
+                        <div id="live-player" class="live-player hidden">
+                            <div class="player-loading">
+                                <i class="fas fa-spinner fa-spin"></i> Cargando señal...
+                            </div>
+                            <iframe id="stream-iframe" src="" frameborder="0" allowfullscreen scrolling="no"></iframe>
+                        </div>
+
+                        <!-- Panel de Control Maestra (Inyectado por JS) se queda igual -->
                     </div>
 
-                    <div id="video-overlay" class="video-overlay">
-                        <div class="lock-icon-wrapper">
-                            <i class="fas fa-lock pulse-icon"></i>
-                        </div>
-                        <h3>Transmisión Protegida</h3>
-                        <p>Haz clic para verificar y desbloquear la señal <strong>Premium HD</strong> del partido.</p>
-                        <button id="unlock-stream-btn" class="btn-unlock-stream">
-                            <i class="fas fa-unlock-alt"></i> DESBLOQUEAR SEÑAL
-                        </button>
-                        <span class="secure-tag"><i class="fas fa-shield-alt"></i> Conexión Segura</span>
-                    </div>
+                    <!-- Secondary controls removed per user request -->
 
-                    <div id="live-player" class="live-player hidden">
-                        <div class="player-loading">
-                            <i class="fas fa-spinner fa-spin"></i> Cargando señal...
+                    <!-- Anuncio Inferior Pegado -->
+                    <div class="ad-slot bottom-ad sticky-ad-bottom">
+                        <span class="sponsor-notice"><i class="fas fa-handshake"></i> MONETIZACIÓN ACTIVA</span>
+                        <div class="ad-responsive-container">
+                            <script type="text/javascript">
+                                atOptions = {
+                                    'key' : 'd73933b8cfbbda3517bd62db85dfa4bf',
+                                    'format' : 'iframe',
+                                    'height' : 90,
+                                    'width' : 728,
+                                    'params' : {}
+                                };
+                            </script>
+                            <script type="text/javascript" src="https://www.highperformanceformat.com/d73933b8cfbbda3517bd62db85dfa4bf/invoke.js"></script>
                         </div>
-                        <iframe id="stream-iframe" src="" frameborder="0" allowfullscreen scrolling="no"></iframe>
                     </div>
-                </div>
-                <div class="player-controls">
-                    <button id="btn-cinema" class="ctrl-btn"><i class="fas fa-tv"></i> MODO CINE</button>
-                    <button id="btn-report" class="ctrl-btn"><i class="fas fa-exclamation-triangle"></i> REPORTAR FALLA</button>
-                    <button id="btn-share" class="ctrl-btn"><i class="fas fa-share-alt"></i> COMPARTIR</button>
                 </div>
 
                 <div class="video-help">
                     <p><i class="fas fa-info-circle"></i> <strong>SISTEMA DE REDUNDANCIA:</strong> Si una señal falla, intenta cambiar de servidor. El sistema busca fuentes estables automáticamente.</p>
                 </div>
 
-                <!-- Chat Simulado -->
-                <div class="live-chat-box">
+                <!-- NEW: Dedicated SPORTFLOW ANALYTICS Section -->
+                <div class="guru-section-container">
+                    <div class="guru-header-main">
+                        <i class="fas fa-chart-line"></i> SPORTFLOW ANALYTICS: PREDICCIÓN IA
+                    </div>
+                    
+                    <div id="guru-locked-state" class="guru-content-box">
+                        <div class="guru-teaser">
+                            <div class="guru-eye">📊</div>
+                            <h3>Análisis de: <span id="guru-match-name">Cargando...</span></h3>
+                            <p>El núcleo de **SportFlow Analytics** ya ha procesado las variables para este duelo de la <strong id="guru-league-name">...</strong></p>
+                            <div id="guru-status-box" class="guru-status-box hidden">
+                                <div class="guru-loader"></div>
+                                <span id="guru-status-text">Consultando redes de datos...</span>
+                            </div>
+                            <button id="guru-unlock-btn" class="btn-guru-reveal">
+                                <i class="fas fa-bolt"></i> VER ANÁLISIS DE SPORTFLOW ANALYTICS
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="guru-unlocked-state" class="guru-content-box hidden">
+                        <div class="guru-oracle-card">
+                            <div class="oracle-profile">
+                                <div class="oracle-avatar-glow">
+                                    <img src="guru_avatar.png" alt="ANALYTICS">
+                                </div>
+                                <div class="oracle-badge">AI MATCH ENGINE <i class="fas fa-microchip"></i></div>
+                            </div>
+                            
+                            <div class="oracle-analysis">
+                                <div class="prediction-header">
+                                    <h4 id="guru-result-title">DATA-DRIVEN PREDICTION</h4>
+                                    <div class="accuracy-tag">Confidencialidad: 82%</div>
+                                </div>
+                                
+                                <p id="guru-phrase" class="guru-phrase">"Analizando tendencias de flujo de datos..."</p>
+                                
+                                <div class="prediction-stats">
+                                    <div class="pred-group">
+                                        <div class="pred-label"><span id="guru-team-home">Local</span><span id="pred-pct-home">--%</span></div>
+                                        <div class="pred-track"><div id="pred-bar-home" class="p-fill"></div></div>
+                                    </div>
+                                    <div class="pred-group">
+                                        <div class="pred-label"><span>Empate</span><span id="pred-pct-draw">--%</span></div>
+                                        <div class="pred-track"><div id="pred-bar-draw" class="p-fill"></div></div>
+                                    </div>
+                                    <div class="pred-group">
+                                        <div class="pred-label"><span id="guru-team-away">Visita</span><span id="pred-pct-away">--%</span></div>
+                                        <div class="pred-track"><div id="pred-bar-away" class="p-fill"></div></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="likely-score">
+                                    <span>MARCADOR PROBABLE:</span>
+                                    <strong id="guru-score">0 - 0</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fan Chat Section (Quick Interactive) -->
+                <div class="fan-chat-container">
                     <div class="chat-header">
-                        <span><i class="fas fa-comments"></i> CHAT EN VIVO</span>
-                        <span class="chat-users"><i class="fas fa-circle"></i> 14,203 Online</span>
+                        <span><i class="fas fa-comments"></i> CHAT DE FANÁTICOS (EN VIVO)</span>
+                        <div class="online-users"><span class="pulse"></span> 4,520 conectados</div>
                     </div>
-                    <div class="chat-messages" id="chat-messages">
-                        <!-- Messages via JS -->
+                    <div id="chat-messages" class="chat-messages">
+                        <div class="msg"><strong>RichiBot:</strong> ¡Bienvenidos a la transmisión! ¿Quién gana hoy?</div>
                     </div>
-                    <div class="chat-input">
-                        <input type="text" id="user-chat-input" placeholder="Escribe un mensaje..." autocomplete="off">
-                        <button id="btn-send-chat"><i class="fas fa-paper-plane"></i></button>
+                    <div class="chat-input-area">
+                        <input type="text" id="chat-input" placeholder="Escribe tu comentario...">
+                        <button id="send-chat"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Floating SmartLink Ad -->
-        <div class="floating-cta" id="floating-cta">
-            <p>¡No te pierdas los goles!</p>
-            <button class="btn-smart" id="btn-floating-smart">DESBLOQUEAR STREAMING</button>
-        </div>
-        <section class="news-section">
-            <h2 class="section-title">Últimas Noticias</h2>
-            <div class="news-grid" id="news-container">
-                <!-- News items injected here -->
-            </div>
-        </section>
+
 
         <section class="schedule-section">
             <h2 class="section-title">Programación de TV</h2>
@@ -262,7 +319,41 @@
         </div>
     </footer>
 
+    <!-- GURU GUIDE MODAL -->
+    <div id="guru-guide-modal" class="modal-overlay hidden">
+        <div class="guide-modal-content">
+            <div class="ai-scanner-overlay"></div>
+            <div class="modal-header">
+                <div class="ai-badge"><i class="fas fa-brain"></i> GURU-SYSTEM GUIDE</div>
+                <button id="close-guide" class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="premium-video-frame">
+                <video id="ai-guide-video" loop playsinline controls style="width: 100%; background: #000;">
+                    <source src="aura_guide.mp4" type="video/mp4">
+                    Tu navegador no soporta videos.
+                </video>
+                <div class="frame-decor tl"></div><div class="frame-decor tr"></div>
+                <div class="frame-decor bl"></div><div class="frame-decor br"></div>
+            </div>
+            <div class="guide-info">
+                <h3>GUÍA DEL GURÚ</h3>
+                <p>Mira las indicaciones para aprender a desbloquear la señal y seguir las predicciones del experto.</p>
+                <div class="ai-status-bar">
+                    <span class="status-bit">BIT-STREAM: OK</span>
+                    <span class="status-bit">GURU-SIGHT: 100%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/stream-finder.js"></script>
+    <!-- Dynamic SEO Crawler Magnet (Automated) -->
+    <section id="seo-crawler-magnet" style="display: none; visibility: hidden;"></section>
+
     <script src="js/app.js"></script>
+    
+    <!-- Social Bar VIP (Adsterra) -->
+    <script src="https://pl28916004.effectivegatecpm.com/d7/b4/d8/d7b4d83e17f56a4aabebc13769bc93a2.js"></script>
+    
 </body>
 </html>

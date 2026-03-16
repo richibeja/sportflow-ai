@@ -36,6 +36,30 @@ body {
     max-width: 500px;
     margin: 0 auto;
     padding: 40px 20px;
+    position: relative;
+}
+
+/* Botón Volver */
+.btn-back-dashboard {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    transition: 0.3s;
+    background: var(--glass);
+    padding: 8px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+}
+
+.btn-back-dashboard:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    transform: translateX(-5px);
 }
 
 /* Header */
