@@ -508,14 +508,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const goalPrediction = totalGoals > 2.5 ? "+2.5 GOLES" : "-2.5 GOLES";
 
         const contextPhrases = [
-            `"El Brujo ve a ${match.homeTeam} con un aura de victoria en la ${match.league}."`,
-            `"Analizando astros: El empate acecha en este ${match.homeTeam} vs ${match.awayTeam}."`,
-            `"Cuidado con ${match.awayTeam}, el Gurú detecta una sorpresa táctica hoy."`,
-            `"Mercado Caliente: Se esperan goles, la defensa de ${match.homeTeam} flaquea."`,
-            `"Predicción Sagrada: ${match.homeTeam} impondrá su jerarquía en casa."`,
-            `"El flujo de datos indica que ${match.awayTeam} viene a encerrarse."`,
-            `"Consulté las noticias de ${match.homeTeam} y hay optimismo puro."`,
-            `"Mi visión para este ${match.homeTeam} vs ${match.awayTeam} es clara."`
+            `"SportFlow AI detecta alta probabilidad de victoria para ${match.homeTeam}."`,
+            `"Análisis Big-Data: El empate es el resultado más probable en este ${match.homeTeam} vs ${match.awayTeam}."`,
+            `"Cuidado con ${match.awayTeam}, nuestro motor de IA detecta un 82% de eficiencia táctica hoy."`,
+            `"Mercado Caliente: La tendencia indica más de 2.5 goles en este duelo de ${match.league}."`,
+            `"Predicción de Expertos: ${match.homeTeam} dominará la posesión según el histórico."`,
+            `"El flujo de datos indica un bloque defensivo sólido por parte de ${match.awayTeam}."`,
+            `"SportFlow Analytics: Las variables climáticas y de forma favorecen a ${match.homeTeam}."`,
+            `"Nuestro motor predictivo ve un escenario de alta intensidad para este ${match.homeTeam} vs ${match.awayTeam}."`
         ];
 
         // Frases de Marcador en Vivo (Momentum)
@@ -617,7 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
         shareBtn.onclick = async () => {
             const shareData = {
                 title: 'SportFlow AI | Deportes en Vivo',
-                text: `¡Mira el partido de ${activeMatch ? activeMatch.homeTeam + ' vs ' + activeMatch.awayTeam : 'hoy'} en HD y con las predicciones del Brujo! ⚽🔥`,
+                text: `¡Mira el partido de ${activeMatch ? activeMatch.homeTeam + ' vs ' + activeMatch.awayTeam : 'hoy'} en HD con el análisis de SportFlow AI! ⚽🔥`,
                 url: window.location.href
             };
 
@@ -661,7 +661,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateSEOMetadata() {
         if (!activeMatch) return;
         const title = `${activeMatch.homeTeam} vs ${activeMatch.awayTeam} en VIVO | SportFlow AI`;
-        const desc = `Mira el partido entre ${activeMatch.homeTeam} y ${activeMatch.awayTeam} por ${activeMatch.league} en vivo. Resultados, estadísticas y predicciones del Brujo.`;
+        const desc = `Mira el partido entre ${activeMatch.homeTeam} y ${activeMatch.awayTeam} por ${activeMatch.league} en vivo. Resultados, estadísticas y predicciones de SportFlow AI.`;
         
         document.title = title;
         document.querySelector('meta[name="description"]')?.setAttribute('content', desc);
@@ -681,7 +681,12 @@ document.addEventListener('DOMContentLoaded', () => {
         let html = '<h2>Partidos en Vivo y Próximos</h2><ul>';
         matches.forEach(m => {
             const cleanName = `${m.homeTeam}-vs-${m.awayTeam}`.toLowerCase().replace(/[^a-z0-9]/g, '-');
-            html += `<li><a href="/partido/${m.id}/${cleanName}">${m.homeTeam} vs ${m.awayTeam} en vivo hoy</a></li>`;
+            html += `
+                <li><a href="/partido/${m.id}/${cleanName}">${m.homeTeam} vs ${m.awayTeam} en vivo - Fútbol Libre</a></li>
+                <li><a href="/partido/${m.id}/${cleanName}">Ver ${m.homeTeam} vs ${m.awayTeam} gratis por Pelota Libre</a></li>
+                <li><a href="/partido/${m.id}/${cleanName}">Transmisión en directo ${m.homeTeam} vs ${m.awayTeam} tipo Pirlo TV</a></li>
+                <li><a href="/partido/${m.id}/${cleanName}">Link directo para ver ${m.homeTeam} vs ${m.awayTeam} sin cortes</a></li>
+            `;
         });
         html += '</ul>';
         magnet.innerHTML = html;
