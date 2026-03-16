@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setupBackground() {
         if(!bgOverlay) return;
-        bgOverlay.style.backgroundImage = `url(sportflow_hero_bg.png)`;
+        bgOverlay.style.backgroundImage = `url(/sportflow_hero_bg.png)`;
         bgOverlay.style.backgroundSize = 'cover';
         bgOverlay.style.backgroundPosition = 'center';
         bgOverlay.style.opacity = '0.3';

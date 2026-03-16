@@ -1,9 +1,11 @@
+```json
 {
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/partido/:id*", "destination": "/index.html" }
+    { "source": "/partido/:id*", "destination": "/index.html" },
+    { "source": "/partido/(.*)", "destination": "/" }
   ],
   "headers": [
     {
