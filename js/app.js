@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 homeScore: competitorHome.score,
                                 awayScore: competitorAway.score,
                                 time: startTime,
+                                date: new Date(event.date).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' }),
                                 status: event.status.type.state === 'in' ? 'EN VIVO' : 
                                         event.status.type.state === 'pre' ? 'PRÓXIMAMENTE' : 'FINALIZADO'
                             };
@@ -238,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="team home"><div class="team-logo"><img src="${match.homeLogo}"></div><h3>${match.homeTeam}</h3></div>
                 <div class="score-board">
                     <div class="score"><span id="home-score">${match.homeScore}</span><span class="separator">-</span><span id="away-score">${match.awayScore}</span></div>
-                    <div class="match-time">${match.time}</div>
+                    <div class="match-time-badge">${match.date} - ${match.time}</div>
                 </div>
                 <div class="team away"><div class="team-logo"><img src="${match.awayLogo}"></div><h3>${match.awayTeam}</h3></div>
             </div>
@@ -285,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tr.innerHTML = `
                 <td>${item.homeTeam} vs ${item.awayTeam}</td>
                 <td><span class="canal-tag">${item.channel}</span></td>
-                <td>${item.time}</td>
+                <td>${item.date} - ${item.time}</td>
                 <td><span class="status-online"><i class="fas fa-circle"></i> ${item.status}</span></td>
             `;
             tr.onclick = () => {

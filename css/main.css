@@ -890,7 +890,9 @@ body {
     transition: 0.5s ease;
     pointer-events: none;
     position: absolute;
-    gap: 20px;
+    top: 0; /* Align to top to use padding effectively */
+    padding: 20px 0;
+    gap: 15px;
 }
 
 .overlay-step.grid-layout {
