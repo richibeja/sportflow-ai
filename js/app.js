@@ -694,4 +694,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Exportar para usar en otros clicks
     window.refreshSEO = updateSEOMetadata;
+
+    // Autoplay reinforcement (v1.8.2)
+    document.addEventListener('click', () => {
+        const ovVideo = document.getElementById('overlay-guide-video');
+        if (ovVideo && ovVideo.paused) ovVideo.play().catch(() => {});
+    }, { once: true });
 });
