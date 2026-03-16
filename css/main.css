@@ -1915,7 +1915,31 @@ body.cinema-mode .navbar, body.cinema-mode .hero-match, body.cinema-mode .match-
     animation: spin 1s linear infinite;
 }
 
+
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+/* STRIKING TITLES FOR AI */
+.striking-title {
+    background: linear-gradient(90deg, #39ff14, #00d4ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 1.15rem;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.4));
+    animation: titleGlow 2.5s infinite alternate;
+}
+
+@keyframes titleGlow {
+    from { filter: drop-shadow(0 0 3px rgba(57, 255, 20, 0.5)); transform: scale(1); }
+    to { filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.8)); transform: scale(1.02); }
 }
 
