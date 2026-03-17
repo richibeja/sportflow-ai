@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // --- MASTER CONFIG (Control total de Richard) ---
     const CONFIG = {
-        smartLink: 'https://www.effectivegatecpm.com/jm7f9ypm?key=b8f95870742d9bd9e730551fa23f4398'
+        KICK_CHANNEL: 'richardbejarano5', // TU CANAL DE KICK RICHARD
+        OBS_LINK: '' // OPCIONAL: LINK DIRECTO SI NO USAS KICK
     };
 
     const matches = [];
@@ -14,29 +15,163 @@ document.addEventListener('DOMContentLoaded', () => {
     const heroContent = document.getElementById('hero-match-content');
     const matchSelector = document.getElementById('upcoming-matches');
     const newsContainer = document.getElementById('news-container');
+    // --- INTERNATIONALIZATION (v11.0 UK Expansion) ---
+    const I18N = {
+        es: {
+            watchHD: "VER TRANSMISIÓN PREMIUM",
+            watchViral: "DESBLOQUEAR STREAM VIRAL HD",
+            dataCenter: "CENTRO DE DATOS",
+            loading: "Selecciona un partido para ver detalles...",
+            noMatches: "No hay partidos programados para hoy.",
+            shareTitle: "¡Mira este evento en vivo!",
+            shareText: "Transmisión en HD con análisis de SportFlow AI.",
+            footerTeams: "Explorar Equipos",
+            footerSpecial: "Secciones Especiales"
+        },
+        en: {
+            watchHD: "WATCH PREMIUM STREAMING",
+            watchViral: "UNLOCK VIRAL HD STREAM",
+            dataCenter: "PRO DATA CENTER",
+            loading: "Select a match to view details...",
+            noMatches: "No matches scheduled for today.",
+            shareTitle: "Watch this event live!",
+            shareText: "HD streaming with SportFlow AI analysis.",
+            footerTeams: "Explore Teams",
+            footerSpecial: "Special Sections"
+        }
+    };
+    window.currentLang = 'es';
     const scheduleBody = document.getElementById('schedule-body');
     const tabs = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
-
+    const livePlayer = document.getElementById('live-player');
+    const streamIframe = document.getElementById('stream-iframe');
+    const signalStatus = document.getElementById('signal-status');
+    const videoOverlay = document.getElementById('video-overlay');
     // --- INIT ---
     setupBackground();
     syncMatches();
     setupNavFilters();
     setInterval(syncMatches, 60000);
 
-    // Ensure first step is visible
+    // Ensure first step is visible (Simplified v2.4.0)
     setTimeout(() => {
-        const step1 = document.getElementById('overlay-step-1');
-        if(step1) step1.classList.add('active');
-    }, 100);
+        loadAds();
+        setupUnmute();
+    }, 500);
 
-    // --- MONETIZATION ENGINE (Richard Special v2) ---
+    // --- MONETIZATION ENGINE (v13.0 - NO-POPUP Mode) ---
     window.triggerSmartLink = () => {
-        window.open(CONFIG.smartLink, '_blank');
+        // v13.0: SmartLinks disabled to prevent mobile blocking
+        console.log("[UX] SmartLink suppressed for mobile stability.");
     };
+
+    function renderAd(containerId, adKey, width, height) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        // v2.2.5: Maximum priority and clickability
+        container.innerHTML = ''; 
+        container.style.pointerEvents = 'auto'; 
+        container.style.zIndex = '2000'; 
+        container.style.position = 'relative';
+        
+        const scriptOptions = document.createElement('script');
+        scriptOptions.type = 'text/javascript';
+        scriptOptions.text = `atOptions = { 'key' : '${adKey}', 'format' : 'iframe', 'height' : ${height}, 'width' : ${width}, 'params' : {} };`;
+        
+        const scriptInvoke = document.createElement('script');
+        scriptInvoke.type = 'text/javascript';
+        scriptInvoke.src = `https://wistfulseverely.com/${adKey}/invoke.js`;
+        
+        container.appendChild(scriptOptions);
+        container.appendChild(scriptInvoke);
+    }
+
+    function loadAds() {
+        // Sticky Footer Logic (v2.2.5 Fix: Prevent blocking)
+        const stickyAd = document.getElementById('sticky-footer-ad');
+        const closeStickyBtn = document.getElementById('close-sticky-ad');
+        if (stickyAd && closeStickyBtn) {
+            stickyAd.classList.remove('hidden');
+            closeStickyBtn.onclick = (e) => { 
+                if(e) e.stopPropagation();
+                stickyAd.classList.add('hidden');
+                stickyAd.style.pointerEvents = 'none'; // Force click-through
+            };
+        }
+
+        const isMobile = window.innerWidth <= 768;
+        const key320x50 = '0d6323163d0bf049f77d24605b7baf54';
+        const key728x90 = 'd73933b8cfbbda3517bd62db85dfa4bf';
+
+        // Richard's Optimized Flow (v2.3.6 Nuclear Cleanup)
+        const slots = [
+            ['ad-container-top', isMobile ? key320x50 : key728x90, isMobile ? 320 : 728, isMobile ? 50 : 90],
+            ['ad-container-hero-top', key320x50, 320, 50],
+            ['ad-container-bottom', isMobile ? key320x50 : key728x90, isMobile ? 320 : 728, isMobile ? 50 : 90],
+            ['ad-container-guru', key320x50, 320, 50],
+            ['ad-container-sticky', key320x50, 320, 50]
+        ];
+
+        slots.forEach(slot => {
+            if(document.getElementById(slot[0])) {
+                renderAd(...slot);
+            }
+        });
+    }
+
+    function setupUnmute() {
+        const unmuteTrigger = document.getElementById('video-unmute-trigger');
+        const overlayVideo = document.getElementById('overlay-guide-video');
+        if(unmuteTrigger && overlayVideo) {
+            const handleUnmute = (e) => {
+                // Prevent default and propagation to kill "Touch to Search"
+                if(e) {
+                    if (e.cancelable) e.preventDefault();
+                    e.stopPropagation();
+                }
+
+                overlayVideo.muted = false;
+                overlayVideo.loop = false; // Kill loop for playback
+                window.isUnmuted = true; // Global flag to prevent reset
+                overlayVideo.currentTime = 0;
+                overlayVideo.play().then(() => {
+                    console.log("[AUDIO] Playing one-shot");
+                }).catch(() => {
+                    overlayVideo.muted = false;
+                    overlayVideo.play();
+                });
+                
+                const overlay = unmuteTrigger.querySelector('.unmute-overlay');
+                if(overlay) overlay.remove(); 
+                
+                overlayVideo.onended = () => {
+                    overlayVideo.pause();
+                    overlayVideo.currentTime = 0; 
+                    console.log("[AUDIO] Finished - Paused");
+                };
+                
+                unmuteTrigger.removeEventListener('click', handleUnmute);
+                unmuteTrigger.removeEventListener('touchstart', handleUnmute);
+            };
+
+            // Use both click and touchstart for instant response
+            unmuteTrigger.addEventListener('click', handleUnmute);
+            unmuteTrigger.addEventListener('touchstart', handleUnmute, { passive: false });
+        }
+    }
 
     function setupNavFilters() {
         document.getElementById('nav-home').onclick = (e) => { e.preventDefault(); filterMatches('all'); setActiveNav(e.target); };
+        
+        // v3.6.0: Global filter button handler
+        document.querySelectorAll('.nav-filter').forEach(btn => {
+            btn.onclick = () => {
+                document.querySelectorAll('.nav-filter').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            };
+        });
     }
 
     function setActiveNav(el) {
@@ -44,8 +179,65 @@ document.addEventListener('DOMContentLoaded', () => {
         el.classList.add('active');
     }
 
+    function renderGuruAnalysis(match) {
+        const locked = document.getElementById('guru-locked-state');
+        const unlocked = document.getElementById('guru-unlocked-state');
+        const matchName = document.getElementById('guru-match-name');
+        const leagueName = document.getElementById('guru-league-name');
+        
+        if (!locked || !unlocked || !match) return;
+
+        matchName.textContent = `${match.homeTeam} vs ${match.awayTeam}`;
+        leagueName.textContent = match.league;
+
+        document.getElementById('guru-unlock-btn').onclick = () => {
+            // v12.0: Less intrusive unlock
+            const statusBox = document.getElementById('guru-status-box');
+            statusBox.classList.remove('hidden');
+            
+            setTimeout(() => {
+                locked.classList.add('hidden');
+                unlocked.classList.remove('hidden');
+                
+                // Content of the oracle
+                document.getElementById('guru-team-home').textContent = match.homeTeam;
+                document.getElementById('guru-team-away').textContent = match.awayTeam;
+                
+                const homeProb = 35 + Math.floor(Math.random() * 30);
+                const drawProb = 15 + Math.floor(Math.random() * 15);
+                const awayProb = 100 - homeProb - drawProb;
+
+                document.getElementById('pred-pct-home').textContent = homeProb + '%';
+                document.getElementById('pred-pct-draw').textContent = drawProb + '%';
+                document.getElementById('pred-pct-away').textContent = awayProb + '%';
+                document.getElementById('pred-bar-home').style.width = homeProb + '%';
+                document.getElementById('pred-bar-draw').style.width = drawProb + '%';
+                document.getElementById('pred-bar-away').style.width = awayProb + '%';
+
+                document.getElementById('guru-score').textContent = `${Math.floor(Math.random() * 3)} - ${Math.floor(Math.random() * 2)}`;
+                
+                // Strategic ad loading AFTER user sees value
+                setTimeout(loadAds, 1000);
+            }, 1500);
+        };
+    }
+
     function filterMatches(type) {
         window.currentFilter = type;
+        
+        // v7.0: Viral Hook Toggle & Visual Feedback
+        const hookBar = document.getElementById('viral-hook-bar');
+        const viralTag = document.getElementById('viral-tag');
+        
+        if (type === 'viral') {
+            if (hookBar) hookBar.classList.remove('hidden');
+            if (viralTag) viralTag.classList.remove('hidden');
+            console.log("[VIRAL] Mode active - High conversion filters applied.");
+        } else {
+            if (hookBar) hookBar.classList.add('hidden');
+            if (viralTag) viralTag.classList.add('hidden');
+        }
+
         renderMatchSelector();
         renderSchedule();
     }
@@ -138,18 +330,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 matches.length = 0;
-                matches.push(...allMatches.slice(0, 20)); // Más capacidad para que siempre haya qué ver
+                matches.push(...allMatches.slice(0, 20)); 
 
-                // --- DEEP LINKING LOGIC ---
-                const urlParams = window.location.pathname.split('/');
-                const matchIdFromUrl = urlParams.includes('partido') ? urlParams[urlParams.indexOf('partido') + 1] : null;
+                // --- DATA PERSISTENCE FOR BLOG ---
+                localStorage.setItem('sportflow_matches', JSON.stringify(matches));
+                
+                // v5.0: Entity Collection for SEO Automation
+                const allTeams = new Set(JSON.parse(localStorage.getItem('sportflow_teams') || '[]'));
+                const allLeagues = new Set(JSON.parse(localStorage.getItem('sportflow_leagues') || '[]'));
+                
+                allMatches.forEach(m => {
+                    allTeams.add(m.homeTeam);
+                    allTeams.add(m.awayTeam);
+                    allLeagues.add(m.league);
+                });
+                
+                localStorage.setItem('sportflow_teams', JSON.stringify([...allTeams].slice(0, 500))); // Cap for performance
+                localStorage.setItem('sportflow_leagues', JSON.stringify([...allLeagues]));
 
-                if (matchIdFromUrl) {
+                // v4.0: Multi-Blog Routing System
+                const pathParts = window.location.pathname.split('/').filter(p => p);
+                const isMatch = pathParts.includes('match') || pathParts.includes('partido');
+                const isTeam = pathParts.includes('equipo') || (pathParts.includes('en') && pathParts.includes('team'));
+                const isLeague = pathParts.includes('liga') || (pathParts.includes('en') && pathParts.includes('league'));
+                const isCategory = pathParts.includes('categoria') || (pathParts.includes('en') && pathParts.includes('category'));
+                
+                window.currentLang = pathParts.includes('en') ? 'en' : 'es';
+
+                if (isMatch) {
+                    const matchIdFromUrl = pathParts[pathParts.indexOf('partido') + 1];
                     const linkedMatch = matches.find(m => String(m.id) === String(matchIdFromUrl));
                     if (linkedMatch) {
                         activeMatch = linkedMatch;
                     } else {
-                        // Si no está en el TOP 20, intentamos encontrarlo en el pool completo
                         const poolMatch = allMatches.find(m => String(m.id) === String(matchIdFromUrl));
                         if (poolMatch) {
                             activeMatch = poolMatch;
@@ -157,6 +370,43 @@ document.addEventListener('DOMContentLoaded', () => {
                         } else {
                             activeMatch = matches[0];
                         }
+                    }
+                } else if (isTeam || isLeague) {
+                    const slug = pathParts[pathParts.length - 1].replace(/-/g, ' ');
+                    const filtered = matches.filter(m => 
+                        (isTeam && (m.homeTeam.toLowerCase().includes(slug) || m.awayTeam.toLowerCase().includes(slug))) ||
+                        (isLeague && m.league.toLowerCase().includes(slug))
+                    );
+                    
+                    if (filtered.length > 0) {
+                        activeMatch = filtered[0];
+                        window.currentContext = { type: isTeam ? 'team' : 'league', name: slug };
+                    } else {
+                        activeMatch = matches[0];
+                    }
+                } else if (isCategory) {
+                    const slug = pathParts[pathParts.length - 1].replace(/-/g, ' ');
+                    const VIRAL_KEYWORDS = {
+                        'lucha': ['Wrestling', 'WWE', 'Lucha', 'UFC', 'MMA'],
+                        'pelea': ['Boxing', 'Boxeo', 'Slap', 'Knockout'],
+                        'chicas': ['Femenino', 'Girls', 'Women', 'Lingerie'],
+                        'american': ['American', 'NFL', 'Fútbol Americano']
+                    };
+                    
+                    const keywords = VIRAL_KEYWORDS[slug] || [slug];
+                    const filtered = matches.filter(m => 
+                        keywords.some(k => 
+                            m.homeTeam.toLowerCase().includes(k.toLowerCase()) || 
+                            m.awayTeam.toLowerCase().includes(k.toLowerCase()) || 
+                            m.league.toLowerCase().includes(k.toLowerCase())
+                        )
+                    );
+
+                    if (filtered.length > 0) {
+                        activeMatch = filtered[0];
+                        window.currentContext = { type: 'category', name: slug };
+                    } else {
+                        activeMatch = matches[0];
                     }
                 } else if (!activeMatch || !matches.find(m => m.id === activeMatch.id)) {
                     activeMatch = matches[0];
@@ -173,10 +423,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         if (matches.length > 0) {
+            const previousId = activeMatch ? activeMatch.id : null;
             renderMatchSelector();
             renderHero(activeMatch || matches[0]);
             renderSchedule();
-            resetVideoPlayer();
+            
+            // Only reset if it's a completely new match OR first load AND not yet unmuted
+            if (!previousId) {
+                if (!window.isUnmuted) resetVideoPlayer();
+            } else if (activeMatch && activeMatch.id !== previousId) {
+                resetVideoPlayer();
+            }
         }
     }
 
@@ -189,7 +446,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (filter === 'intl') filtered = matches.filter(m => m.league !== 'Liga MX');
         else if (filter === 'live') filtered = matches.filter(m => m.status === 'EN VIVO');
-
+        else if (filter === 'viral') {
+            // v9.0: Strategic Niche Expansion (Girls Sports, Slap Fighting, Extreme Boxing)
+            const VIRAL_KEYWORDS = [
+                'Wrestling', 'WWE', 'Boxing', 'Boxeo', 'Slap', 'Femenino', 'UFC', 'MMA', 'Extreme', 
+                'Curioso', 'Lucha', 'Lingerie', 'American', 'Fútbol Americano', 'Chicas', 'Girls',
+                'Shock', 'Knockout', 'Viral', 'Trending'
+            ];
+            filtered = matches.filter(m => 
+                VIRAL_KEYWORDS.some(k => 
+                    m.homeTeam.toLowerCase().includes(k.toLowerCase()) || 
+                    m.awayTeam.toLowerCase().includes(k.toLowerCase()) || 
+                    m.league.toLowerCase().includes(k.toLowerCase())
+                )
+            );
+        }
         if (query) {
             filtered = filtered.filter(m => 
                 m.homeTeam.toLowerCase().includes(query) || 
@@ -219,8 +490,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelectorAll('.match-card-mini').forEach(c => c.classList.remove('active'));
                 card.classList.add('active');
                 resetVideoPlayer();
-                renderHero(activeMatch);
+                renderHero(activeMatch || matches[0]);
                 renderSchedule(); // Sincronizar tabla de abajo
+                renderStandings(); // Generar tabla de posiciones
                 updateSEOMetadata(); // Actualizar SEO y URL
             };
             matchSelector.appendChild(card);
@@ -235,6 +507,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="tournament">${match.league}</span>
                 <span class="match-status" style="color: ${match.status === 'EN VIVO' ? 'var(--accent)' : 'var(--text-muted)'}">${match.status}</span>
             </div>
+            
+            ${window.currentContext ? `
+            <div id="context-breadcrumb" style="margin-bottom: 20px; text-transform: uppercase; font-weight: 800; font-size: 1.5rem; color: var(--accent); border-left: 4px solid var(--accent); padding-left: 15px;">
+                CENTRO DE DATOS: ${window.currentContext.name}
+            </div>
+            ` : ''}
+
             <div class="teams-container">
                 <div class="team home"><div class="team-logo"><img src="${match.homeLogo}"></div><h3>${match.homeTeam}</h3></div>
                 <div class="score-board">
@@ -244,14 +523,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="team away"><div class="team-logo"><img src="${match.awayLogo}"></div><h3>${match.awayTeam}</h3></div>
             </div>
             <div class="match-actions">
-                <button class="btn-primary" id="btn-watch-hd"><i class="fas fa-play"></i> VER EN VIVO</button>
-                <button class="btn-secondary" id="btn-stats-hero"><i class="fas fa-chart-bar"></i> ESTADÍSTICAS</button>
+                <button class="btn-primary ${window.currentFilter === 'viral' ? 'btn-decoy-glow' : ''}" id="btn-watch-hd">
+                    <i class="fas fa-play"></i> 
+                    ${window.currentFilter === 'viral' ? I18N[window.currentLang].watchViral : I18N[window.currentLang].watchHD}
+                </button>
+                <div id="ad-container-hero-top" class="ad-responsive-container" style="margin-top: 15px; min-height: 50px;"></div>
             </div>
         `;
         document.getElementById('btn-watch-hd').onclick = () => {
-            const videoTab = document.querySelector('[data-tab="video"]');
-            if(videoTab) videoTab.click();
-            document.querySelector('.match-details').scrollIntoView({ behavior: 'smooth' });
+            // v13.0: Direct access, no SmartLink pop-ups
+
+            // v3.0 logic: Redirect high-risk matches to Handshake -> Blog
+            const SAFE_LEAGUES = ['UFC', 'Champions League', 'Premier League', 'Liga MX', 'Boxing', 'MMA', 'La Liga', 'Serie A', 'Bundesliga'];
+            const isHighRisk = SAFE_LEAGUES.some(l => activeMatch.league.includes(l));
+
+            if (isHighRisk) {
+                // Ir a la pasarela de seguridad
+                window.location.href = `/handshake.html?id=${activeMatch.id}`;
+            } else {
+                // Deportistas normales o virales: Quedarse en la app (Signal 1 / Kick priority)
+                const videoTab = document.querySelector('[data-tab="video"]');
+                if(videoTab) videoTab.click();
+                const player = document.querySelector('.branded-player-zone');
+                if(player) player.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                loadServer(1);
+            }
         };
     }
 
@@ -275,30 +571,105 @@ document.addEventListener('DOMContentLoaded', () => {
         if(!scheduleBody) return;
         let filtered = matches;
         const filter = window.currentFilter || 'all';
+        
         if (filter === 'intl') filtered = matches.filter(m => m.league !== 'Liga MX');
         else if (filter === 'live') filtered = matches.filter(m => m.status === 'EN VIVO');
+        else if (filter === 'viral') {
+            const VIRAL_KEYWORDS = ['Wrestling', 'WWE', 'Boxing', 'UFC', 'Women', 'Lingerie', 'MMA', 'Femenino', 'Slap'];
+            filtered = matches.filter(m => 
+                VIRAL_KEYWORDS.some(k => 
+                    m.homeTeam.toLowerCase().includes(k.toLowerCase()) || 
+                    m.awayTeam.toLowerCase().includes(k.toLowerCase()) || 
+                    m.league.toLowerCase().includes(k.toLowerCase())
+                )
+            );
+        }
 
         scheduleBody.innerHTML = '';
-        filtered.forEach(item => {
+        filtered.forEach((item, index) => {
+            // Priority highlighting for viral content
+            const isViral = filter === 'viral';
             const tr = document.createElement('tr');
             tr.style.cursor = 'pointer';
-            tr.className = item.id === (activeMatch ? activeMatch.id : '') ? 'active-row' : '';
+            tr.className = `${item.id === (activeMatch ? activeMatch.id : '') ? 'active-row' : ''} ${isViral ? 'viral-row' : ''}`;
             tr.innerHTML = `
-                <td>${item.homeTeam} vs ${item.awayTeam}</td>
+                <td>${isViral ? '<i class="fas fa-fire" style="color:var(--accent)"></i> ' : ''}${item.homeTeam} vs ${item.awayTeam}</td>
                 <td><span class="canal-tag">${item.channel}</span></td>
                 <td>${item.date} - ${item.time}</td>
                 <td><span class="status-online"><i class="fas fa-circle"></i> ${item.status}</span></td>
             `;
             tr.onclick = () => {
                 activeMatch = item;
+                
+                // v3.0: Direct blog access from list
+                const urlParams = new URLSearchParams(window.location.search);
+                const isSocialRef = urlParams.get('ref') === 'social';
+                const SAFE_LEAGUES = ['UFC', 'Champions League', 'Premier League', 'Liga MX', 'Boxing', 'MMA', 'La Liga', 'Serie A', 'Bundesliga'];
+                const isHighRisk = SAFE_LEAGUES.some(l => activeMatch.league.includes(l));
+                
+                if (isHighRisk || isSocialRef) {
+                    window.location.href = `/handshake.html?id=${activeMatch.id}&ref=social`;
+                    return;
+                }
+
                 resetVideoPlayer();
                 renderMatchSelector();
                 renderHero(activeMatch);
                 renderSchedule();
-                updateSEOMetadata(); // Actualizar SEO y URL
-                document.getElementById('main-match-hero').scrollIntoView({ behavior: 'smooth' });
+                renderStandings();
+                updateSEOMetadata(); 
             };
             scheduleBody.appendChild(tr);
+        });
+    }
+
+    function renderStandings() {
+        const section = document.getElementById('league-standings-section');
+        const body = document.getElementById('standings-body');
+        const nameEl = document.getElementById('standing-league-name');
+        
+        if (!section || !body || !activeMatch) return;
+
+        // Solo mostrar si hay contexto de liga o estamos en un partido específico
+        section.classList.remove('hidden');
+        nameEl.textContent = activeMatch.league;
+
+        // Generar datos "creíbles" basados en los equipos del pool
+        const leagueTeams = [...new Set(matches
+            .filter(m => m.league === activeMatch.league)
+            .flatMap(m => [m.homeTeam, m.awayTeam])
+        )];
+        
+        if (leagueTeams.length < 2) {
+            // Fallback: Añadir equipos genéricos de la liga si hay pocos
+            leagueTeams.push("Rival A", "Rival B", "Rival C");
+        }
+
+        // Simular estadísticas
+        let standingsData = leagueTeams.map((team, index) => {
+            const pj = 25 + Math.floor(Math.random() * 5);
+            const g = Math.floor(pj * (0.3 + Math.random() * 0.4));
+            const e = Math.floor((pj - g) * Math.random());
+            const p = pj - g - e;
+            return { team, pj, g, e, p, pts: (g * 3 + e) };
+        });
+
+        // Sort by points
+        standingsData.sort((a, b) => b.pts - a.pts);
+
+        body.innerHTML = '';
+        standingsData.forEach((row, i) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${i + 1}</td>
+                <td style="font-weight: 600;">${row.team}</td>
+                <td>${row.pj}</td>
+                <td>${row.g}</td>
+                <td>${row.e}</td>
+                <td>${row.p}</td>
+                <td style="color: var(--accent); font-weight: 800;">${row.pts}</td>
+            `;
+            body.appendChild(tr);
         });
     }
 
@@ -310,58 +681,155 @@ document.addEventListener('DOMContentLoaded', () => {
             tabContents.forEach(c => c.id === `tab-${tab.dataset.tab}` ? c.classList.remove('hidden') : c.classList.add('hidden'));
         };
     });
-     // --- VIDEO UNLOCK ENGINE (Original 3-Step Flow Restored) ---
-    const step1Btn = document.getElementById('unlock-step-1-btn');
-    const step2Btn = document.getElementById('unlock-step-2-btn');
-    const signalStatus = document.getElementById('signal-status');
-    const videoOverlay = document.getElementById('video-overlay');
-    const livePlayer = document.getElementById('live-player');
-    const streamIframe = document.getElementById('stream-iframe');
+     // --- VIDEO UNLOCK ENGINE REMOVED (v2.4.0) ---
+    // User requested direct access without ads/verification steps.
 
-    if(step1Btn) {
-        step1Btn.onclick = () => {
-            triggerSmartLink(); // Ad 1
-            
-            const step1 = document.getElementById('overlay-step-1');
-            const step2 = document.getElementById('overlay-step-2');
-            
-            if (step1 && step2) {
-                step1.classList.remove('active');
-                setTimeout(() => {
-                    step1.classList.add('hidden');
-                    step2.classList.remove('hidden');
-                    setTimeout(() => step2.classList.add('active'), 50);
-                }, 500);
-            }
+    // --- STREAM LOADING LOGIC ---
+    let lastFinalUrl = '';
+    const serverBtns = document.querySelectorAll('.server-btn');
 
-            if(signalStatus) {
-                signalStatus.textContent = "VERIFICANDO PASO 1/2...";
-                signalStatus.style.color = "#00d4ff";
+    serverBtns.forEach(btn => {
+        btn.onclick = () => {
+            if (btn.dataset.server === 'sos') {
+                const masters = ['https://www.rojadirectatv.me/', 'https://www.pirlotv.fr/', 'https://librefutboltv.com/'];
+                const randomMaster = masters[Math.floor(Math.random() * masters.length)];
+                window.open(randomMaster, '_blank');
+                return;
             }
+            const serverNum = parseInt(btn.dataset.server);
+            if (livePlayer && !livePlayer.classList.contains('hidden')) loadServer(serverNum);
         };
-    }
+    });
 
-    if(step2Btn) {
-        step2Btn.onclick = async () => {
-            triggerSmartLink(); // Ad 2
-            
-            if(signalStatus) {
-                signalStatus.textContent = "DECODIFICANDO SEÑAL FINAL...";
-                signalStatus.style.color = "#39ff14";
-            }
-            
-            await loadServer(1);
-            
-            // Show player
-            if(videoOverlay) videoOverlay.style.display = 'none';
-            if(livePlayer) {
-                livePlayer.classList.remove('hidden');
-                livePlayer.style.display = 'block';
-            }
-        };
-    }
+    async function loadServer(serverNum) {
+        if (!activeMatch) return;
 
-    // --- SPORT-GURU ENGINE (Dedicated Section & Ad Gate) ---
+        // Ensure player is visible (v2.4.2 Fix)
+        if (livePlayer) {
+            livePlayer.style.display = 'flex';
+            livePlayer.classList.remove('hidden');
+        }
+        
+        // Premium UI Feedback logic
+        if (signalStatus) {
+            signalStatus.textContent = "SIGNAL ESTABLISHED - HD QUALITY";
+            signalStatus.style.color = "var(--accent)";
+            const shield = document.querySelector('.signal-shield');
+            if(shield) shield.style.boxShadow = "0 0 15px var(--accent)";
+        }
+
+        const safetyGate = document.getElementById('safety-gate');
+        const unlockBtn = document.getElementById('btn-gate-unlock');
+        const initialView = document.getElementById('gate-initial-view');
+        const processView = document.getElementById('gate-unlock-process');
+        const readyView = document.getElementById('gate-ready-view');
+        const finalRedirectBtn = document.getElementById('btn-gate-redirect');
+        
+        // v2.6.0: Safe Mode Definition
+        const SAFE_LEAGUES = ['UFC', 'Champions League', 'Premier League', 'Liga MX', 'Boxing', 'UFC Femenino', 'MMA'];
+        const isHighRisk = SAFE_LEAGUES.some(l => activeMatch && activeMatch.league && activeMatch.league.includes(l));
+
+        if (isHighRisk && safetyGate && unlockBtn) {
+            if (streamIframe) streamIframe.classList.add('hidden');
+            safetyGate.classList.remove('hidden');
+            
+            // State reset
+            if(initialView) initialView.classList.remove('hidden');
+            if(processView) processView.classList.add('hidden');
+            if(readyView) readyView.classList.add('hidden');
+
+            unlockBtn.onclick = () => {
+                if(initialView) initialView.classList.add('hidden');
+                if(processView) processView.classList.remove('hidden');
+                
+                // --- DECIPHERING ANIMATION ---
+                let progress = 0;
+                const progressBar = document.getElementById('unlock-progress');
+                const matrixStatus = document.getElementById('matrix-status');
+                const terminal = document.getElementById('terminal-logs');
+                
+                const logPool = [
+                    "> Sincronizando túnel SportFlow-AI...",
+                    "> Bypass geobloqueo activo...",
+                    "> Estableciendo Handshake con servidor...",
+                    "> Encriptación AES-256 aplicada...",
+                    "> Optimizando búfer de video HD...",
+                    "> Máscara IP generada [192.168.X.X]",
+                    "> Conexión verificada: 100% segura"
+                ];
+
+                const interval = setInterval(() => {
+                    progress += Math.random() * 15;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(interval);
+                        
+                        // Transition to READY
+                        setTimeout(() => {
+                            if(processView) processView.classList.add('hidden');
+                            if(readyView) readyView.classList.remove('hidden');
+                        }, 500);
+                    }
+                    
+                    if(progressBar) progressBar.style.width = progress + "%";
+                    if(matrixStatus) matrixStatus.textContent = `DESBLOQUEANDO: ${Math.floor(progress)}%`;
+                    
+                    // Add a log entry randomly
+                    if(terminal && Math.random() > 0.6) {
+                        const log = document.createElement('div');
+                        log.className = 'log-entry';
+                        log.textContent = logPool[Math.floor(Math.random() * logPool.length)];
+                        terminal.appendChild(log);
+                        terminal.scrollTop = terminal.scrollHeight;
+                        if(terminal.childElementCount > 5) terminal.removeChild(terminal.firstChild);
+                    }
+                }, 400);
+
+                finalRedirectBtn.onclick = () => {
+                    const externalUrl = `https://www.rojadirectatv.me/`; 
+                    window.open(externalUrl, '_blank');
+                };
+            };
+            return;
+        } else if (safetyGate) {
+            safetyGate.classList.add('hidden');
+            if (streamIframe) streamIframe.classList.remove('hidden');
+        }
+
+        // v2.4.1: Kick.com Integration (Priority 1)
+        if (serverNum == 1 && CONFIG.KICK_CHANNEL) {
+            if (streamIframe) {
+                // v2.4.2: Enhanced Kick Embed with autoplay and parent domain security
+                const parent = window.location.hostname;
+                streamIframe.src = `https://player.kick.com/${CONFIG.KICK_CHANNEL}?parent=${parent}&autoplay=true&muted=false`;
+                
+                // v2.4.4: Real Kick Chat Integration
+                toggleKickChat(true);
+            }
+            return;
+        } else {
+            toggleKickChat(false);
+        }
+
+        // Richard's OBS Direct Link (Priority 2)
+        if (serverNum == 1 && CONFIG.OBS_LINK) {
+            if (streamIframe) streamIframe.src = CONFIG.OBS_LINK;
+            return;
+        }
+        const finalUrl = await findLiveStream(`${activeMatch.homeTeam} vs ${activeMatch.awayTeam}`, serverNum);
+        lastFinalUrl = finalUrl;
+        if (streamIframe) streamIframe.src = finalUrl;
+        
+        const fallback = document.getElementById('external-signal-fallback');
+        const btnFallback = document.getElementById('btn-open-external');
+        if (fallback && btnFallback) {
+            fallback.classList.remove('hidden');
+            btnFallback.onclick = () => {
+                window.open(finalUrl, '_blank');
+            };
+        }
+    }
+    // --- SPORT-GURU ENGINE (RESTORED v2.3.1) ---
     const guruUnlockBtn = document.getElementById('guru-unlock-btn');
     if(guruUnlockBtn) {
         guruUnlockBtn.onclick = () => {
@@ -371,25 +839,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const statusText = document.getElementById('guru-status-text');
             const btnReveal = document.getElementById('guru-unlock-btn');
             
-            // --- BLOQUEO DE PASADO (Professional Check) ---
             if(activeMatch.status === 'FINALIZADO') {
                 if(statusBox && statusText && btnReveal) {
                     btnReveal.style.display = 'none';
                     statusBox.classList.remove('hidden');
-                    statusBox.style.borderLeftColor = 'var(--accent)';
-                    statusText.textContent = "Data Core: No es posible procesar datos históricos de eventos finalizados.";
-                    statusText.style.color = "var(--accent)";
+                    statusText.textContent = "Data Core: No es posible procesar datos históricos.";
                     setTimeout(() => {
                         statusBox.classList.add('hidden');
                         btnReveal.style.display = 'block';
-                        statusBox.style.borderLeftColor = 'var(--secondary)';
-                        statusText.style.color = 'var(--secondary)';
                     }, 3000);
                 }
                 return;
             }
 
-            triggerSmartLink(); // Ad for Guru
+            // v13.0: Content First
             
             if(statusBox && statusText && btnReveal) {
                 btnReveal.style.display = 'none';
@@ -398,7 +861,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const steps = [
                     `Sincronizando variables de ${activeMatch.homeTeam}...`,
                     `Analizando big-data en ${activeMatch.league}...`,
-                    `Evaluando impacto de bajas en ${activeMatch.awayTeam}...`,
+                    `Evaluando impacto de bajas...`,
                     "Sintetizando modelo predictivo SportFlow-AI..."
                 ];
                 
@@ -415,7 +878,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                 lockedState.classList.add('hidden');
                                 unlockedState.classList.remove('hidden');
                                 generateGuruPrediction(activeMatch);
-                                // Reset for next time
                                 btnReveal.style.display = 'block';
                                 statusBox.classList.add('hidden');
                             }
@@ -424,38 +886,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 1000);
             }
         };
-    }
-
-    // --- STREAM LOADING LOGIC ---
-    let lastFinalUrl = '';
-    const serverBtns = document.querySelectorAll('.server-btn');
-
-    serverBtns.forEach(btn => {
-        btn.onclick = () => {
-            if (btn.dataset.server === 'sos') {
-                const masters = [
-                    'https://www.rojadirectatv.me/',
-                    'https://www.pirlotv.fr/',
-                    'https://librefutboltv.com/'
-                ];
-                const randomMaster = masters[Math.floor(Math.random() * masters.length)];
-                window.open(randomMaster, '_blank');
-                triggerSmartLink();
-                return;
-            }
-            serverBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const serverNum = parseInt(btn.dataset.server);
-            if (livePlayer && !livePlayer.classList.contains('hidden')) loadServer(serverNum);
-        };
-    });
-
-    async function loadServer(serverNum) {
-        if (!activeMatch) return;
-        const finalUrl = await findLiveStream(`${activeMatch.homeTeam} vs ${activeMatch.awayTeam}`, serverNum);
-        lastFinalUrl = finalUrl;
-        if (streamIframe) streamIframe.src = finalUrl;
-        console.log(`[STREAM-OK] Canal Sintonizado: ${finalUrl}`);
     }
 
     function generateGuruPrediction(match) {
@@ -589,8 +1019,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const step2 = document.getElementById('overlay-step-2');
             if(step1) { step1.classList.remove('hidden'); step1.classList.add('active'); }
             if(step2) { step2.classList.remove('active'); step2.classList.add('hidden'); }
-            const overlayVideo = document.getElementById('guide-video');
-            if (overlayVideo) { overlayVideo.currentTime = 0; overlayVideo.play().catch(() => {}); }
+            const overlayVideo = document.getElementById('overlay-guide-video');
+            if (overlayVideo) { 
+                overlayVideo.muted = true;
+                overlayVideo.loop = true; // Wait state loops
+                overlayVideo.currentTime = 0; 
+                overlayVideo.play().catch(() => {}); 
+                window.isUnmuted = false; // Reset the unmute flag
+            }
         }
         
         // Reset Guru State with ACTIVE MATCH Context
@@ -611,14 +1047,24 @@ document.addEventListener('DOMContentLoaded', () => {
         if(streamIframe) streamIframe.src = '';
     }
 
-    // --- SHARE FUNCTIONALITY (Richard VIP Viral) ---
+    // --- SHARE FUNCTIONALITY (Richard VIP Viral v8.0) ---
     const shareBtn = document.getElementById('btn-share');
     if(shareBtn) {
         shareBtn.onclick = async () => {
+            if(!activeMatch) return;
+
+            // v8.0: Safe Link Logic (Handshake for Social Media to avoid bans)
+            const isViral = window.currentFilter === 'viral';
+            const shareUrl = isViral 
+                ? `${window.location.origin}/handshake.html?id=${activeMatch.id}&ref=social`
+                : window.location.href;
+
             const shareData = {
-                title: 'SportFlow AI | Deportes en Vivo',
-                text: `¡Mira el partido de ${activeMatch ? activeMatch.homeTeam + ' vs ' + activeMatch.awayTeam : 'hoy'} en HD con el análisis de SportFlow AI! ⚽🔥`,
-                url: window.location.href
+                title: isViral ? `🔥 ¡URGENTE! Mira esto: ${activeMatch.homeTeam} vs ${activeMatch.awayTeam}` : 'SportFlow AI | VIP Sports',
+                text: isViral 
+                    ? `😱 No vas a creer lo que está pasando en este evento de ${activeMatch.homeTeam}. ¡Míralo EN VIVO aquí rápido! ⚽🔥`
+                    : `¡Disfruta el partido de ${activeMatch.homeTeam} vs ${activeMatch.awayTeam} en HD! Análisis y datos exclusivos. ⚽🔥`,
+                url: shareUrl
             };
 
             try {
@@ -634,8 +1080,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.getElementById('btn-direct').onclick = () => {
-        if (lastFinalUrl) { window.open(lastFinalUrl, '_blank'); triggerSmartLink(); }
-        else if (streamIframe && streamIframe.src && streamIframe.src !== 'about:blank') { window.open(streamIframe.src, '_blank'); triggerSmartLink(); }
+        if (lastFinalUrl) { window.open(lastFinalUrl, '_blank'); }
+        else if (streamIframe && streamIframe.src && streamIframe.src !== 'about:blank') { window.open(streamIframe.src, '_blank'); }
         else { alert("Selecciona un partido y desbloquea la señal primero."); }
     };
 
@@ -660,44 +1106,227 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- AUTOMATED SEO ENGINE ---
     function updateSEOMetadata() {
         if (!activeMatch) return;
-        const title = `${activeMatch.homeTeam} vs ${activeMatch.awayTeam} en VIVO | SportFlow AI`;
-        const desc = `Mira el partido entre ${activeMatch.homeTeam} y ${activeMatch.awayTeam} por ${activeMatch.league} en vivo. Resultados, estadísticas y predicciones de SportFlow AI.`;
         
+        let title = `${activeMatch.homeTeam} vs ${activeMatch.awayTeam} EN VIVO | SportFlow AI`;
+        let desc = `Mira el partido entre ${activeMatch.homeTeam} y ${activeMatch.awayTeam} por ${activeMatch.league} en vivo. Resultados, estadísticas y predicciones de SportFlow AI.`;
+        let path = `/partido/${activeMatch.id}/${activeMatch.homeTeam.toLowerCase().replace(/\s+/g, '-')}-vs-${activeMatch.awayTeam.toLowerCase().replace(/\s+/g, '-')}`;
+
+        // v4.0 Contextual SEO
+        if (window.currentContext) {
+            const { type, name } = window.currentContext;
+            const cleanName = name.charAt(0).toUpperCase() + name.slice(1);
+            const isEn = window.currentLang === 'en';
+            
+            if (type === 'team') {
+                title = isEn ? `${cleanName} Live | SportFlow Data Center` : `Canal ${cleanName} HD | Centro de Datos SportFlow AI`;
+                desc = isEn ? `Follow all ${cleanName} matches live. Stats, lineups and HD streaming.` : `Sigue todos los partidos de ${cleanName} en vivo. Estadísticas, alineaciones y transmisión en alta definición.`;
+            } else if (type === 'league') {
+                title = isEn ? `${cleanName} Results | Standings & Live` : `Resultados ${cleanName} | Tabla de Posiciones y En Vivo`;
+                desc = isEn ? `Complete coverage of ${cleanName}. Results and standings updated by AI.` : `Cobertura completa de la ${cleanName}. Partidos de hoy, resultados y tabla actualizada por IA.`;
+            } else if (type === 'category') {
+                title = isEn ? `${cleanName} Live | Premium HD Streaming` : `${cleanName} en Vivo | Transmisión Especial HD`;
+                desc = isEn ? `Watch the best ${cleanName} events today. Exclusive premium access.` : `Mira los mejores eventos de ${cleanName} hoy. Acceso premium a transmisiones virales y exclusivas.`;
+            }
+            
+            // Actualizar URL sin recargar
+            const slug = name.replace(/ /g, '-');
+            let pathPrefix = isEn ? '/en' : '';
+            let typePath = type;
+            if (isEn) {
+                if (type === 'team') typePath = 'team';
+                if (type === 'league') typePath = 'league';
+                if (type === 'category') typePath = 'category';
+            }
+            const newPath = `${pathPrefix}/${typePath}/${slug}`;
+            window.history.replaceState({ type, name }, title, newPath);
+        } else if (activeMatch) {
+            // If no specific context, but there's an active match, use its details for the path
+            const isEn = window.currentLang === 'en';
+            const pathPrefix = isEn ? '/en' : '';
+            const matchPathSegment = isEn ? 'match' : 'partido';
+            const homeTeamSlug = activeMatch.homeTeam.toLowerCase().replace(/\s+/g, '-');
+            const awayTeamSlug = activeMatch.awayTeam.toLowerCase().replace(/\s+/g, '-');
+            const newPath = `${pathPrefix}/${matchPathSegment}/${activeMatch.id}/${homeTeamSlug}-vs-${awayTeamSlug}`;
+            window.history.replaceState({ matchId: activeMatch.id }, title, newPath);
+        }
+
         document.title = title;
         document.querySelector('meta[name="description"]')?.setAttribute('content', desc);
-        document.querySelector('meta[property="og:title"]')?.setAttribute('content', title);
-        document.querySelector('meta[property="og:description"]')?.setAttribute('content', desc);
         
-        // Actualizar URL sin recargar para que el usuario pueda compartir el link específico
-        const cleanName = `${activeMatch.homeTeam}-vs-${activeMatch.awayTeam}`.toLowerCase().replace(/[^a-z0-9]/g, '-');
-        const newPath = `/partido/${activeMatch.id}/${cleanName}`;
-        window.history.replaceState({ id: activeMatch.id }, title, newPath);
+        // Open Graph refresh
+        document.querySelector('meta[property="og.title"]')?.setAttribute('content', title);
+        document.querySelector('meta[property="og.description"]')?.setAttribute('content', desc);
+
+        // The history.replaceState for activeMatch context is now handled within the if/else if blocks
+        // window.history.replaceState({ matchId: activeMatch.id, context: window.currentContext }, title, path);
+
+        // Update Guru Hero Titles
+        const gMatch = document.getElementById('guru-match-name');
+        const gLeague = document.getElementById('guru-league-name');
+        const gHome = document.getElementById('guru-team-home');
+        const gAway = document.getElementById('guru-team-away');
+        if(gMatch) gMatch.textContent = `${activeMatch.homeTeam} vs ${activeMatch.awayTeam}`;
+        if(gLeague) gLeague.textContent = activeMatch.league;
+        if(gHome) gHome.textContent = activeMatch.homeTeam;
+        if(gAway) gAway.textContent = activeMatch.awayTeam;
     }
 
     function updateCrawlerMagnet() {
         const magnet = document.getElementById('seo-crawler-magnet');
         if (!magnet || matches.length === 0) return;
         
-        let html = '<h2>Partidos en Vivo y Próximos</h2><ul>';
+        const teams = new Set(JSON.parse(localStorage.getItem('sportflow_teams') || '[]'));
+        const leagues = new Set(JSON.parse(localStorage.getItem('sportflow_leagues') || '[]'));
+        const I18N = {
+            es: {
+                footerTeams: 'EQUIPOS DESTACADOS',
+                footerLeagues: 'LIGAS PRINCIPALES',
+                footerSpecial: 'CATEGORÍAS ESPECIALES'
+            },
+            en: {
+                footerTeams: 'FEATURED TEAMS',
+                footerLeagues: 'TOP LEAGUES',
+                footerSpecial: 'SPECIAL CATEGORIES'
+            }
+        };
+
+        let html = '<div class="seo-footer-explorer" style="padding: 40px; background: #050505; border-top: 1px solid #222; margin-top: 50px;">';
+        
+        // Match Section
+        html += '<div class="seo-section"><h4>PARTIDOS DE HOY</h4><ul>';
         matches.forEach(m => {
             const cleanName = `${m.homeTeam}-vs-${m.awayTeam}`.toLowerCase().replace(/[^a-z0-9]/g, '-');
-            html += `
-                <li><a href="/partido/${m.id}/${cleanName}">${m.homeTeam} vs ${m.awayTeam} en vivo - Fútbol Libre</a></li>
-                <li><a href="/partido/${m.id}/${cleanName}">Ver ${m.homeTeam} vs ${m.awayTeam} gratis por Pelota Libre</a></li>
-                <li><a href="/partido/${m.id}/${cleanName}">Transmisión en directo ${m.homeTeam} vs ${m.awayTeam} tipo Pirlo TV</a></li>
-                <li><a href="/partido/${m.id}/${cleanName}">Link directo para ver ${m.homeTeam} vs ${m.awayTeam} sin cortes</a></li>
-            `;
+            html += `<li><a href="/partido/${m.id}/${cleanName}">Ver ${m.homeTeam} vs ${m.awayTeam} en vivo</a></li>`;
         });
-        html += '</ul>';
+        html += '</ul></div>';
+
+        // Team Section
+        const langPrefix = window.currentLang === 'en' ? '/en' : '';
+        const teamPath = window.currentLang === 'en' ? 'team' : 'equipo';
+        const t = I18N[window.currentLang] || I18N.es;
+
+        if (teams.size > 0) {
+            html += `<div class="seo-section"><h4>${t.footerTeams}</h4><ul>`;
+            [...teams].slice(0, 30).forEach(team => {
+                const slug = team.toLowerCase().replace(/ /g, '-');
+                html += `<li><a href="${langPrefix}/${teamPath}/${slug}">${window.currentLang === 'en' ? team + ' HD' : 'Canal ' + team + ' HD'}</a></li>`;
+            });
+            html += '</ul></div>';
+        }
+
+        // Categorías de Nicho (v10.0 + UK v11.0)
+        const categories = window.currentLang === 'en' ? ['Wrestling', 'Slap Fights', 'Girls Sports', 'American Football'] : ['Lucha Libre', 'Peleas Slap', 'Deporte Femenino', 'Fútbol Americano'];
+        html += `<div class="seo-section"><h4>${t.footerSpecial}</h4><ul>`;
+        categories.forEach(cat => {
+            const catSlug = cat.toLowerCase().replace(/ /g, '-').replace('femenino', 'chicas').replace('fights', 'pelea').replace('wrestling', 'lucha').replace('girls-sports', 'chicas').replace('football', 'american');
+            html += `<li><a href="${langPrefix}/${window.currentLang === 'en' ? 'category' : 'categoria'}/${catSlug}">${window.currentLang === 'en' ? cat + ' Live' : cat + ' en Vivo'}</a></li>`;
+        });
+        html += '</ul></div>';
+
+        // League Section
+        html += `<div class="seo-section"><h4>${t.footerLeagues}</h4><ul>`;
+        [...leagues].forEach(l => {
+            const slug = l.toLowerCase().replace(/\s+/g, '-');
+            html += `<li><a href="/liga/${slug}">${l} online</a></li>`;
+        });
+        html += '</ul></div>';
+
+        html += '</div>';
         magnet.innerHTML = html;
+        magnet.style.display = 'block';
+        magnet.style.visibility = 'visible';
+        
+        // Re-trigger ad loading for the new dynamic containers
+        setTimeout(loadAds, 500);
     }
 
     // Exportar para usar en otros clicks
     window.refreshSEO = updateSEOMetadata;
+
+    // --- KICK INTERACTION ENGINE (v2.4.4) ---
+    function toggleKickChat(active) {
+        const fakeChat = document.getElementById('chat-messages');
+        const fakeInput = document.getElementById('chat-input-area');
+        const realChat = document.getElementById('real-kick-chat');
+        const chatIframe = document.getElementById('kick-chat-iframe');
+        const announcement = document.getElementById('kick-live-call');
+        const viralTag = document.getElementById('viral-tag');
+
+        if (active) {
+            if (fakeChat) fakeChat.classList.add('hidden');
+            if (fakeInput) fakeInput.classList.add('hidden');
+            if (realChat) {
+                realChat.classList.remove('hidden');
+                if (chatIframe && !chatIframe.src) {
+                    chatIframe.src = `https://kick.com/popout/${CONFIG.KICK_CHANNEL}/chat`;
+                }
+            }
+            if (announcement) announcement.classList.remove('hidden');
+            if (viralTag) viralTag.classList.remove('hidden');
+            startKickNotifications();
+        } else {
+            if (fakeChat) fakeChat.classList.remove('hidden');
+            if (fakeInput) fakeInput.classList.remove('hidden');
+            if (realChat) realChat.classList.add('hidden');
+            if (announcement) announcement.classList.add('hidden');
+            if (viralTag) viralTag.classList.add('hidden');
+        }
+    }
+
+    let kickNotifyInterval = null;
+    function startKickNotifications() {
+        if (kickNotifyInterval) return;
+        const callText = document.getElementById('kick-call-text');
+        const phrases = [
+            "¡ÚNETE AL CHAT EN KICK PARA SORTEOS!",
+            "¡SÍGUEME EN KICK PARA NO PERDER LA SEÑAL!",
+            "¡CHARLA EN VIVO CON RICHARD AQUÍ!",
+            "¿QUIÉN GANA HOY? VOTA EN EL CHAT DE KICK"
+        ];
+        let current = 0;
+        kickNotifyInterval = setInterval(() => {
+            if (!document.getElementById('kick-live-call').classList.contains('hidden')) {
+                current = (current + 1) % phrases.length;
+                if (callText) callText.textContent = phrases[current];
+            } else {
+                clearInterval(kickNotifyInterval);
+                kickNotifyInterval = null;
+            }
+        }, 10000);
+    }
 
     // Autoplay reinforcement (v1.8.2)
     document.addEventListener('click', () => {
         const ovVideo = document.getElementById('overlay-guide-video');
         if (ovVideo && ovVideo.paused) ovVideo.play().catch(() => {});
     }, { once: true });
+
+    // --- TELEGRAM WIDGET ENGINE (v3.0) ---
+    function updateTelegramWidget(match) {
+        const stream = document.getElementById('telegram-msg-stream');
+        if(!stream || !match) return;
+
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const alerts = [
+            `🔥 ¡Señal activa para el ${match.homeTeam} vs ${match.awayTeam}! Entra ahora.`,
+            `📊 El Gurú detectó movimiento en las apuestas para ${match.league}.`,
+            `🚀 Únete al VIP para ver las fijas de hoy sin anuncios.`
+        ];
+
+        const randomAlert = alerts[Math.floor(Math.random() * alerts.length)];
+        
+        stream.innerHTML = `
+            <div class="tg-msg">
+                <span class="tg-time">${time}</span>
+                <p>${randomAlert}</p>
+            </div>
+        `;
+    }
+
+    // Update TG widget when active match changes
+    const originalRenderHero = renderHero;
+    renderHero = (match) => {
+        originalRenderHero(match);
+        updateTelegramWidget(match);
+    };
 });

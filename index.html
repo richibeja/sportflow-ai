@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SportFlow AI | Transmisión Deportiva y Resultados en Vivo</title>
+    <title>SportFlow AI | Motor de Análisis Predictivo y Datos Deportivos</title>
     <meta name="description" content="Sigue la Champions League, Liga MX y Premier League en vivo. Resultados, alineaciones, estadísticas y noticias de último minuto en alta definición.">
     <!-- Open Graph for Facebook -->
     <meta property="og:title" content="SportFlow AI | Deportes en Vivo">
@@ -12,7 +12,7 @@
     <meta property="og:url" content="https://sportflow-ai-snowy.vercel.app">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/main.css?v=1.8.3">
+    <link rel="stylesheet" href="/css/main.css?v=2.4.2">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Site Verification -->
@@ -20,6 +20,17 @@
 </head>
 <body>
     <div class="background-overlay"></div>
+    <div id="ad-container-top" class="ad-responsive-container" style="text-align:center; padding: 10px 0; background: #000;"></div>
+
+    <!-- RICHARD LIVE HOOK (v3.6.0) -->
+    <div id="viral-hook-bar" class="viral-hook-bar hidden">
+        <div class="hook-content">
+            <span class="hook-badge">RICHARD EN VIVO 🔥</span>
+            <p>Contenido Especial en Kick.com/richardbejarano5</p>
+            <a href="https://kick.com/richardbejarano5" target="_blank" class="hook-btn">UNIRSE AL LIVE</a>
+        </div>
+        <button class="close-hook" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
+    </div>
     
     <header class="navbar">
         <div class="container">
@@ -34,7 +45,7 @@
                 <div class="live-indicator">
                     <span class="pulse"></span> 4 EN VIVO
                 </div>
-                <a href="https://t.me/SportFlowVIP" target="_blank" class="btn-telegram">
+                <a href="https://t.me/+eDNK1QZVe-c5MjM5" target="_blank" class="btn-telegram">
                     <i class="fab fa-telegram"></i> Grupo VIP
                 </a>
             </div>
@@ -46,19 +57,8 @@
 
 
         <div class="ad-slot top-ad">
-            <div class="ad-responsive-container">
-                <div class="ad-unit ad-pc">
-                    <script type="text/javascript">
-                        atOptions = {
-                            'key' : 'd73933b8cfbbda3517bd62db85dfa4bf',
-                            'format' : 'iframe',
-                            'height' : 90,
-                            'width' : 728,
-                            'params' : {}
-                        };
-                    </script>
-                    <script type="text/javascript" src="https://www.highperformanceformat.com/d73933b8cfbbda3517bd62db85dfa4bf/invoke.js"></script>
-                </div>
+            <div id="ad-container-top" class="ad-responsive-container">
+                <!-- Inyectado por JS -->
             </div>
         </div>
 
@@ -78,6 +78,12 @@
                     <i class="fas fa-search"></i>
                     <input type="text" id="match-search" placeholder="Buscar equipo o liga...">
                 </div>
+                <div class="filter-bar">
+                    <button class="nav-filter active" onclick="filterMatches('all')">Todos</button>
+                    <button class="nav-filter" onclick="filterMatches('live')">En Vivo</button>
+                    <button class="nav-filter viral" onclick="filterMatches('viral')"><i class="fas fa-fire"></i> Viral</button>
+                    <button class="nav-filter" onclick="filterMatches('intl')">Internacional</button>
+                </div>
             </div>
             <div class="match-scroll" id="upcoming-matches">
                 <!-- Matches will be injected here -->
@@ -88,6 +94,9 @@
             <div class="match-card">
                 <div id="hero-match-content">
                     <!-- Dynamic Hero Content -->
+                    <div id="hero-dynamic-title" class="hidden" style="text-align: center; margin-bottom: 20px;">
+                        <h1 style="color: var(--accent); font-weight: 800; font-size: 1.8rem;">CENTRO DE DATOS: <span id="current-context-name">...</span></h1>
+                    </div>
                     <div class="loading-state">Selecciona un partido para ver detalles...</div>
                 </div>
             </div>
@@ -95,34 +104,23 @@
 
         <section class="match-details">
             <div class="tabs-control">
-                <button class="tab-btn active" data-tab="video"><i class="fas fa-play"></i> SEÑAL EN VIVO</button>
+                <button class="tab-btn active" data-tab="video"><i class="fas fa-play"></i> EN VIVO</button>
             </div>
 
 
             <div class="tab-content" id="tab-video">
-                <div class="branded-player-zone">
-                    <!-- Anuncio Superior Pegado -->
-                    <div class="ad-slot top-video-ad sticky-ad-top">
-                        <span class="sponsor-notice"><i class="fas fa-handshake"></i> PUBLICIDAD PATROCINADA</span>
-                        <div class="ad-responsive-container">
-                            <script type="text/javascript">
-                                atOptions = {
-                                    'key' : 'd73933b8cfbbda3517bd62db85dfa4bf',
-                                    'format' : 'iframe',
-                                    'height' : 90,
-                                    'width' : 728,
-                                    'params' : {}
-                                };
-                            </script>
-                            <script type="text/javascript" src="https://www.highperformanceformat.com/d73933b8cfbbda3517bd62db85dfa4bf/invoke.js"></script>
-                        </div>
-                    </div>
+                <div class="branded-player-zone" style="min-height: 550px; background: #000; border-radius: 12px; overflow: hidden; position: relative; z-index: 9999;">
+                    <!-- DIRECT PLAY ZONE: Richard's OBS System (v2.4.0) -->
 
                     <div class="video-container-wrapper">
-                        <div class="player-top-bar">
+                        <div class="player-top-bar" style="background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); border-bottom: 1px solid var(--glass-border);">
+                            <div id="kick-live-call" class="kick-announcement hidden">
+                                <span class="live-dot"></span> <span id="kick-call-text">¡ÚNETE AL CHAT EN KICK PARA SORTEOS!</span>
+                            </div>
                             <div class="signal-shield">
                                 <i class="fas fa-signal"></i>
                                 <span id="signal-status">OPTIMIZANDO CONEXIÓN...</span>
+                                <span id="viral-tag" class="viral-tag hidden">DEPORTES VIRALES</span>
                                 <div class="signal-bars">
                                     <span class="bar b1"></span><span class="bar b2"></span><span class="bar b3"></span>
                                 </div>
@@ -131,55 +129,52 @@
                                 <button class="server-btn active" data-server="1">1</button>
                                 <button class="server-btn" data-server="2">2</button>
                                 <button class="server-btn" data-server="3">3</button>
-                                <button class="server-btn" data-server="sos"><i class="fas fa-search"></i></button>
+                                <button class="server-btn btn-sos" data-server="sos"><i class="fas fa-search"></i> CANAL RESPALDO</button>
                             </div>
                         </div>
 
-                        <div id="video-overlay" class="video-overlay">
-                            <!-- Step 1: Guide & Initial Unlock -->
-                            <div id="overlay-step-1" class="overlay-step grid-layout">
-                                <div class="overlay-video-container" id="video-unmute-trigger">
-                                    <video id="overlay-guide-video" loop muted playsinline poster="/sportflow_hero_bg.png">
-                                        <source src="/aura_guide.mp4" type="video/mp4">
-                                    </video>
-                                    <div class="video-scanline"></div>
-                                    <div class="unmute-overlay">
-                                        <i class="fas fa-volume-mute"></i>
-                                        <span>TOCA PARA ESCUCHAR</span>
+                        <div id="live-player" class="live-player" style="display: flex;">
+                            <div class="player-loading" id="player-loading-overlay">
+                                <div class="ai-loader"></div>
+                                <span>SINCRONIZANDO SEÑAL...</span>
+                            </div>
+                            <div id="external-signal-fallback" class="hidden" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100; text-align: center; width: 80%;">
+                                <p style="color: white; margin-bottom: 15px; font-weight: 600;">¿La señal tiene interrupciones? Prueba el espejo:</p>
+                                <button id="btn-open-external" class="btn-unlock-stream" style="background: linear-gradient(45deg, #00d2ff, #3a7bd5); width: auto; padding: 12px 25px;">
+                                    <i class="fas fa-external-link-alt"></i> VER EN SEÑAL EXTERNA
+                                </button>
+                            </div>
+                            <div id="safety-gate" class="safety-gate hidden">
+                                <div id="gate-initial-view" class="gate-content">
+                                    <i class="fas fa-shield-halved gate-icon"></i>
+                                    <h3>SEÑAL DE ALTA PROTECCIÓN</h3>
+                                    <p>Este evento requiere una conexión segura para evitar geobloqueos.</p>
+                                    <button id="btn-gate-unlock" class="btn-primary">
+                                        <i class="fas fa-unlock"></i> DESBLOQUEAR SEÑAL HD (VIA AI)
+                                    </button>
+                                    <span class="gate-note">SPORTFLOW SECURE TUNNEL v2.6</span>
+                                </div>
+                                <div id="gate-unlock-process" class="gate-content hidden">
+                                    <div class="matrix-loader">
+                                        <div class="matrix-text" id="matrix-status">INICIANDO APORTE DE DATOS...</div>
+                                        <div class="progress-bar-container">
+                                            <div id="unlock-progress" class="progress-bar-fill"></div>
+                                        </div>
+                                        <div class="terminal-logs" id="terminal-logs">
+                                            <!-- Logs inyectados por JS -->
+                                        </div>
                                     </div>
                                 </div>
-                                
-                                <div class="overlay-content">
-                                    <h3 class="step-title">PASO 1/2</h3>
-                                    <p>Verificación de seguridad requerida.</p>
-                                    
-                                    <button id="unlock-step-1-btn" class="btn-unlock-stream">
-                                        <i class="fas fa-shield-alt"></i> DESBLOQUEAR
+                                <div id="gate-ready-view" class="gate-content hidden">
+                                    <i class="fas fa-check-circle gate-icon success"></i>
+                                    <h3>¡SEÑAL DESBLOQUEADA!</h3>
+                                    <p>La conexión se ha establecido correctamente.</p>
+                                    <button id="btn-gate-redirect" class="btn-primary success">
+                                        <i class="fas fa-play"></i> VER SEÑAL AHORA
                                     </button>
                                 </div>
                             </div>
-
-                            <!-- Step 2: Final Verify (Original Flow) -->
-                            <div id="overlay-step-2" class="overlay-step hidden">
-                                <div class="overlay-content" style="max-width: 100%; text-align: center;">
-                                    <div class="lock-icon" style="font-size: 2rem; color: var(--secondary); margin-bottom: 10px;">
-                                        <i class="fas fa-user-shield"></i>
-                                    </div>
-                                    <h3 class="step-title">PASO 2/2</h3>
-                                    <p>Presiona el botón final para decodificar la señal y empezar a ver.</p>
-                                    
-                                    <button id="unlock-step-2-btn" class="btn-unlock-stream" style="background: linear-gradient(45deg, #ff4757, #ff6b81); box-shadow: 0 0 20px rgba(255, 71, 87, 0.4);">
-                                        <i class="fas fa-check-circle"></i> COMPLETAR DESBLOQUEO
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="live-player" class="live-player hidden">
-                            <div class="player-loading">
-                                <i class="fas fa-spinner fa-spin"></i> Cargando señal...
-                            </div>
-                            <iframe id="stream-iframe" src="" frameborder="0" allowfullscreen scrolling="no"></iframe>
+                            <iframe id="stream-iframe" src="" frameborder="0" allowfullscreen scrolling="no" style="object-fit: contain; width: 100%; height: 100%;" loading="lazy"></iframe>
                         </div>
 
                         <!-- Panel de Control Maestra (Inyectado por JS) se queda igual -->
@@ -189,31 +184,18 @@
 
                     <!-- Anuncio Inferior Pegado -->
                     <div class="ad-slot bottom-ad sticky-ad-bottom">
-                        <span class="sponsor-notice"><i class="fas fa-handshake"></i> MONETIZACIÓN ACTIVA</span>
-                        <div class="ad-responsive-container">
-                            <script type="text/javascript">
-                                atOptions = {
-                                    'key' : 'd73933b8cfbbda3517bd62db85dfa4bf',
-                                    'format' : 'iframe',
-                                    'height' : 90,
-                                    'width' : 728,
-                                    'params' : {}
-                                };
-                            </script>
-                            <script type="text/javascript" src="https://www.highperformanceformat.com/d73933b8cfbbda3517bd62db85dfa4bf/invoke.js"></script>
+                        <div id="ad-container-bottom" class="ad-responsive-container">
+                            <!-- Inyectado por JS -->
                         </div>
                     </div>
                 </div>
 
                 <div class="video-help">
-                    <p><i class="fas fa-info-circle"></i> <strong>SISTEMA DE REDUNDANCIA:</strong> Si una señal falla, intenta cambiar de servidor. El sistema busca fuentes estables automáticamente.</p>
+                    <p><i class="fas fa-info-circle"></i> <strong>SISTEMA DE REDUNDANCIA:</strong> Si una señal falla, intenta cambiar de servidor o abrir el respaldo externo.</p>
                 </div>
 
-                <!-- NEW: Dedicated SPORTFLOW ANALYTICS Section -->
+                <!-- RESTORED: Dedicated SPORTFLOW ANALYTICS Section (THE HOOK) -->
                 <div class="guru-section-container">
-                    <div class="guru-header-main">
-                        <i class="fas fa-chart-line"></i> SPORTFLOW ANALYTICS: PREDICCIÓN IA
-                    </div>
                     
                     <div id="guru-locked-state" class="guru-content-box">
                         <div class="guru-teaser">
@@ -227,6 +209,8 @@
                             <button id="guru-unlock-btn" class="btn-guru-reveal">
                                 <i class="fas fa-bolt"></i> VER ANÁLISIS DE SPORTFLOW ANALYTICS
                             </button>
+                            <!-- Anuncio sutil debajo del botón tras revelar -->
+                            <div id="ad-container-guru" class="ad-responsive-container" style="margin-top: 20px; min-height: 50px; border-radius: 8px; overflow: hidden; opacity: 0.8;"></div>
                         </div>
                     </div>
 
@@ -280,9 +264,31 @@
                     <div id="chat-messages" class="chat-messages">
                         <div class="msg"><strong>RichiBot:</strong> ¡Bienvenidos a la transmisión! ¿Quién gana hoy?</div>
                     </div>
-                    <div class="chat-input-area">
+                    <!-- Anuncio en barra lateral, integrándose con el chat -->
+                    <div id="ad-container-sidebar" class="ad-responsive-container" style="margin: 15px 0; border-top: 1px solid var(--secondary); padding-top: 15px;"></div>
+                    
+                    <!-- Real Kick Chat Iframe (v2.4.4) -->
+                    <div id="real-kick-chat" class="real-kick-chat hidden">
+                        <iframe id="kick-chat-iframe" src="" frameborder="0" scrolling="no"></iframe>
+                    </div>
+
+                    <div id="chat-input-area" class="chat-input-area">
                         <input type="text" id="chat-input" placeholder="Escribe tu comentario...">
                         <button id="send-chat"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+
+                    <!-- Telegram Mini Widget (v3.0) -->
+                    <div id="telegram-mini-widget" class="telegram-mini-widget">
+                        <div class="widget-header">
+                            <i class="fab fa-telegram"></i> <span>ALERTA DE PRONÓSTICOS</span>
+                        </div>
+                        <div id="telegram-msg-stream" class="widget-stream">
+                            <div class="tg-msg">
+                                <span class="tg-time">11:45</span>
+                                <p>🚀 ¡Gol de último minuto! El Gurú acertó el OVER 2.5. ¡Únete al VIP para más!</p>
+                            </div>
+                        </div>
+                        <a href="https://t.me/+eDNK1QZVe-c5MjM5" target="_blank" class="btn-join-tg">ABRIR TELEGRAM</a>
                     </div>
                 </div>
             </div>
@@ -307,17 +313,39 @@
                     </tbody>
                 </table>
             </div>
+        <section id="league-standings-section" class="schedule-section hidden">
+            <h2 class="section-title">Tabla de Posiciones: <span id="standing-league-name">...</span></h2>
+            <div class="schedule-table-wrapper">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Equipo</th>
+                            <th>PJ</th>
+                            <th>G</th>
+                            <th>E</th>
+                            <th>P</th>
+                            <th>Pts</th>
+                        </tr>
+                    </thead>
+                    <tbody id="standings-body">
+                        <!-- Statistically generated by SportFlow AI -->
+                    </tbody>
+                </table>
+                <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 10px; text-align: center;">PROCESADO POR SPORTFLOW AI ENGINE v5.0</p>
+            </div>
         </section>
     </main>
 
-    <footer class="footer">
-        <p>&copy; 2026 SportFlow AI. Todos los derechos reservados.</p>
-        <div class="social-links">
-            <i class="fab fa-facebook"></i>
-            <i class="fab fa-twitter"></i>
-            <i class="fab fa-instagram"></i>
-        </div>
     </footer>
+
+    <!-- Sticky Footer Ad (v1.9.8) -->
+    <div id="sticky-footer-ad" class="sticky-footer-container hidden">
+        <button id="close-sticky-ad" class="close-sticky-btn"><i class="fas fa-times"></i></button>
+        <div id="ad-container-sticky" class="ad-responsive-container">
+            <!-- Inyectado por JS -->
+        </div>
+    </div>
 
     <!-- GURU GUIDE MODAL -->
     <div id="guru-guide-modal" class="modal-overlay hidden">
@@ -346,14 +374,20 @@
         </div>
     </div>
 
-    <script src="/js/stream-finder.js?v=1.8.3"></script>
+    <!-- Botón Flotante de Telegram (v3.0) -->
+    <a href="https://t.me/+eDNK1QZVe-c5MjM5" target="_blank" class="telegram-float">
+        <i class="fab fa-telegram-plane"></i>
+        <span class="float-tooltip">¡ÚNETE AL VIP!</span>
+    </a>
+
+    <script src="/js/stream-finder.js?v=2.4.2"></script>
     <!-- Dynamic SEO Crawler Magnet (Automated) -->
     <section id="seo-crawler-magnet" style="display: none; visibility: hidden;"></section>
 
-    <script src="/js/app.js?v=1.8.3"></script>
+    <script src="/js/app.js?v=2.6.1"></script>
     
-    <!-- Social Bar VIP (Adsterra) -->
-    <script src="https://pl28916004.effectivegatecpm.com/d7/b4/d8/d7b4d83e17f56a4aabebc13769bc93a2.js"></script>
+    <!-- Social Bar (Adsterra - Approved Source) -->
+    <script src="https://wistfulseverely.com/d7/b4/d8/d7b4d83e17f56a4aabebc13769bc93a2.js"></script>
     
 </body>
 </html>

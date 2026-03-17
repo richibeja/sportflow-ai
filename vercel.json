@@ -1,6 +1,9 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/partido/(.*)", "destination": "/" }
+    { "source": "/equipo/(.*)", "destination": "/index.html" },
+    { "source": "/liga/(.*)", "destination": "/index.html" },
+    { "source": "/categoria/(.*)", "destination": "/index.html" },
+    { "source": "/en/(.*)", "destination": "/index.html" }
   ]
 }
