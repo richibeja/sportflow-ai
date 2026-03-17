@@ -1331,8 +1331,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
     }
-
-        `;
     }
 
     // Initialize Crawler Magnet for first time
