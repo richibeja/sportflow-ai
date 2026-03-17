@@ -1,3 +1,7 @@
+param(
+    [switch]$IncludeMedia = $false
+)
+
 $token = $env:GH_TOKEN # Recuérda configurar tu GH_TOKEN en las variables de entorno
 $owner = "richibeja"
 $repo = "sportflow-ai"
@@ -33,7 +37,7 @@ function Push-File($localPath, $remotePath) {
     }
 
     $body = @{
-        message = "Update: SportFlow AI Pro v5.0 (Brujo Intel & Production Polish)"
+        message = "Update: SportFlow AI Pro v5.0 (Optimized Asset Pipeline)"
         content = $base64Content
     }
     if ($sha -ne $null) {
@@ -58,27 +62,38 @@ function Push-File($localPath, $remotePath) {
 }
 
 # Main Execution
-Write-Host "Starting Media & Asset Deployment to GitHub..."
+Write-Host "Starting Optimized Deployment to GitHub..."
 
+# Core Files (Always pushed)
 Push-File -localPath "index.html" -remotePath "index.html"
 Push-File -localPath "js/app.js" -remotePath "js/app.js"
 Push-File -localPath "css/main.css" -remotePath "css/main.css"
 Push-File -localPath "vercel.json" -remotePath "vercel.json"
 Push-File -localPath "README.md" -remotePath "README.md"
 Push-File -localPath "js/stream-finder.js" -remotePath "js/stream-finder.js"
+Push-File -localPath "handshake.html" -remotePath "handshake.html"
+Push-File -localPath "match-preview.html" -remotePath "match-preview.html"
+Push-File -localPath ".gitignore" -remotePath ".gitignore"
 
-# Media Files
-Push-File -localPath "aura_guide.mp4" -remotePath "aura_guide.mp4"
-Push-File -localPath "1.mp4" -remotePath "1.mp4"
-Push-File -localPath "2.mp4" -remotePath "2.mp4"
-Push-File -localPath "3.mp4" -remotePath "3.mp4"
-Push-File -localPath "4.mp4" -remotePath "4.mp4"
+if ($IncludeMedia) {
+    Write-Host "Including Media & Assets in deployment..." -ForegroundColor Cyan
+    # Media Files
+    Push-File -localPath "aura_guide.mp4" -remotePath "aura_guide.mp4"
+    Push-File -localPath "1.mp4" -remotePath "1.mp4"
+    Push-File -localPath "2.mp4" -remotePath "2.mp4"
+    Push-File -localPath "3.mp4" -remotePath "3.mp4"
+    Push-File -localPath "4.mp4" -remotePath "4.mp4"
 
-# Images
-Push-File -localPath "sportflow_hero_bg.png" -remotePath "sportflow_hero_bg.png"
-Push-File -localPath "madrina.png" -remotePath "madrina.png"
-Push-File -localPath "guru_avatar.png" -remotePath "guru_avatar.png"
-Push-File -localPath "favicon.ico" -remotePath "favicon.ico"
+    # Images
+    Push-File -localPath "sportflow_hero_bg.png" -remotePath "sportflow_hero_bg.png"
+    Push-File -localPath "madrina.png" -remotePath "madrina.png"
+    Push-File -localPath "guru_avatar.png" -remotePath "guru_avatar.png"
+    Push-File -localPath "favicon.ico" -remotePath "favicon.ico"
+} else {
+    Write-Host "Skipping Media Files (Use -IncludeMedia to upload them)" -ForegroundColor Yellow
+}
+
+# Always push metadata
 Push-File -localPath "robots.txt" -remotePath "robots.txt"
 Push-File -localPath "sitemap.xml" -remotePath "sitemap.xml"
 
