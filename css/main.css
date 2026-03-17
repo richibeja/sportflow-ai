@@ -6,6 +6,12 @@
     --text: #ffffff;
     --text-muted: #8e8e93;
     --bg-gradient: radial-gradient(circle at top, #1c1c1e 0%, #0a0a0b 100%);
+    --bg-dark: #0a0a0b;
+    --text-main: #ffffff;
+    --glass: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --shadow: 0 10px 40px rgba(0,0,0,0.5);
+    --bg-card: rgba(22, 22, 24, 0.8);
 }
 
 

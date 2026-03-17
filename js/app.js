@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Richard's Optimized Flow (v2.3.6 Nuclear Cleanup)
         const slots = [
+            ['ad-container-header', isMobile ? key320x50 : key728x90, isMobile ? 320 : 728, isMobile ? 50 : 90],
             ['ad-container-top', isMobile ? key320x50 : key728x90, isMobile ? 320 : 728, isMobile ? 50 : 90],
             ['ad-container-hero-top', key320x50, 320, 50],
             ['ad-container-bottom', isMobile ? key320x50 : key728x90, isMobile ? 320 : 728, isMobile ? 50 : 90],
@@ -549,6 +550,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 loadServer(1);
             }
         };
+
+        // v3.0 Update Telegram Widget with current match context
+        updateTelegramWidget(match);
     }
 
     function setupMatchSearch() {
@@ -586,6 +590,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         scheduleBody.innerHTML = '';
+        if (filtered.length === 0) {
+            scheduleBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 30px;">No hay partidos programados para el filtro actual.</td></tr>';
+            return;
+        }
+
         filtered.forEach((item, index) => {
             // Priority highlighting for viral content
             const isViral = filter === 'viral';
@@ -1323,10 +1332,9 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    // Update TG widget when active match changes
-    const originalRenderHero = renderHero;
-    renderHero = (match) => {
-        originalRenderHero(match);
-        updateTelegramWidget(match);
-    };
+        `;
+    }
+
+    // Initialize Crawler Magnet for first time
+    updateCrawlerMagnet();
 });
