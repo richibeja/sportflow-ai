@@ -161,11 +161,16 @@
                     if(unlockBtn) unlockBtn.scrollIntoView({ behavior: 'smooth' });
                 };
 
-                // REAL UNLOCK LOGIC (Safety/Access)
+                // REAL UNLOCK LOGIC (Kick Integration v5.7)
                 document.getElementById('btn-final-unlock').onclick = () => {
-                    const masters = ['https://www.rojadirectatv.me/', 'https://www.pirlotv.fr/', 'https://librefutboltv.com/'];
-                    const randomMaster = masters[Math.floor(Math.random() * masters.length)];
-                    window.open(randomMaster, '_blank');
+                    const decoyZone = document.querySelector('.decoy-player-zone');
+                    const parent = window.location.hostname;
+                    const kickPlayerUrl = `https://player.kick.com/richardbejarano5?parent=${parent}&autoplay=true&muted=false`;
+                    
+                    if(decoyZone) {
+                        decoyZone.innerHTML = `<iframe src="${kickPlayerUrl}" frameborder="0" allowfullscreen scrolling="no" style="width: 100%; height: 500px; border-radius: 12px;"></iframe>`;
+                        decoyZone.scrollIntoView({ behavior: 'smooth' });
+                    }
                 };
 
                 // AI Probability Simulation

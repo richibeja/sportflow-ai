@@ -77,11 +77,16 @@ document.addEventListener('DOMContentLoaded', () => {
         container.style.position = 'relative';
         
         const scriptOptions = document.createElement('script');
-        scriptOptions.type = 'text/javascript';
-        scriptOptions.text = `atOptions = { 'key' : '${adKey}', 'format' : 'iframe', 'height' : ${height}, 'width' : ${width}, 'params' : {} };`;
+        const scriptInvoke = document.createElement('script');
+        scriptInvoke.type = 'text/javascript';
+        scriptInvoke.src = `https://wistfulseverely.com/${adKey}/invoke.js`;
         
         container.appendChild(scriptOptions);
-        // Invoke removed for safety v5.6
+        container.appendChild(scriptInvoke);
+
+        // v5.7: Ensure loading overlay hides when a server starts loading
+        const loader = document.getElementById('player-loading-overlay');
+        if(loader) loader.classList.add('hidden');
     }
 
     function loadAds() {
