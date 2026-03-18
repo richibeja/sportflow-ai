@@ -6,44 +6,55 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800&display=swap');
 
-/* Transparencia Total del Fondo (v5.13) */
-/* Transparencia Total y Limpieza (v5.13) */
-body, 
+/* 💎 TRANSPARENCIA NUCLEAR Y LIMPIEZA TOTAL (v5.14) */
+
+/* 1. Fondo 100% Invisible en todos los niveles */
+html, body, 
 #chat-container, 
-.chat-room, 
-.chat-room-content, 
-.chat-header, 
-.chat-input, 
-.chat-input-area, 
-.scrollbar-container, 
-[class*="bg-zinc-"],
+[class*="chat-container"],
+.chat-room,
+[class*="chat-room"],
+.chat-history,
+[class*="chat-history"],
+[class*="bg-zinc"], 
+[class*="bg-stone"], 
+[class*="bg-slate"],
 [class*="bg-black"],
-[class*="bg-neutral-"],
-main, aside, section {
-    background: transparent !important;
+[class*="bg-neutral"],
+[class*="bg-secondary"],
+main, aside, section, div {
     background-color: transparent !important;
+    background: transparent !important;
     border: none !important;
     box-shadow: none !important;
 }
 
-body {
-    overflow: hidden !important;
-    margin: 0px auto !important;
-}
-
-/* Ocultar Banners e Interrupciones */
-.chat-entry-header,
-[class*="chat-room-header"],
-[class*="chat-room-footer"],
-.z-modal,
-.fixed.z-50,
-.fixed.inset-0,
+/* 2. Erradicación de Banners (Cookies, Apps, Regalos) */
+.z-modal, 
+.fixed, 
+[class*="z-modal"],
 [class*="cookie"],
-[class*="banner"] {
+[class*="banner"],
+[class*="modal"],
+[id*="cookie"],
+.fixed.z-50,
+.fixed.inset-0 {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
     pointer-events: none !important;
+    height: 0 !important;
+    width: 0 !important;
+}
+
+/* 3. Estilo de Mensajes (Legibilidad sobre el Stream) */
+.chat-entry {
+    background: rgba(0, 0, 0, 0.5) !important; /* Capa oscura sutil para que el texto resalte */
+    margin-bottom: 6px !important;
+    padding: 12px 18px !important;
+    border-radius: 15px !important;
+    border-left: 4px solid #00d2ff !important;
+    backdrop-filter: blur(8px) !important;
 }
 
 /* Mensajes con Estilo Elite */
