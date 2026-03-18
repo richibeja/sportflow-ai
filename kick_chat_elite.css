@@ -28,7 +28,8 @@ body {
 .app-download-banner,
 .kick-app-banner,
 .claim-gift-banner,
-.announcement-banner {
+.announcement-banner,
+.z-modal.fixed {
     display: none !important;
     visibility: hidden !important;
     height: 0px !important;
