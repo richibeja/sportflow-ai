@@ -12,13 +12,29 @@ body {
     margin: 0px auto !important;
 }
 
-/* Ocultar elementos innecesarios */
+/* Ocultar elementos innecesarios y Banners de Cookies */
 .chat-entry-header,
 .chat-input,
 .chat-header,
 .chat-room-header,
-.chat-room-footer {
+.chat-room-footer,
+.cc-window,
+.cc-banner,
+.cc-type-info,
+.cc-message,
+.cc-btn,
+#cookie-banner,
+.kick-cookie-consent,
+.app-download-banner,
+.kick-app-banner,
+.claim-gift-banner,
+.announcement-banner {
     display: none !important;
+    visibility: hidden !important;
+    height: 0px !important;
+    width: 0px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 
 .chat-container {
