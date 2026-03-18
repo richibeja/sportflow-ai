@@ -135,6 +135,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // v5.9: Global Config for Blog
+            const CONFIG = {
+                KICK_CHANNEL: 'richardbejarano5',
+                OBS_LINK: ''
+            };
+
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get('id');
             
