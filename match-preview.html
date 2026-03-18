@@ -154,12 +154,11 @@
                 document.getElementById('info-time').textContent = match.time || "--:--";
                 if(match.homeLogo) document.getElementById('match-poster').src = match.homeLogo;
 
-                // DECOY PLAY LOGIC (Revenue Boost)
+                // DECOY PLAY LOGIC (Revenue Boost - Fixed v5.6)
                 document.getElementById('btn-decoy-play').onclick = () => {
-                    // This is the "Señuelo": Redirects to SmartLink (Ad)
-                    const smartLink = 'https://wistfulseverely.com/jm7f9ypm?key=b8f95870742d9bd9e730551fa23f4398';
-                    const win = window.open(smartLink, '_blank');
-                    if (win) win.focus();
+                    // Redirect to safe internal access or show message
+                    const unlockBtn = document.getElementById('btn-final-unlock');
+                    if(unlockBtn) unlockBtn.scrollIntoView({ behavior: 'smooth' });
                 };
 
                 // REAL UNLOCK LOGIC (Safety/Access)
@@ -188,21 +187,9 @@
                 document.getElementById('match-title').textContent = "Selecciona un Partido en Inicio";
             }
 
-            // Inyectar Ads
-            const keys = ['d73933b8cfbbda3517bd62db85dfa4bf', '0d6323163d0bf049f77d24605b7baf54'];
-            const containers = ['ad-top-blog', 'ad-mid-blog', 'ad-bot-blog'];
-            
-            containers.forEach((cid, i) => {
-                const key = keys[i % 2];
+            containers.forEach((cid) => {
                 const cont = document.getElementById(cid);
-                const scriptOptions = document.createElement('script');
-                scriptOptions.type = 'text/javascript';
-                scriptOptions.text = `atOptions = { 'key' : '${key}', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };`;
-                const scriptInvoke = document.createElement('script');
-                scriptInvoke.type = 'text/javascript';
-                scriptInvoke.src = `https://wistfulseverely.com/${key}/invoke.js`;
-                cont.appendChild(scriptOptions);
-                cont.appendChild(scriptInvoke);
+                if(cont) cont.innerHTML = '<div style="color: #444; font-size: 10px; text-align: center; border: 1px dashed #333; padding: 10px;">ANUNCIO PROTEGIDO SPORTFLOW</div>';
             });
         });
     </script>

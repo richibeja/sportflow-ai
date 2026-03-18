@@ -80,12 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
         scriptOptions.type = 'text/javascript';
         scriptOptions.text = `atOptions = { 'key' : '${adKey}', 'format' : 'iframe', 'height' : ${height}, 'width' : ${width}, 'params' : {} };`;
         
-        const scriptInvoke = document.createElement('script');
-        scriptInvoke.type = 'text/javascript';
-        scriptInvoke.src = `https://wistfulseverely.com/${adKey}/invoke.js`;
-        
         container.appendChild(scriptOptions);
-        container.appendChild(scriptInvoke);
+        // Invoke removed for safety v5.6
     }
 
     function loadAds() {
