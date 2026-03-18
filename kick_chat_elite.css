@@ -6,41 +6,44 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800&display=swap');
 
-body {
+/* Transparencia Total del Fondo (v5.13) */
+/* Transparencia Total y Limpieza (v5.13) */
+body, 
+#chat-container, 
+.chat-room, 
+.chat-room-content, 
+.chat-header, 
+.chat-input, 
+.chat-input-area, 
+.scrollbar-container, 
+[class*="bg-zinc-"],
+[class*="bg-black"],
+[class*="bg-neutral-"],
+main, aside, section {
+    background: transparent !important;
     background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+body {
     overflow: hidden !important;
     margin: 0px auto !important;
 }
 
-/* Ocultar elementos innecesarios y Banners de Cookies */
+/* Ocultar Banners e Interrupciones */
 .chat-entry-header,
-.chat-input,
-.chat-header,
-.chat-room-header,
-.chat-room-footer,
-.cc-window,
-.cc-banner,
-.cc-type-info,
-.cc-message,
-.cc-btn,
-#cookie-banner,
-.kick-cookie-consent,
-.app-download-banner,
-.kick-app-banner,
-.claim-gift-banner,
-.announcement-banner,
-.z-modal.fixed {
+[class*="chat-room-header"],
+[class*="chat-room-footer"],
+.z-modal,
+.fixed.z-50,
+.fixed.inset-0,
+[class*="cookie"],
+[class*="banner"] {
     display: none !important;
     visibility: hidden !important;
-    height: 0px !important;
-    width: 0px !important;
     opacity: 0 !important;
     pointer-events: none !important;
-}
-
-.chat-container {
-    background: transparent !important;
-    border: none !important;
 }
 
 /* Mensajes con Estilo Elite */
