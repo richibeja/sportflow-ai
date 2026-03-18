@@ -330,6 +330,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
+            // v5.10: Richard's Priority Signal (Never "outside")
+            const richardLive = {
+                id: 'richard-live-signal',
+                league: 'ESPECIAL KICK',
+                channel: 'KICK PRO',
+                homeTeam: 'RICHARD',
+                awayTeam: 'EN VIVO',
+                homeLogo: '/guru_avatar.png',
+                awayLogo: 'https://kick.com/favicon.ico',
+                homeScore: 'LIVE',
+                awayScore: 'ON',
+                time: 'AHORA',
+                date: 'HOY',
+                status: 'EN VIVO'
+            };
+            allMatches.unshift(richardLive);
+
             if (allMatches.length > 0) {
                 allMatches.sort((a, b) => {
                     const priority = { 'EN VIVO': 0, 'PRÓXIMAMENTE': 1, 'FINALIZADO': 2 };
