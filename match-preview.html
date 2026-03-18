@@ -40,8 +40,19 @@
     </nav>
 
     <main class="blog-container">
-        <!-- TOP AD BANNER -->
-        <div id="ad-top-blog" class="blog-ad-slot top-banner">
+        <div class="blog-container">
+        <!-- Elite Match Ticker (v5.40) -->
+        <div class="match-ticker-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px 10px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--accent);">
+                <span><i class="fas fa-satellite-dish"></i> Centro de Señales en Vivo</span>
+                <span>v5.40 Elite</span>
+            </div>
+            <div id="match-ticker-scroll" class="match-ticker-scroll">
+                <div style="padding: 20px; color: #444; font-size: 0.8rem;">Sincronizando satélites...</div>
+            </div>
+        </div>
+
+        <div id="ad-top-blog" class="blog-ad-slot top-banner"></div>
             <!-- Adsterra 728x90 -->
         </div>
 
@@ -144,7 +155,7 @@
     
 
     <footer class="blog-footer">
-        <p>© 2026 SportFlow AI - Motor de Inteligencia Deportiva v5.34 (DYNAMIC SIGNAL HUB)</p>
+        <p>© 2026 SportFlow AI - Motor de Inteligencia Deportiva v5.35 (FINAL POLISH)</p>
     </footer>
 
     <script>
@@ -220,30 +231,23 @@
                             if(unlockBtn) unlockBtn.innerHTML = `<i class="fas fa-bolt"></i> REINTENTAR PASO ${clickCount+1}`;
                         }, 2000);
                     } else {
-                        // 3rd click -> Real Signal (Dynamic Selection)
+                        // 3rd click -> Real Signal (Protected)
                         if(stepTag) stepTag.textContent = `¡CONEXIÓN ESTABLECIDA!`;
-                        
-                        const isOfficial = String(id) === String(CONFIG.OFFICIAL_MATCH_ID);
-                        if (isOfficial) {
-                            unlockSignal(decoyZone, host, CONFIG);
-                        } else {
-                            unlockSecondaryHub(decoyZone, CONFIG);
-                        }
-                    }
-                };
-
-                const unlockSecondaryHub = (decoyZone, cfg) => {
-                    const SL = "https://wistfulseverely.com/d7044ubwez?key=bac3a61df59dc6f36412f9eb2ff17156";
+                        unlockSignal(decoyZone, host, CONFIG);
+                                    const unlockSignal = (decoyZone, host, cfg) => {
+                    const url = `https://player.kick.com/${cfg.KICK_CHANNEL}?parent=${host}&autoplay=true&muted=false`;
+                    
                     if(decoyZone) {
                         decoyZone.innerHTML = `
-                            <div style="padding: 60px 20px; text-align: center; background: #080808; border: 1px solid var(--accent); border-radius: 12px; margin: 20px 0;">
-                                <i class="fas fa-server" style="font-size: 3rem; color: var(--accent); margin-bottom: 20px;"></i>
-                                <h3 style="margin-bottom: 10px;">SERVIDOR PRINCIPAL SATURADO</h3>
-                                <p style="color: #888; font-size: 0.9rem; margin-bottom: 25px;">Hemos habilitado un túnel secundario en **Futbol Libre** para este encuentro.</p>
-                                <a href="${cfg.EXTERNAL_URL}" target="_blank" class="btn-secondary-server" onclick="window.open('${SL}', '_blank')">
-                                    <i class="fas fa-external-link-alt"></i> ABRIR EN SERVIDOR SECUNDARIO
+                            <div class="player-wrapper">
+                                <div class="signal-guard kick-logo-guard"></div>
+                                <iframe src="${url}" frameborder="0" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-presentation" style="width: 100%; aspect-ratio: 16/9; display: block;"></iframe>
+                            </div>
+                            <div style="text-align: center; margin-top: 25px; display: flex; flex-direction: column; gap: 15px; align-items: center;">
+                                <a href="/" class="btn-secondary-server" style="display: inline-block; width: auto; padding: 12px 25px; font-size: 0.9rem; text-decoration: none;">
+                                    <i class="fas fa-search"></i> EXPLORAR OTROS PARTIDOS
                                 </a>
-                                <p style="font-size: 0.7rem; color: #444; margin-top: 15px;">La señal se abrirá en una pestaña nueva para evitar el bloqueo del navegador.</p>
+                                <p style="color: #666; font-size: 0.8rem;">Estás viendo la Señal Oficial Protegida de SportFlow AI</p>
                             </div>
                         `;
                         decoyZone.scrollIntoView({ behavior: 'smooth' });
@@ -252,38 +256,7 @@
 
                 document.getElementById('btn-decoy-play').onclick = handleUnlockAttempt;
                 document.getElementById('btn-final-unlock').onclick = handleUnlockAttempt;
-
-                const unlockSignal = (decoyZone, host, cfg) => {
-                    const ALLOWED = ['sportflow-ai-snowy.vercel.app', 'localhost', '127.0.0.1'];
-                    if (!ALLOWED.includes(host)) {
-                        alert("ERROR: Acceso denegado por seguridad.");
-                        return;
-                    }
-
-                    let sHtml = '';
-                    if (cfg.SIGNAL_TYPE === 'KICK') {
-                        const url = `https://player.kick.com/${cfg.KICK_CHANNEL}?parent=${host}&autoplay=true&muted=false`;
-                        sHtml = `<div class="player-wrapper">
-                                    <div class="signal-guard kick-logo-guard"></div>
-                                    <iframe src="${url}" frameborder="0" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-presentation" style="width: 100%; aspect-ratio: 16/9; display: block;"></iframe>
-                                 </div>`;
-                    } else if (cfg.SIGNAL_TYPE === 'IFRAME') { // Added missing IFRAME and DIRECT logic
-                        sHtml = `
-                            <div class="player-wrapper" style="position: relative; width: 100%; height: 500px;">
-                                <div class="anti-scraper-overlay" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index: 10; cursor: default;"></div>
-                                <iframe src="${cfg.EXTERNAL_URL}" frameborder="0" allowfullscreen scrolling="no" style="width: 100%; height: 100%; border: 2px solid var(--secondary);"></iframe>
-                            </div>`;
-                    } else if (cfg.SIGNAL_TYPE === 'DIRECT') {
-                        sHtml = `<div style="padding: 100px 20px; text-align: center;">
-                                        <p style="margin-bottom: 20px;">LA SEÑAL HA SIDO MOVIDA AL SERVIDOR PRIVADO</p>
-                                        <a href="${cfg.OBS_LINK || cfg.EXTERNAL_URL}" target="_blank" class="btn-elite">ACCEDER AHORA (CLIC AQUÍ)</a>
-                                      </div>`;
-                    }
-                    
-                    if(decoyZone) {
-                        decoyZone.innerHTML = `<div style="background: #000; padding: 10px; text-align: center; border-bottom: 2px solid var(--accent); font-weight: 800; font-size: 0.8rem;">SEÑAL PROTEGIDA ACTIVA</div>${sHtml}`;
-                        decoyZone.scrollIntoView({ behavior: 'smooth' });
-                    }
+      }
                 };
 
                 // AI Probability Simulation
@@ -303,6 +276,69 @@
                 }, 800);
             }
 
+            // v5.40: Elite Match Ticker Logic
+            async function syncTicker() {
+                const ticker = document.getElementById('match-ticker-scroll');
+                if(!ticker) return;
+
+                const leagues = [
+                    { id: 'arg.1', name: 'LPF' },
+                    { id: 'uefa.champions', name: 'UCL' },
+                    { id: 'conmebol.libertadores', name: 'LIB' },
+                    { id: 'esp.1', name: 'ESP' },
+                    { id: 'eng.1', name: 'PRE' }
+                ];
+
+                try {
+                    let all = [];
+                    for(const l of leagues) {
+                        try {
+                            const res = await fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${l.id}/scoreboard`);
+                            const data = await res.json();
+                            if(data.events) {
+                                all = [...all, ...data.events.map(ev => ({
+                                    id: ev.id,
+                                    league: l.name,
+                                    home: ev.competitions[0].competitors.find(c => c.homeAway === 'home'),
+                                    away: ev.competitions[0].competitors.find(c => c.homeAway === 'away'),
+                                    status: ev.status.type.state,
+                                    time: ev.status.type.shortDetail
+                                }))];
+                            }
+                        } catch(e) {}
+                    }
+
+                    if(all.length > 0) {
+                        ticker.innerHTML = '';
+                        all.forEach(m => {
+                            const isLive = m.status === 'in';
+                            const card = document.createElement('a');
+                            card.href = `/partido/${m.id}`;
+                            card.className = `ticker-card ${String(m.id) === String(id) ? 'active' : ''}`;
+                            card.innerHTML = `
+                                <div class="ticker-teams">
+                                    <div class="ticker-team">
+                                        <span>${m.home.team.abbreviation || m.home.team.displayName.substring(0,3)}</span>
+                                        <span class="ticker-score">${m.home.score}</span>
+                                    </div>
+                                    <div class="ticker-team">
+                                        <span>${m.away.team.abbreviation || m.away.team.displayName.substring(0,3)}</span>
+                                        <span class="ticker-score">${m.away.score}</span>
+                                    </div>
+                                </div>
+                                <div class="ticker-status">
+                                    ${isLive ? '<div class="pulse-ticker"></div>' : ''}
+                                    <span style="color: ${isLive ? 'var(--accent)' : '#666'}">${m.time}</span>
+                                </div>
+                            `;
+                            ticker.appendChild(card);
+                        });
+                    }
+                } catch(err) {}
+            }
+            syncTicker();
+            setInterval(syncTicker, 30000);
+
             // Inyectar Ads
             const keys = ['d73933b8cfbbda3517bd62db85dfa4bf', '0d6323163d0bf049f77d24605b7baf54', 'd73933b8cfbbda3517bd62db85dfa4bf'];
             const containers = ['ad-top-blog', 'ad-mid-blog', 'ad-bot-blog'];
@@ -321,6 +357,7 @@
                 sInv.type = 'text/javascript'; // Added type
                 sInv.src = `https://wistfulseverely.com/${keys[i]}/invoke.js`;
                 el.appendChild(sOpt);
+                el.appendChild(sInv);
                 el.appendChild(sInv);
             });
         });
