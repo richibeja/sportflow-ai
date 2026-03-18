@@ -1,8 +1,8 @@
 import requests
 import os
 
-url = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://sportflow-ai-snowy.vercel.app/"
-target_path = "d:/deportes/qr_interactivo_v2.png"
+url = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://sportflow-ai-snowy.vercel.app/elite-ads.html&color=D4AF37&bgcolor=050505"
+target_path = "d:/deportes/qr_elite_premium.png"
 
 try:
     print(f"Descargando nuevo QR desde {url}...")

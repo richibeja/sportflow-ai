@@ -14,7 +14,8 @@ Usa este archivo para organizar tus códigos. Una vez que tengas los códigos de
 ### 🚀 Códigos de Anuncios (Pega aquí lo que obtengas de Adsterra)
 
 #### 1. SmartLink (El link directo que más dinero da)
-Pégalo aquí: `https://www.effectivegatecpm.com/jm7f9ypm?key=b8f95870742d9bd9e730551fa23f4398`
+- **Principal**: `https://wistfulseverely.com/d7044ubwez?key=bac3a61df59dc6f36412f9eb2ff17156` (Zone ID: 28829081)
+- **Backup**: `https://wistfulseverely.com/jm7f9ypm?key=b8f95870742d9bd9e730551fa23f4398`
 
 #### 2. Banner Escritorio (728x90)
 ```html
@@ -27,7 +28,7 @@ Pégalo aquí: `https://www.effectivegatecpm.com/jm7f9ypm?key=b8f95870742d9bd9e7
     'params' : {}
   };
 </script>
-<script type="text/javascript" src="https://www.highperformanceformat.com/d73933b8cfbbda3517bd62db85dfa4bf/invoke.js"></script>
+<script type="text/javascript" src="https://wistfulseverely.com/d73933b8cfbbda3517bd62db85dfa4bf/invoke.js"></script>
 ```
 
 #### 3. Banner Móvil (320x50)
@@ -41,12 +42,13 @@ Pégalo aquí: `https://www.effectivegatecpm.com/jm7f9ypm?key=b8f95870742d9bd9e7
     'params' : {}
   };
 </script>
-<script type="text/javascript" src="https://www.highperformanceformat.com/0d6323163d0bf049f77d24605b7baf54/invoke.js"></script>
+<script type="text/javascript" src="https://wistfulseverely.com/0d6323163d0bf049f77d24605b7baf54/invoke.js"></script>
 ```
 
 #### 4. Social Bar (Notificaciones flotantes)
+- **ID**: 28815505
 ```html
-<script src="https://pl28916004.effectivegatecpm.com/d7/b4/d8/d7b4d83e17f56a4aabebc13769bc93a2.js"></script>
+<script src="https://wistfulseverely.com/d7/b4/d8/d7b4d83e17f56a4aabebc13769bc93a2.js"></script>
 ```
 
 ---

@@ -1,9 +1,12 @@
 {
   "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
-    { "source": "/equipo/(.*)", "destination": "/index.html" },
-    { "source": "/liga/(.*)", "destination": "/index.html" },
-    { "source": "/categoria/(.*)", "destination": "/index.html" },
-    { "source": "/en/(.*)", "destination": "/index.html" }
+    { "source": "/test-rewrite", "destination": "/handshake.html" },
+    { "source": "/partido/:id", "destination": "/match-preview.html?id=:id" },
+    { "source": "/partido/:id/:slug", "destination": "/match-preview.html?id=:id&slug=:slug" },
+    { "source": "/equipos/:id", "destination": "/sports-hub.html?team=:id" },
+    { "source": "/ligas/:id", "destination": "/sports-hub.html?league=:id" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

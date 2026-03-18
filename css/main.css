@@ -15,9 +15,28 @@
 }
 
 
-.nav-madrina {
-    color: #ff4d94 !important;
-    font-weight: 800 !important;
+#ad-container-header {
+    position: relative !important;
+    margin: 40px auto 20px !important; /* Not at the beginning, space around it */
+    min-height: 50px;
+    background: #000;
+    max-width: 320px;
+    z-index: 10 !important;
+}
+
+.navbar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2000;
+    background: rgba(0,0,0,0.98);
+    height: 60px;
+    border-bottom: 1px solid var(--accent);
+}
+
+.main-content {
+    margin-top: 80px !important; /* Just space for navbar */
 }
 
 
@@ -392,23 +411,37 @@ body {
 }
 
 .play-decoy-btn {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     background: var(--accent);
     border: none;
     border-radius: 50%;
     color: #000;
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: 0 0 30px rgba(57, 255, 20, 0.4);
-    transition: transform 0.3s;
+    box-shadow: 0 0 50px rgba(57, 255, 20, 0.6);
+    transition: 0.3s;
+    animation: pulse-gold 2s infinite;
 }
 
-.play-decoy-btn:hover {
-    transform: scale(1.1);
+@keyframes pulse-gold {
+    0% { transform: scale(1); box-shadow: 0 0 30px rgba(57, 255, 20, 0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 0 60px rgba(57, 255, 20, 0.8); }
+    100% { transform: scale(1); box-shadow: 0 0 30px rgba(57, 255, 20, 0.4); }
+}
+
+.decoy-overlay .step-indicator {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    margin-bottom: 10px;
+    font-weight: 800;
 }
 
 .decoy-status {
@@ -1683,6 +1716,27 @@ body.cinema-mode .navbar, body.cinema-mode .hero-match, body.cinema-mode .match-
         font-size: 0.85rem !important;
         letter-spacing: 1px;
     }
+
+    /* Fixed Spacing for Social Bar Richard */
+    #adsterra-social-bar {
+        bottom: 70px !important; /* Move it UP to avoid covering the banner */
+    }
+    
+    .sticky-footer-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #000;
+        z-index: 10000;
+        padding: 5px 0;
+        border-top: 2px solid var(--accent);
+        box-shadow: 0 -5px 20px rgba(0,0,0,0.9);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 /* Fullscreen VIP Support */
@@ -2883,4 +2937,149 @@ body.cinema-mode .navbar, body.cinema-mode .hero-match, body.cinema-mode .match-
 .btn-join-tg:hover {
     background: #00aaff;
     transform: translateY(-2px);
+}
+/* MADRINA VIP SECTION - ELITE STRATEGY */
+.madrina-vip-section {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.madrina-card {
+    background: linear-gradient(135deg, rgba(255, 77, 148, 0.1), rgba(10, 14, 20, 0.95));
+    border: 1px solid #ff4d94;
+    border-radius: 25px;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(255, 77, 148, 0.2);
+}
+
+.madrina-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #ff4d94;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.madrina-content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.madrina-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 3px solid #ff4d94;
+    flex-shrink: 0;
+}
+
+.madrina-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.madrina-info {
+    text-align: left;
+}
+
+.madrina-info h3 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.madrina-info p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+}
+
+.btn-madrina {
+    background: #ff4d94;
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.3s;
+    box-shadow: 0 0 15px rgba(255, 77, 148, 0.4);
+}
+
+.btn-madrina:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(255, 77, 148, 0.6);
+    background: #fff;
+    color: #ff4d94;
+}
+
+@media (max-width: 600px) {
+    .madrina-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    .madrina-info {
+        text-align: center;
+    }
+    .madrina-img {
+        width: 120px;
+        height: 120px;
+    }
+}
+/* MOBILE OPTIMIZATION & AD STABILITY (v5.24) */
+.ad-responsive-container, .blog-ad-slot {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px auto;
+    min-height: 50px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 8px;
+}
+
+.ad-responsive-container iframe, .blog-ad-slot iframe {
+    max-width: 100% !important;
+}
+
+/* Fix for ultra-small screens (<360px) */
+@media (max-width: 360px) {
+    .madrina-card {
+        padding: 15px;
+    }
+    .madrina-info h3 {
+        font-size: 1.1rem;
+    }
+    .btn-madrina {
+        padding: 10px 15px;
+        font-size: 0.8rem;
+    }
+    .hook-content p {
+        font-size: 0.75rem;
+    }
+}
+
+/* Neon Glow for Viral Tags (Premium Look) */
+.viral-tag {
+    animation: neon-glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes neon-glow {
+    from { box-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent); }
+    to { box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent); }
 }

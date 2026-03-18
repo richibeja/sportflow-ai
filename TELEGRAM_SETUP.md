@@ -34,8 +34,10 @@ Copia esto, envíalo al canal y luego dale clic derecho -> **"Fijar"**:
 
 ---
 
-### 💡 Pasos para tí:
-1. **Sube la foto**: Usa el logo generado.
-2. **Pega la descripción**: Usa el texto de arriba.
-3. **Crea tu enlace público**: Trata de que sea algo como `t.me/SportFlowAI` o `t.me/RichardLive`.
-4. **Pásame ese enlace**: En cuanto me lo des, yo edito el código de la web para que todo quede conectado.
+## 4. Automatización Total (Opcional - RECOMENDADO)
+He preparado el bot para que funcione solo cada 30 minutos junto con el ticker. Para que funcione:
+1. Ve a tu repositorio en GitHub -> **Settings** -> **Secrets and variables** -> **Actions**.
+2. Añade dos "New repository secret":
+   - `TELEGRAM_TOKEN`: (Tu token de @BotFather)
+   - `CHAT_ID`: (Tu ID de canal, ej: `@SportFlowAI`)
+3. ¡Listo! El bot enviará los partidos automáticamente.

@@ -42,7 +42,10 @@ def fetch_matches():
     return all_ticker_text, matches_found
 
 def main():
+    import sys
     ticker_file = "ticker_partidos.txt"
+    once_only = "--once" in sys.argv or os.environ.get("ONCE_ONLY") == "true"
+    
     while True:
         ticker_content = fetch_matches()[0]
         
@@ -51,6 +54,10 @@ def main():
             f.write(ticker_content)
         
         print(f"[{time.strftime('%H:%M:%S')}] Ticker actualizado.")
+        
+        if once_only:
+            break
+            
         time.sleep(120)
 
 if __name__ == "__main__":

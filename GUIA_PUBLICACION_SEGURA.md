@@ -10,6 +10,9 @@ Facebook es muy agresivo con los links de streaming. **NUNCA** publiques el link
     *   Esto activa la pantalla de "Carga de Seguridad" que engaña a los robots de Facebook.
 2.  **La técnica del "Primer Comentario"**: Publica una foto impactante del partido sin link. En el primer comentario, pon: *"Señal HD aquí: [TU_LINK]"*.
 3.  **Acortadores**: Si puedes, usa un acortador como Bitly o el de Telegram para que el link no se vea "fregado".
+4.  **Calentamiento de Cuenta**: Antes de pegar un link en un grupo, dale "Like" a 2 o 3 posts y comenta algo normal ("¡Vamos!", "Buen dato"). Así los algoritmos no te ven como SPAM bot.
+5.  **Variación de Texto**: No pegues exactamente el mismo mensaje en 10 grupos. Cambia un par de palabras o usa emojis distintos en cada uno.
+6.  **Uso de Datos Móviles**: Si vas a publicar en muchos grupos, hazlo desde tu celular con los datos móviles (4G/5G). Cambiar tu IP de vez en cuando ayuda a que Facebook no marque tu red de casa como sospechosa.
 
 ## 🛡️ Nivel 2: TikTok (Viralidad)
 TikTok no permite links en los videos, solo en la Bio (si tienes 1000+ seguidores) o en los comentarios.

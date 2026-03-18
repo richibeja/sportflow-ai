@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Data Center | SportFlow AI</title>
+    <meta name="description" content="Análisis avanzado y centro de datos para la élite deportiva. Estadísticas optimizadas por IA.">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <!-- ADSTERRA SOCIAL BAR -->
+    <script src="https://wistfulseverely.com/d7/b4/d8/d7b4d83e17f56a4aabebc13769bc93a2.js"></script>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        .hub-body {
+            background: #020202;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+        }
+        .hub-header {
+            padding: 80px 20px;
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
+            border-bottom: 1px solid var(--accent);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        .hub-header::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            opacity: 0.1;
+        }
+        .elite-badge {
+            display: inline-block;
+            background: var(--secondary);
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.7rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        .hub-title {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #fff, var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 30px;
+        }
+        .data-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+        .data-card:hover {
+            border-color: var(--secondary);
+            transform: translateY(-5px);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 15px;
+        }
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            text-transform: uppercase;
+        }
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+        .stat-bar-bg {
+            height: 6px;
+            background: #222;
+            border-radius: 10px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        .stat-bar-fill {
+            height: 100%;
+            background: var(--secondary);
+            width: 0%;
+            transition: 1s ease-out;
+        }
+        .ai-analysis-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #aaa;
+            font-style: italic;
+        }
+        .live-cta {
+            background: linear-gradient(135deg, var(--secondary), #f39c12);
+            padding: 40px;
+            text-align: center;
+            border-radius: 20px;
+            margin: 40px 30px;
+            color: #000;
+        }
+        .live-cta h2 { font-weight: 800; margin-bottom: 10px; }
+        .btn-elite {
+            background: #000;
+            color: #fff;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 800;
+            display: inline-block;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        .btn-elite:hover {
+            transform: scale(1.05);
+            background: #222;
+        }
+        @media (max-width: 768px) {
+            .hub-title { font-size: 2rem; }
+            .data-grid { padding: 15px; gap: 15px; }
+        }
+    </style>
+</head>
+<body class="hub-body">
+    <nav class="main-nav">
+        <div class="logo">
+            <span class="ai-text">SPORT</span><span class="gradient-text">FLOW AI</span>
+        </div>
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <a href="https://facebook.com/SportFlowAI" target="_blank" style="color: #1877f2; font-size: 1.2rem;"><i class="fab fa-facebook"></i></a>
+            <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> INICIO</a>
+        </div>
+    </nav>
+
+    <header class="hub-header">
+        <div class="elite-badge">Data Center v5.24 <i class="fas fa-check-circle"></i></div>
+        <h1 id="hub-name" class="hub-title">CARGANDO...</h1>
+        <p id="hub-desc" class="hub-subtitle">Sincronizando con satélites deportivos europeos...</p>
+    </header>
+
+    <main>
+        <!-- TOP AD -->
+        <div id="ad-top-hub" class="ad-responsive-container" style="margin: 20px auto; max-width: 728px;"></div>
+
+        <div class="data-grid">
+            <!-- TACTICAL MODULE -->
+            <div class="data-card">
+                <div class="card-header">
+                    <span class="card-title">Eficiencia Táctica</span>
+                    <i class="fas fa-microchip" style="color: #444;"></i>
+                </div>
+                <div class="stat-container">
+                    <div class="stat-row"><span>Precisión de Pases</span><span id="stat-val-1">--%</span></div>
+                    <div class="stat-bar-bg"><div class="stat-bar-fill" id="stat-bar-1"></div></div>
+                </div>
+                <div class="stat-container" style="margin-top: 20px;">
+                    <div class="stat-row"><span>Presión Defensiva</span><span id="stat-val-2">--%</span></div>
+                    <div class="stat-bar-bg"><div class="stat-bar-fill" id="stat-bar-2"></div></div>
+                </div>
+            </div>
+
+            <!-- GURU ANALYSIS -->
+            <div class="data-card">
+                <div class="card-header">
+                    <span class="card-title">Análisis AI del Gurú</span>
+                    <i class="fas fa-brain" style="color: var(--secondary);"></i>
+                </div>
+                <p class="ai-analysis-text" id="guru-text">
+                    Iniciando escaneo de patrones profundos para esta entidad... 
+                    Buscando ventajas competitivas en el clima y condición física local.
+                </p>
+                <div style="margin-top: 15px; border-top: 1px solid #333; padding-top: 10px;">
+                    <span style="font-size: 0.7rem; color: var(--secondary); font-weight: 800;">TENDENCIA:</span>
+                    <span id="trend-status" style="font-size: 0.7rem; color: #0f0; margin-left: 5px;">ASCENDENTE 🔥</span>
+                </div>
+            </div>
+
+            <!-- PERFORMANCE INDEX -->
+            <div class="data-card">
+                <div class="card-header">
+                    <span class="card-title">Índice de Victoria</span>
+                    <i class="fas fa-chart-line" style="color: #444;"></i>
+                </div>
+                <div style="text-align: center; padding: 10px 0;">
+                    <div id="win-index" style="font-size: 3.5rem; font-weight: 800; color: #fff;">0%</div>
+                    <span style="font-size: 0.6rem; color: #666; text-transform: uppercase;">Probabilidad Algorítmica</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- MID AD -->
+        <div id="ad-mid-hub" class="ad-responsive-container" style="margin: 20px auto; max-width: 320px;"></div>
+
+        <!-- CALL TO ACTION -->
+        <section class="live-cta">
+            <h2 id="cta-title">¿TODO LISTO PARA EL PARTIDO?</h2>
+            <p>Accede a la señal oficial y análisis en tiempo real de Richard Deportes.</p>
+            <a href="/partido/richard-special-today" class="btn-elite">
+                <i class="fas fa-play-circle"></i> IR AL BLOG DE TRANSMISIÓN
+            </a>
+        </section>
+
+        <!-- BOT AD -->
+        <div id="ad-bot-hub" class="ad-responsive-container" style="margin: 20px auto; max-width: 728px;"></div>
+    </main>
+
+    <footer style="padding: 40px; text-align: center; border-top: 1px solid #222; color: #444;">
+        <p>© 2026 SportFlow AI - Extreme Professional Hub Edition</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const path = window.location.pathname;
+            const parts = path.split('/').filter(p => p);
+            let name = 'Entidad';
+            let type = 'Categoría';
+
+            if (parts.includes('equipo')) {
+                name = parts[parts.indexOf('equipo') + 1] || 'Club';
+                type = 'Equipo';
+            } else if (parts.includes('liga')) {
+                name = parts[parts.indexOf('liga') + 1] || 'Liga';
+                type = 'Competición';
+            }
+
+            const cleanName = name.replace(/-/g, ' ').toUpperCase();
+            document.getElementById('hub-name').textContent = `${cleanName}`;
+            document.title = `${cleanName} | Elite Data Center AI`;
+
+            // LIVE DATA CONNECTION (Richard Hub Sync v5.24)
+            let savedMatches = [];
+            try {
+                savedMatches = JSON.parse(localStorage.getItem('sportflow_matches') || '[]');
+            } catch (e) { console.error("Sync failed", e); }
+
+            // Filter matches for this Hub
+            const relevantMatches = savedMatches.filter(m => {
+                const searchName = name.toLowerCase().replace(/-/g, ' ');
+                if (type === 'Equipo') {
+                    return m.homeTeam.toLowerCase().includes(searchName) || m.awayTeam.toLowerCase().includes(searchName);
+                } else if (type === 'Competición') {
+                    return m.league.toLowerCase().includes(searchName);
+                }
+                return false;
+            });
+
+            const matchListEl = document.getElementById('hub-match-list');
+            if (relevantMatches.length > 0) {
+                matchListEl.innerHTML = '';
+                relevantMatches.forEach(m => {
+                    const matchCard = document.createElement('div');
+                    matchCard.className = 'match-card-hub';
+                    matchCard.style.cssText = 'background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #333;';
+                    matchCard.innerHTML = `
+                        <div style="text-align: left;">
+                            <div style="font-weight: 800; font-size: 0.9rem;">${m.homeTeam} vs ${m.awayTeam}</div>
+                            <div style="font-size: 0.7rem; color: #888;">${m.league} | ${m.time || 'EN VIVO'}</div>
+                        </div>
+                        <a href="/partido/${m.id}" class="btn-elite" style="padding: 10px 20px; font-size: 0.7rem; margin: 0;">VER SEÑAL</a>
+                    `;
+                    matchListEl.appendChild(matchCard);
+                });
+                
+                // Update CTA to the first relevant match
+                const firstMatch = relevantMatches[0];
+                document.getElementById('cta-title').textContent = `¿VER ${firstMatch.homeTeam.toUpperCase()} EN VIVO?`;
+                const ctaBtn = document.querySelector('.live-cta .btn-elite');
+                if(ctaBtn) ctaBtn.href = `/partido/${firstMatch.id}`;
+            } else {
+                document.getElementById('cta-title').textContent = `¿QUIERES VER AL ${cleanName}?`;
+            }
+
+            // Dynamic Stats Logic
+            const s1 = 70 + Math.floor(Math.random() * 25);
+            const s2 = 50 + Math.floor(Math.random() * 40);
+            const win = 30 + Math.floor(Math.random() * 65);
+
+            setTimeout(() => {
+                document.getElementById('stat-val-1').textContent = s1 + '%';
+                document.getElementById('stat-bar-1').style.width = s1 + '%';
+                document.getElementById('stat-val-2').textContent = s2 + '%';
+                document.getElementById('stat-bar-2').style.width = s2 + '%';
+                document.getElementById('win-index').textContent = win + '%';
+                
+                const analyses = [
+                    `El motor de SportFlow detecta una sobrecarga ofensiva en ${cleanName}. La IA predice un control total del medio campo basado en los últimos 5 encuentros.`,
+                    `Patrones de ataque directo detectados. ${cleanName} muestra una eficiencia del 88% en transiciones rápidas. Ideal para mercados de goles tempranos.`,
+                    `Análisis defensivo completado. ${cleanName} mantiene un bloque bajo sólido. El Gurú sugiere precaución; partido cerrado con alta probabilidad de empate técnico.`
+                ];
+                document.getElementById('guru-text').textContent = analyses[Math.floor(Math.random() * analyses.length)];
+                
+                if (win < 40) {
+                    document.getElementById('trend-status').textContent = "BAJO PRESIÓN ⚠️";
+                    document.getElementById('trend-status').style.color = "#f39c12";
+                }
+            }, 500);
+
+            // Ad Injection
+            const keys = ['d73933b8cfbbda3517bd62db85dfa4bf', '0d6323163d0bf049f77d24605b7baf54', 'd73933b8cfbbda3517bd62db85dfa4bf'];
+            const containers = ['ad-top-hub', 'ad-mid-hub', 'ad-bot-hub'];
+            
+            // v5.25: Signal Shield Logic for CTA
+            const ctaBtn = document.querySelector('.live-cta .btn-elite');
+            if (ctaBtn) {
+                ctaBtn.onclick = (e) => {
+                    const host = window.location.hostname;
+                    const ALLOWED = ['sportflow-ai-snowy.vercel.app', 'localhost', '127.0.0.1'];
+                    if (!ALLOWED.includes(host)) {
+                        e.preventDefault();
+                        alert("Blindaje: Acceso denegado.");
+                    }
+                };
+            }
+
+            const isMobile = window.innerWidth < 768;
+            containers.forEach((cid, i) => {
+                const el = document.getElementById(cid);
+                if(!el) return;
+                // v5.24: Serve 320x50 on mobile to avoid horizontal scrolling
+                const h = (isMobile ? 50 : (i === 1 ? 50 : 90));
+                const w = (isMobile ? 320 : (i === 1 ? 320 : 728));
+
+                const scriptOptions = document.createElement('script');
+                scriptOptions.type = 'text/javascript';
+                scriptOptions.text = `atOptions = { 'key' : '${keys[i]}', 'format' : 'iframe', 'height' : ${h}, 'width' : ${w}, 'params' : {} };`;
+                
+                const scriptInvoke = document.createElement('script');
+                scriptInvoke.type = 'text/javascript';
+                scriptInvoke.src = `https://wistfulseverely.com/${keys[i]}/invoke.js`;
+                
+                el.appendChild(scriptOptions);
+                el.appendChild(scriptInvoke);
+            });
+        });
+    </script>
+</body>
+</html>

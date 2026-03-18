@@ -2,39 +2,102 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@800&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background: transparent; /* Fondo transparente para OBS */
+            background: transparent;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            font-family: 'Outfit', sans-serif;
+        }
+        .broadcast-container {
+            position: relative;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid #ff0000;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            animation: slide-in 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        @keyframes slide-in {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .live-tag {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #ff0000;
+            color: white;
+            padding: 2px 12px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+        .pulse {
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            animation: pulse-red 1.5s infinite;
+        }
+        @keyframes pulse-red {
+            0% { transform: scale(0.95); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(0.95); opacity: 1; }
         }
         .ad-wrapper {
-            /* Opcional: añadir un borde sutil para que parezca profesional */
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0, 0, 0, 0.5);
-            padding: 5px;
+            background: #000;
             border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 90px;
+            min-width: 728px;
+        }
+        .tv-overlay {
+            position: absolute;
+            bottom: -5px;
+            right: 15px;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.3);
+            letter-spacing: 2px;
+            font-weight: 800;
         }
     </style>
 </head>
 <body>
-    <div class="ad-wrapper">
-        <!-- SLOT DE ADSTERRA (728x90) -->
-        <script type="text/javascript">
-            atOptions = {
-                'key' : 'd73933b8cfbbda3517bd62db85dfa4bf',
-                'format' : 'iframe',
-                'height' : 90,
-                'width' : 728,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/d73933b8cfbbda3517bd62db85dfa4bf/invoke.js"></script>
+    <div class="broadcast-container">
+        <div class="live-tag">
+            <div class="pulse"></div> EN VIVO HD
+        </div>
+        <div class="ad-wrapper">
+            <!-- SLOT DE ADSTERRA (728x90) -->
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : 'd73933b8cfbbda3517bd62db85dfa4bf',
+                    'format' : 'iframe',
+                    'height' : 90,
+                    'width' : 728,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="https://www.highperformanceformat.com/d73933b8cfbbda3517bd62db85dfa4bf/invoke.js"></script>
+        </div>
+        <div class="tv-overlay">SPORTFLOW BROADCAST v5.24</div>
     </div>
 </body>
 </html>

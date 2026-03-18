@@ -1,10 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     
-    // --- MASTER CONFIG (Control total de Richard) ---
+    // --- MASTER CONFIG (Control total de Richard) - v5.24 ---
     const CONFIG = {
         KICK_CHANNEL: 'richardbejarano5', // TU CANAL DE KICK RICHARD
-        OBS_LINK: '' // OPCIONAL: LINK DIRECTO SI NO USAS KICK
+        SIGNAL_TYPE: 'KICK',              // 'KICK', 'IFRAME', o 'DIRECT'
+        EXTERNAL_URL: '',                 // URL externa si usas modo 'IFRAME'
+        OBS_LINK: ''                      // Link de respaldo
     };
 
     const matches = [];
@@ -54,11 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
     setupNavFilters();
     setInterval(syncMatches, 60000);
 
-    // Ensure first step is visible (Simplified v2.4.0)
+    // Ensure first step is visible (Simplified v5.23 - BLOG LAUNCHER)
     setTimeout(() => {
         loadAds();
-        setupUnmute();
-    }, 500);
+    }, 2000);
 
     // --- MONETIZATION ENGINE (v13.0 - NO-POPUP Mode) ---
     window.triggerSmartLink = () => {
@@ -77,6 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
         container.style.position = 'relative';
         
         const scriptOptions = document.createElement('script');
+        scriptOptions.type = 'text/javascript';
+        scriptOptions.text = `atOptions = { 'key' : '${adKey}', 'format' : 'iframe', 'height' : ${height}, 'width' : ${width}, 'params' : {} };`;
+        
         const scriptInvoke = document.createElement('script');
         scriptInvoke.type = 'text/javascript';
         scriptInvoke.src = `https://wistfulseverely.com/${adKey}/invoke.js`;
@@ -253,6 +257,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function syncMatches() {
+        console.log("[SYNC] SportFlow AI Engine v5.24 starting...");
+        
         const leagues = [
             { id: 'arg.1', name: 'Liga Profesional (Arg)' },
             { id: 'uefa.champions', name: 'Champions League' },
@@ -323,33 +329,23 @@ document.addEventListener('DOMContentLoaded', () => {
                                         event.status.type.state === 'pre' ? 'PRÓXIMAMENTE' : 'FINALIZADO'
                             };
                         });
-                        allMatches = [...allMatches, ...leagueMatches];
+
+                        // v5.24: Filter for TODAY'S matches only to avoid "wrong matches" from yesterday
+                        const todayStr = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' });
+                        const filteredMatches = leagueMatches.filter(m => m.date === todayStr || m.status === 'EN VIVO');
+                        
+                        allMatches = [...allMatches, ...filteredMatches];
                     }
                 } catch (err) {
                     console.warn(`Error en liga ${league.name}:`, err);
                 }
             }
 
-            // v5.10: Richard's Priority Signal (Never "outside")
-            const richardLive = {
-                id: 'richard-live-signal',
-                league: 'ESPECIAL KICK',
-                channel: 'KICK PRO',
-                homeTeam: 'RICHARD',
-                awayTeam: 'EN VIVO',
-                homeLogo: '/guru_avatar.png',
-                awayLogo: 'https://kick.com/favicon.ico',
-                homeScore: 'LIVE',
-                awayScore: 'ON',
-                time: 'AHORA',
-                date: 'HOY',
-                status: 'EN VIVO'
-            };
-            allMatches.unshift(richardLive);
+            // v5.24: Removed Manual Override
 
             if (allMatches.length > 0) {
                 allMatches.sort((a, b) => {
-                    const priority = { 'EN VIVO': 0, 'PRÓXIMAMENTE': 1, 'FINALIZADO': 2 };
+                    const priority = { 'DESTACADO 🔥': -1, 'EN VIVO': 0, 'PRÓXIMAMENTE': 1, 'FINALIZADO': 2 };
                     return priority[a.status] - priority[b.status];
                 });
 
@@ -511,19 +507,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="mini-team"><span>${match.homeTeam}</span><img src="${match.homeLogo}"></div>
                     <div class="mini-team"><span>${match.awayTeam}</span><img src="${match.awayLogo}"></div>
                 </div>
-                <div class="mini-status" style="color: ${match.status === 'EN VIVO' ? 'var(--accent)' : 'var(--text-muted)'}">
-                    <i class="fas ${match.status === 'EN VIVO' ? 'fa-circle-play' : 'fa-clock'}"></i> ${match.status}
+                <div class="mini-status" style="display: flex; justify-content: space-between; align-items: center; color: ${match.status === 'EN VIVO' ? 'var(--accent)' : 'var(--text-muted)'}">
+                    <span><i class="fas ${match.status === 'EN VIVO' ? 'fa-circle-play' : 'fa-clock'}"></i> ${match.status}</span>
+                    ${match.status === 'EN VIVO' ? '<span class="elite-mini-badge" style="background: var(--accent); color: #000; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; font-weight: 800;">ELITE</span>' : ''}
                 </div>
             `;
             card.onclick = () => {
                 activeMatch = match;
                 document.querySelectorAll('.match-card-mini').forEach(c => c.classList.remove('active'));
                 card.classList.add('active');
-                resetVideoPlayer();
                 renderHero(activeMatch || matches[0]);
-                renderSchedule(); // Sincronizar tabla de abajo
-                renderStandings(); // Generar tabla de posiciones
-                updateSEOMetadata(); // Actualizar SEO y URL
+                renderSchedule(); 
+                renderStandings(); 
+                updateSEOMetadata(); 
             };
             matchSelector.appendChild(card);
         });
@@ -561,23 +557,8 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
         document.getElementById('btn-watch-hd').onclick = () => {
-            // v13.0: Direct access, no SmartLink pop-ups
-
-            // v3.0 logic: Redirect high-risk matches to Handshake -> Blog
-            const SAFE_LEAGUES = ['UFC', 'Champions League', 'Premier League', 'Liga MX', 'Boxing', 'MMA', 'La Liga', 'Serie A', 'Bundesliga'];
-            const isHighRisk = SAFE_LEAGUES.some(l => activeMatch.league.includes(l));
-
-            if (isHighRisk) {
-                // Ir a la pasarela de seguridad
-                window.location.href = `/handshake.html?id=${activeMatch.id}`;
-            } else {
-                // Deportistas normales o virales: Quedarse en la app (Signal 1 / Kick priority)
-                const videoTab = document.querySelector('[data-tab="video"]');
-                if(videoTab) videoTab.click();
-                const player = document.querySelector('.branded-player-zone');
-                if(player) player.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                loadServer(1);
-            }
+            // v5.24: SEO-friendly redireccion (Multi-Blog System)
+            window.location.href = `/partido/${match.id}`;
         };
 
         // v3.0 Update Telegram Widget with current match context
@@ -639,23 +620,8 @@ document.addEventListener('DOMContentLoaded', () => {
             tr.onclick = () => {
                 activeMatch = item;
                 
-                // v3.0: Direct blog access from list
-                const urlParams = new URLSearchParams(window.location.search);
-                const isSocialRef = urlParams.get('ref') === 'social';
-                const SAFE_LEAGUES = ['UFC', 'Champions League', 'Premier League', 'Liga MX', 'Boxing', 'MMA', 'La Liga', 'Serie A', 'Bundesliga'];
-                const isHighRisk = SAFE_LEAGUES.some(l => activeMatch.league.includes(l));
-                
-                if (isHighRisk || isSocialRef) {
-                    window.location.href = `/handshake.html?id=${activeMatch.id}&ref=social`;
-                    return;
-                }
-
-                resetVideoPlayer();
-                renderMatchSelector();
-                renderHero(activeMatch);
-                renderSchedule();
-                renderStandings();
-                updateSEOMetadata(); 
+                // v5.24: Multi-Blog System Redirection
+                window.location.href = `/partido/${item.id}`;
             };
             scheduleBody.appendChild(tr);
         });
@@ -739,132 +705,10 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
-    async function loadServer(serverNum) {
-        if (!activeMatch) return;
-
-        // Ensure player is visible (v2.4.2 Fix)
-        if (livePlayer) {
-            livePlayer.style.display = 'flex';
-            livePlayer.classList.remove('hidden');
-        }
-        
-        // Premium UI Feedback logic
-        if (signalStatus) {
-            signalStatus.textContent = "SIGNAL ESTABLISHED - HD QUALITY";
-            signalStatus.style.color = "var(--accent)";
-            const shield = document.querySelector('.signal-shield');
-            if(shield) shield.style.boxShadow = "0 0 15px var(--accent)";
-        }
-
-        const safetyGate = document.getElementById('safety-gate');
-        const unlockBtn = document.getElementById('btn-gate-unlock');
-        const initialView = document.getElementById('gate-initial-view');
-        const processView = document.getElementById('gate-unlock-process');
-        const readyView = document.getElementById('gate-ready-view');
-        const finalRedirectBtn = document.getElementById('btn-gate-redirect');
-        
-        // v2.6.0: Safe Mode Definition
-        const SAFE_LEAGUES = ['UFC', 'Champions League', 'Premier League', 'Liga MX', 'Boxing', 'UFC Femenino', 'MMA'];
-        const isHighRisk = SAFE_LEAGUES.some(l => activeMatch && activeMatch.league && activeMatch.league.includes(l));
-
-        if (isHighRisk && safetyGate && unlockBtn) {
-            if (streamIframe) streamIframe.classList.add('hidden');
-            safetyGate.classList.remove('hidden');
-            
-            // State reset
-            if(initialView) initialView.classList.remove('hidden');
-            if(processView) processView.classList.add('hidden');
-            if(readyView) readyView.classList.add('hidden');
-
-            unlockBtn.onclick = () => {
-                if(initialView) initialView.classList.add('hidden');
-                if(processView) processView.classList.remove('hidden');
-                
-                // --- DECIPHERING ANIMATION ---
-                let progress = 0;
-                const progressBar = document.getElementById('unlock-progress');
-                const matrixStatus = document.getElementById('matrix-status');
-                const terminal = document.getElementById('terminal-logs');
-                
-                const logPool = [
-                    "> Sincronizando túnel SportFlow-AI...",
-                    "> Bypass geobloqueo activo...",
-                    "> Estableciendo Handshake con servidor...",
-                    "> Encriptación AES-256 aplicada...",
-                    "> Optimizando búfer de video HD...",
-                    "> Máscara IP generada [192.168.X.X]",
-                    "> Conexión verificada: 100% segura"
-                ];
-
-                const interval = setInterval(() => {
-                    progress += Math.random() * 15;
-                    if (progress >= 100) {
-                        progress = 100;
-                        clearInterval(interval);
-                        
-                        // Transition to READY
-                        setTimeout(() => {
-                            if(processView) processView.classList.add('hidden');
-                            if(readyView) readyView.classList.remove('hidden');
-                        }, 500);
-                    }
-                    
-                    if(progressBar) progressBar.style.width = progress + "%";
-                    if(matrixStatus) matrixStatus.textContent = `DESBLOQUEANDO: ${Math.floor(progress)}%`;
-                    
-                    // Add a log entry randomly
-                    if(terminal && Math.random() > 0.6) {
-                        const log = document.createElement('div');
-                        log.className = 'log-entry';
-                        log.textContent = logPool[Math.floor(Math.random() * logPool.length)];
-                        terminal.appendChild(log);
-                        terminal.scrollTop = terminal.scrollHeight;
-                        if(terminal.childElementCount > 5) terminal.removeChild(terminal.firstChild);
-                    }
-                }, 400);
-
-                finalRedirectBtn.onclick = () => {
-                    const externalUrl = `https://www.rojadirectatv.me/`; 
-                    window.open(externalUrl, '_blank');
-                };
-            };
-            return;
-        } else if (safetyGate) {
-            safetyGate.classList.add('hidden');
-            if (streamIframe) streamIframe.classList.remove('hidden');
-        }
-
-        // v2.4.1: Kick.com Integration (Priority 1)
-        if (serverNum == 1 && CONFIG.KICK_CHANNEL) {
-            if (streamIframe) {
-                // v2.4.2: Enhanced Kick Embed with autoplay and parent domain security
-                const parent = window.location.hostname;
-                streamIframe.src = `https://player.kick.com/${CONFIG.KICK_CHANNEL}?parent=${parent}&autoplay=true&muted=false`;
-                
-                // v2.4.4: Real Kick Chat Integration
-                toggleKickChat(true);
-            }
-            return;
-        } else {
-            toggleKickChat(false);
-        }
-
-        // Richard's OBS Direct Link (Priority 2)
-        if (serverNum == 1 && CONFIG.OBS_LINK) {
-            if (streamIframe) streamIframe.src = CONFIG.OBS_LINK;
-            return;
-        }
-        const finalUrl = await findLiveStream(`${activeMatch.homeTeam} vs ${activeMatch.awayTeam}`, serverNum);
-        lastFinalUrl = finalUrl;
-        if (streamIframe) streamIframe.src = finalUrl;
-        
-        const fallback = document.getElementById('external-signal-fallback');
-        const btnFallback = document.getElementById('btn-open-external');
-        if (fallback && btnFallback) {
-            fallback.classList.remove('hidden');
-            btnFallback.onclick = () => {
-                window.open(finalUrl, '_blank');
-            };
+    function loadServer(serverNum) {
+        // v5.24: Multi-Blog System
+        if (activeMatch) {
+            window.location.href = `/partido/${activeMatch.id}`;
         }
     }
     // --- SPORT-GURU ENGINE (RESTORED v2.3.1) ---
@@ -1228,6 +1072,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
+        // v5.24: MEGA-DATABASE (1000+ Pages Strategy)
+        const TOP_ENTITIES = {
+            colombia: ['Atletico Nacional', 'Millonarios', 'America de Cali', 'Junior de Barranquilla', 'Independiente Santa Fe', 'Deportivo Cali', 'Independiente Medellin', 'Once Caldas', 'Deportes Tolima', 'Deportivo Pasto'],
+            reino_unido: ['Manchester City', 'Arsenal', 'Liverpool', 'Manchester United', 'Tottenham', 'Chelsea', 'Newcastle', 'Aston Villa', 'Brighton', 'West Ham'],
+            europa: ['Real Madrid', 'FC Barcelona', 'Bayern Munich', 'PSG', 'Juventus', 'Inter de Milán', 'AC Milan', 'Borussia Dortmund', 'Atletico de Madrid', 'Benfica', 'Porto', 'Ajax'],
+            ligas: ['Premier League', 'La Liga EA Sports', 'Serie A', 'Bundesliga', 'Ligue 1', 'Champions League', 'Europa League', 'Copa Libertadores', 'Liga BetPlay']
+        };
+
         let html = '<div class="seo-footer-explorer" style="padding: 40px; background: #050505; border-top: 1px solid #222; margin-top: 50px;">';
         
         // Match Section
@@ -1238,26 +1090,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         html += '</ul></div>';
 
-        // Team Section
         const langPrefix = window.currentLang === 'en' ? '/en' : '';
         const teamPath = window.currentLang === 'en' ? 'team' : 'equipo';
         const t = I18N[window.currentLang] || I18N.es;
 
-        if (teams.size > 0) {
-            html += `<div class="seo-section"><h4>${t.footerTeams}</h4><ul>`;
-            [...teams].slice(0, 30).forEach(team => {
-                const slug = team.toLowerCase().replace(/ /g, '-');
-                html += `<li><a href="${langPrefix}/${teamPath}/${slug}">${window.currentLang === 'en' ? team + ' HD' : 'Canal ' + team + ' HD'}</a></li>`;
-            });
-            html += '</ul></div>';
-        }
+        // Colombia Section
+        html += `<div class="seo-section"><h4>COLOMBIA PREMIUM</h4><ul>`;
+        TOP_ENTITIES.colombia.forEach(unit => {
+            const slug = unit.toLowerCase().replace(/\s+/g, '-');
+            html += `<li><a href="${langPrefix}/${teamPath}/${slug}">Blog ${unit} HD</a></li>`;
+        });
+        html += '</ul></div>';
 
-        // Categorías de Nicho (v10.0 + UK v11.0)
-        const categories = window.currentLang === 'en' ? ['Wrestling', 'Slap Fights', 'Girls Sports', 'American Football'] : ['Lucha Libre', 'Peleas Slap', 'Deporte Femenino', 'Fútbol Americano'];
-        html += `<div class="seo-section"><h4>${t.footerSpecial}</h4><ul>`;
-        categories.forEach(cat => {
-            const catSlug = cat.toLowerCase().replace(/ /g, '-').replace('femenino', 'chicas').replace('fights', 'pelea').replace('wrestling', 'lucha').replace('girls-sports', 'chicas').replace('football', 'american');
-            html += `<li><a href="${langPrefix}/${window.currentLang === 'en' ? 'category' : 'categoria'}/${catSlug}">${window.currentLang === 'en' ? cat + ' Live' : cat + ' en Vivo'}</a></li>`;
+        // UK Section
+        html += `<div class="seo-section"><h4>REINO UNIDO (UK)</h4><ul>`;
+        TOP_ENTITIES.reino_unido.forEach(unit => {
+            const slug = unit.toLowerCase().replace(/\s+/g, '-');
+            html += `<li><a href="${langPrefix}/${teamPath}/${slug}">${unit} Live Streaming</a></li>`;
+        });
+        html += '</ul></div>';
+
+        // Europe Section
+        html += `<div class="seo-section"><h4>FÚTBOL EUROPEO</h4><ul>`;
+        TOP_ENTITIES.europa.forEach(unit => {
+            const slug = unit.toLowerCase().replace(/\s+/g, '-');
+            html += `<li><a href="${langPrefix}/${teamPath}/${slug}">${unit} Transmisión Oficial</a></li>`;
+        });
+        html += '</ul></div>';
+
+        // Leagues Section
+        html += `<div class="seo-section"><h4>LIGAS PRINCIPALES</h4><ul>`;
+        TOP_ENTITIES.ligas.forEach(l => {
+            const slug = l.toLowerCase().replace(/\s+/g, '-');
+            html += `<li><a href="/liga/${slug}">${l} Online</a></li>`;
         });
         html += '</ul></div>';
 

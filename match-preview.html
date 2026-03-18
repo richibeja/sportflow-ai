@@ -10,16 +10,30 @@
     <meta property="og:image" content="/sportflow_hero_bg.png">
     <meta property="og:type" content="website">
 
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/main.css?v=5.28">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- ADSTERRA SOCIAL BAR -->
+    <script src="https://wistfulseverely.com/d7/b4/d8/d7b4d83e17f56a4aabebc13769bc93a2.js"></script>
 </head>
 <body class="blog-body">
+    <a href="https://t.me/+eDNK1QZVe-c5MjM5" target="_blank" class="telegram-float">
+        <i class="fab fa-telegram-plane"></i>
+        <span class="float-tooltip">¡ÚNETE AL VIP!</span>
+    </a>
+
+    <!-- Botón Flotante de Facebook (v1.0) -->
+    <a href="https://facebook.com/SportFlowAI" target="_blank" class="facebook-float" style="position: fixed; bottom: 100px; right: 20px; background: #1877f2; color: #fff; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; text-decoration: none; box-shadow: 0 4px 15px rgba(24, 119, 242, 0.4); z-index: 9999; transition: 0.3s;">
+        <i class="fab fa-facebook-f"></i>
+    </a>
     <nav class="main-nav">
         <div class="logo">
             <span class="ai-text">SPORT</span><span class="gradient-text">FLOW AI</span>
         </div>
-        <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Volver al Inicio</a>
+        <div class="social-nav" style="display: flex; gap: 15px; align-items: center;">
+            <a href="https://facebook.com/SportFlowAI" target="_blank" style="color: #1877f2; font-size: 1.2rem;"><i class="fab fa-facebook"></i></a>
+            <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Volver al Inicio</a>
+        </div>
     </nav>
 
     <main class="blog-container">
@@ -35,11 +49,6 @@
                 <span id="league-name" class="league-tag"><i class="fas fa-trophy"></i> ...</span>
                 <span class="live-indicator"><i class="fas fa-circle pulse-red"></i> EN VIVO</span>
             </div>
-            
-            <!-- ELITE INFORMATION GRID (Value added) -->
-            <div class="info-grid">
-                <div class="info-item">
-                    <i class="fas fa-tv"></i>
                     <span class="label">TRANSMISIÓN</span>
                     <span id="info-channel" class="val">Cargando...</span>
                 </div>
@@ -62,10 +71,11 @@
                 <div class="decoy-cover">
                     <img id="match-poster" src="/sportflow_hero_bg.png" alt="Match Cover">
                     <div class="decoy-overlay">
+                        <div id="decoy-step-tag" class="step-indicator">PASO 1/2: SINCRONIZACIÓN</div>
                         <button id="btn-decoy-play" class="play-decoy-btn">
                             <i class="fas fa-play"></i>
                         </button>
-                        <p>Haz clic para reproducir señal HD</p>
+                        <p style="font-size: 1.1rem; letter-spacing: 1px;">HAZ CLIC PARA VER EN VIVO</p>
                     </div>
                 </div>
                 <div class="decoy-status">
@@ -128,58 +138,121 @@
             <!-- Adsterra 728x90 -->
         </div>
     </main>
+    
 
     <footer class="blog-footer">
-        <p>© 2026 SportFlow AI - Motor de Inteligencia Deportiva</p>
+        <p>© 2026 SportFlow AI - Motor de Inteligencia Deportiva v5.24</p>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // v5.9: Global Config for Blog
             const CONFIG = {
                 KICK_CHANNEL: 'richardbejarano5',
+                SIGNAL_TYPE: 'KICK',
+                EXTERNAL_URL: '',
                 OBS_LINK: ''
             };
 
             const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get('id');
+            let id = urlParams.get('id');
+            const path = window.location.pathname.toLowerCase();
             
-            // Read from Shared LocalStorage
-            const savedMatches = JSON.parse(localStorage.getItem('sportflow_matches') || '[]');
-            const match = savedMatches.find(m => String(m.id) === String(id));
+            if (!id) {
+                const parts = path.split('/');
+                const pIdx = parts.indexOf('partido');
+                if (pIdx !== -1 && parts[pIdx + 1]) {
+                    id = parts[pIdx + 1];
+                }
+            }
+
+            let savedMatches = [];
+            try {
+                savedMatches = JSON.parse(localStorage.getItem('sportflow_matches') || '[]');
+            } catch (e) { console.error("Storage fail", e); }
             
+            // v5.28: Smart Search (Exact ID > Name Scan > Live Fallback)
+            let match = savedMatches.find(m => String(m.id) === String(id));
+            if(!match && path.includes('partido/')) {
+                match = savedMatches.find(m => {
+                    const h = m.homeTeam.toLowerCase();
+                    const a = m.awayTeam.toLowerCase();
+                    return path.includes(h) || path.includes(a);
+                });
+            }
+            if(!match) {
+                match = savedMatches.find(m => m.status === 'EN VIVO') || savedMatches[0];
+            }
+
             if (match) {
                 document.getElementById('match-title').textContent = `${match.homeTeam} vs ${match.awayTeam}`;
                 document.getElementById('league-name').innerHTML = `<i class="fas fa-trophy"></i> ${match.league}`;
                 document.getElementById('team-home').textContent = match.homeTeam;
                 document.getElementById('team-away').textContent = match.awayTeam;
-                document.getElementById('pred-score').textContent = match.homeScore + " - " + match.awayScore;
-                
-                // NEW: Value Info
+                document.getElementById('pred-score').textContent = (match.homeScore || 0) + " - " + (match.awayScore || 0);
                 document.getElementById('info-channel').textContent = match.channel || "ESPN / Fox Sports";
                 document.getElementById('info-time').textContent = match.time || "--:--";
                 if(match.homeLogo) document.getElementById('match-poster').src = match.homeLogo;
 
-                // DECOY PLAY LOGIC (Revenue Boost - Fixed v5.6)
-                document.getElementById('btn-decoy-play').onclick = () => {
-                    // Redirect to safe internal access or show message
+                // v5.28: VIRAL DOUBLE-DECOY STRATEGY (Richard's Revenue Booster)
+                let clickCount = 0;
+                const SL = "https://wistfulseverely.com/d7044ubwez?key=bac3a61df59dc6f36412f9eb2ff17156";
+
+                const handleUnlockAttempt = () => {
+                    clickCount++;
+                    const decoyZone = document.querySelector('.decoy-player-zone');
+                    const host = window.location.hostname;
+                    const stepTag = document.getElementById('decoy-step-tag');
                     const unlockBtn = document.getElementById('btn-final-unlock');
-                    if(unlockBtn) unlockBtn.scrollIntoView({ behavior: 'smooth' });
+
+                    if (clickCount < 3) {
+                        // First 2 clicks -> Viral Ads
+                        window.open(SL, '_blank');
+                        
+                        // Update UI to show progress
+                        if(stepTag) stepTag.textContent = `PASO ${clickCount+1}/2: VALIDANDO...`;
+                        if(unlockBtn) unlockBtn.innerHTML = `<i class="fas fa-sync-alt fa-spin"></i> VALIDANDO PASO ${clickCount}...`;
+                        
+                        setTimeout(() => {
+                            if(unlockBtn) unlockBtn.innerHTML = `<i class="fas fa-bolt"></i> REINTENTAR PASO ${clickCount+1}`;
+                        }, 2000);
+                    } else {
+                        // 3rd click -> Real Signal
+                        if(stepTag) stepTag.textContent = `¡CONEXIÓN ESTABLECIDA!`;
+                        unlockSignal(decoyZone, host, CONFIG);
+                    }
                 };
 
-                // REAL UNLOCK LOGIC (Kick Integration v5.7)
-                document.getElementById('btn-final-unlock').onclick = () => {
-                    const decoyZone = document.querySelector('.decoy-player-zone');
-                    const parent = window.location.hostname;
-                    const kickPlayerUrl = `https://player.kick.com/richardbejarano5?parent=${parent}&autoplay=true&muted=false`;
+                document.getElementById('btn-decoy-play').onclick = handleUnlockAttempt;
+                document.getElementById('btn-final-unlock').onclick = handleUnlockAttempt;
+
+                const unlockSignal = (decoyZone, host, cfg) => {
+                    const ALLOWED = ['sportflow-ai-snowy.vercel.app', 'localhost', '127.0.0.1'];
+                    if (!ALLOWED.includes(host)) {
+                        alert("ERROR: Acceso denegado por seguridad.");
+                        return;
+                    }
+
+                    let sHtml = '';
+                    if (cfg.SIGNAL_TYPE === 'KICK') {
+                        const url = `https://player.kick.com/${cfg.KICK_CHANNEL}?parent=${host}&autoplay=true`;
+                        sHtml = `<div class="player-wrapper" style="width: 100%; aspect-ratio: 16/9; background: #000;">
+                                    <iframe src="${url}" frameborder="0" allowfullscreen style="width: 100%; height: 100%;"></iframe>
+                                 </div>`;
+                    } else if (cfg.SIGNAL_TYPE === 'IFRAME') { // Added missing IFRAME and DIRECT logic
+                        sHtml = `
+                            <div class="player-wrapper" style="position: relative; width: 100%; height: 500px;">
+                                <div class="anti-scraper-overlay" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index: 10; cursor: default;"></div>
+                                <iframe src="${cfg.EXTERNAL_URL}" frameborder="0" allowfullscreen scrolling="no" style="width: 100%; height: 100%; border: 2px solid var(--secondary);"></iframe>
+                            </div>`;
+                    } else if (cfg.SIGNAL_TYPE === 'DIRECT') {
+                        sHtml = `<div style="padding: 100px 20px; text-align: center;">
+                                        <p style="margin-bottom: 20px;">LA SEÑAL HA SIDO MOVIDA AL SERVIDOR PRIVADO</p>
+                                        <a href="${cfg.OBS_LINK || cfg.EXTERNAL_URL}" target="_blank" class="btn-elite">ACCEDER AHORA (CLIC AQUÍ)</a>
+                                      </div>`;
+                    }
                     
                     if(decoyZone) {
-                        decoyZone.innerHTML = `
-                            <div style="background: #000; padding: 10px; text-align: center; border-bottom: 2px solid var(--accent); font-weight: 800; font-size: 0.8rem;">
-                                SEÑAL OFICIAL: KICK.COM/${CONFIG.KICK_CHANNEL.toUpperCase()} (RICHARD)
-                            </div>
-                            <iframe src="${kickPlayerUrl}" frameborder="0" allowfullscreen scrolling="no" style="width: 100%; height: 500px;"></iframe>
-                        `;
+                        decoyZone.innerHTML = `<div style="background: #000; padding: 10px; text-align: center; border-bottom: 2px solid var(--accent); font-weight: 800; font-size: 0.8rem;">SEÑAL PROTEGIDA ACTIVA</div>${sHtml}`;
                         decoyZone.scrollIntoView({ behavior: 'smooth' });
                     }
                 };
@@ -199,29 +272,27 @@
                     document.getElementById('pct-draw').textContent = dPct + '%';
                     document.getElementById('pct-away').textContent = aPct + '%';
                 }, 800);
-            } else {
-                document.getElementById('match-title').textContent = "Selecciona un Partido en Inicio";
             }
 
-            // Inyectar Ads (Restaurado v5.8)
-            const keys = ['d73933b8cfbbda3517bd62db85dfa4bf', '0d6323163d0bf049f77d24605b7baf54'];
+            // Inyectar Ads
+            const keys = ['d73933b8cfbbda3517bd62db85dfa4bf', '0d6323163d0bf049f77d24605b7baf54', 'd73933b8cfbbda3517bd62db85dfa4bf'];
             const containers = ['ad-top-blog', 'ad-mid-blog', 'ad-bot-blog'];
-            
+            const isMobile = window.innerWidth < 768;
+
             containers.forEach((cid, i) => {
-                const key = keys[i % 2];
-                const cont = document.getElementById(cid);
-                if(!cont) return;
-                
-                const scriptOptions = document.createElement('script');
-                scriptOptions.type = 'text/javascript';
-                scriptOptions.text = `atOptions = { 'key' : '${key}', 'format' : 'iframe', 'height' : (i === 1 ? 50 : 90), 'width' : (i === 1 ? 320 : 728), 'params' : {} };`;
-                
-                const scriptInvoke = document.createElement('script');
-                scriptInvoke.type = 'text/javascript';
-                scriptInvoke.src = `https://wistfulseverely.com/${key}/invoke.js`;
-                
-                cont.appendChild(scriptOptions);
-                cont.appendChild(scriptInvoke);
+                const el = document.getElementById(cid);
+                if(!el) return;
+                el.innerHTML = '';
+                const h = (isMobile ? 50 : (i === 1 ? 50 : 90)); // Re-added specific height for mid-banner
+                const w = (isMobile ? 320 : (i === 1 ? 320 : 728)); // Re-added specific width for mid-banner
+                const sOpt = document.createElement('script');
+                sOpt.type = 'text/javascript'; // Added type
+                sOpt.text = `atOptions = { 'key' : '${keys[i]}', 'format' : 'iframe', 'height' : ${h}, 'width' : ${w}, 'params' : {} };`;
+                const sInv = document.createElement('script');
+                sInv.type = 'text/javascript'; // Added type
+                sInv.src = `https://wistfulseverely.com/${keys[i]}/invoke.js`;
+                el.appendChild(sOpt);
+                el.appendChild(sInv);
             });
         });
     </script>
