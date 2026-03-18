@@ -1,8 +1,6 @@
 import requests
 import time
 import os
-import pyttsx3
-import threading
 
 leagues = [
     {'id': 'arg.1', 'name': 'Liga Arg'},
@@ -13,23 +11,8 @@ leagues = [
     {'id': 'col.1', 'name': 'Liga Col'}
 ]
 
-# Configuración de voz
-engine = pyttsx3.init()
-voices = engine.getProperty('voices')
-# Intentar buscar una voz en español
-for voice in voices:
-    if "spanish" in voice.name.lower():
-        engine.setProperty('voice', voice.id)
-        break
-engine.setProperty('rate', 150) # Velocidad de habla
 
-def speak_text(text):
-    def run_speak():
-        engine.say(text)
-        engine.runAndWait()
-    
-    # Ejecutar en un hilo separado para no bloquear el ticker
-    threading.Thread(target=run_speak).start()
+# Función principal del ticker
 
 def fetch_matches():
     all_ticker_text = "⚽ PRÓXIMOS PARTIDOS: "
@@ -60,24 +43,14 @@ def fetch_matches():
 
 def main():
     ticker_file = "ticker_partidos.txt"
-    print(f"Iniciando sincronización de partidos y NARRACIÓN en {ticker_file}...")
-    
-    last_matches = []
-    
     while True:
-        ticker_content, current_matches = fetch_matches()
+        ticker_content = fetch_matches()[0]
         
         # Guardar en el archivo para el ticker visual de OBS
         with open(ticker_file, "w", encoding="utf-8") as f:
             f.write(ticker_content)
         
-        # Si hay partidos nuevos o cambios, narrarlos
-        if current_matches != last_matches and current_matches:
-            announcement = "Atención Richard. Tenemos nuevos partidos en cartelera: " + ", ".join(current_matches[:3])
-            speak_text(announcement)
-            last_matches = current_matches
-        
-        print(f"[{time.strftime('%H:%M:%S')}] Ticker y Voz actualizados.")
+        print(f"[{time.strftime('%H:%M:%S')}] Ticker actualizado.")
         time.sleep(120)
 
 if __name__ == "__main__":

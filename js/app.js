@@ -285,7 +285,12 @@ document.addEventListener('DOMContentLoaded', () => {
             let allMatches = [];
             for (const league of leagues) {
                 try {
-                    const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${league.id}/scoreboard`);
+                    // v5.5: 5s localized timeout to prevent sync-lock
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 5000);
+                    
+                    const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${league.id}/scoreboard`, { signal: controller.signal });
+                    clearTimeout(timeoutId);
                     if (!response.ok) throw new Error('Network error');
                     const data = await response.json();
                     
@@ -415,6 +420,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 updateSEOMetadata();
                 updateCrawlerMagnet();
+
+                // Dynamic Live Counter (v5.5)
+                const liveCount = allMatches.filter(m => m.status === 'EN VIVO').length;
+                const badge = document.getElementById('live-count-badge');
+                if(badge) badge.textContent = liveCount;
+                
             } else {
                 if(heroContent) heroContent.innerHTML = '<div class="loading-state">No hay partidos programados para hoy en estas ligas. ¡Vuelve más tarde!</div>';
             }
