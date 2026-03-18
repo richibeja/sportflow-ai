@@ -144,7 +144,7 @@
     
 
     <footer class="blog-footer">
-        <p>© 2026 SportFlow AI - Motor de Inteligencia Deportiva v5.32 (UI DEFINITIVE)</p>
+        <p>© 2026 SportFlow AI - Motor de Inteligencia Deportiva v5.34 (DYNAMIC SIGNAL HUB)</p>
     </footer>
 
     <script>
@@ -152,7 +152,8 @@
             const CONFIG = {
                 KICK_CHANNEL: 'richardbejarano5',
                 SIGNAL_TYPE: 'KICK',
-                EXTERNAL_URL: '',
+                OFFICIAL_MATCH_ID: '401862582', // ID del partido que transmites en Kick
+                EXTERNAL_URL: 'https://futbollibretv.me/', // Servidor secundario
                 OBS_LINK: ''
             };
 
@@ -219,9 +220,33 @@
                             if(unlockBtn) unlockBtn.innerHTML = `<i class="fas fa-bolt"></i> REINTENTAR PASO ${clickCount+1}`;
                         }, 2000);
                     } else {
-                        // 3rd click -> Real Signal
+                        // 3rd click -> Real Signal (Dynamic Selection)
                         if(stepTag) stepTag.textContent = `¡CONEXIÓN ESTABLECIDA!`;
-                        unlockSignal(decoyZone, host, CONFIG);
+                        
+                        const isOfficial = String(id) === String(CONFIG.OFFICIAL_MATCH_ID);
+                        if (isOfficial) {
+                            unlockSignal(decoyZone, host, CONFIG);
+                        } else {
+                            unlockSecondaryHub(decoyZone, CONFIG);
+                        }
+                    }
+                };
+
+                const unlockSecondaryHub = (decoyZone, cfg) => {
+                    const SL = "https://wistfulseverely.com/d7044ubwez?key=bac3a61df59dc6f36412f9eb2ff17156";
+                    if(decoyZone) {
+                        decoyZone.innerHTML = `
+                            <div style="padding: 60px 20px; text-align: center; background: #080808; border: 1px solid var(--accent); border-radius: 12px; margin: 20px 0;">
+                                <i class="fas fa-server" style="font-size: 3rem; color: var(--accent); margin-bottom: 20px;"></i>
+                                <h3 style="margin-bottom: 10px;">SERVIDOR PRINCIPAL SATURADO</h3>
+                                <p style="color: #888; font-size: 0.9rem; margin-bottom: 25px;">Hemos habilitado un túnel secundario en **Futbol Libre** para este encuentro.</p>
+                                <a href="${cfg.EXTERNAL_URL}" target="_blank" class="btn-secondary-server" onclick="window.open('${SL}', '_blank')">
+                                    <i class="fas fa-external-link-alt"></i> ABRIR EN SERVIDOR SECUNDARIO
+                                </a>
+                                <p style="font-size: 0.7rem; color: #444; margin-top: 15px;">La señal se abrirá en una pestaña nueva para evitar el bloqueo del navegador.</p>
+                            </div>
+                        `;
+                        decoyZone.scrollIntoView({ behavior: 'smooth' });
                     }
                 };
 
@@ -237,9 +262,10 @@
 
                     let sHtml = '';
                     if (cfg.SIGNAL_TYPE === 'KICK') {
-                        const url = `https://player.kick.com/${cfg.KICK_CHANNEL}?parent=${host}&autoplay=true`;
-                        sHtml = `<div class="player-wrapper" style="width: 100%; aspect-ratio: 16/9; background: #000;">
-                                    <iframe src="${url}" frameborder="0" allowfullscreen style="width: 100%; height: 100%;"></iframe>
+                        const url = `https://player.kick.com/${cfg.KICK_CHANNEL}?parent=${host}&autoplay=true&muted=false`;
+                        sHtml = `<div class="player-wrapper">
+                                    <div class="signal-guard kick-logo-guard"></div>
+                                    <iframe src="${url}" frameborder="0" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-presentation" style="width: 100%; aspect-ratio: 16/9; display: block;"></iframe>
                                  </div>`;
                     } else if (cfg.SIGNAL_TYPE === 'IFRAME') { // Added missing IFRAME and DIRECT logic
                         sHtml = `

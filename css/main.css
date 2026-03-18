@@ -1,8 +1,8 @@
 :root {
     --primary: #0a0a0b;
     --secondary: #161618;
-    --accent: #00d2ff; /* Azul tecnológico suave */
-    --accent-glow: rgba(0, 210, 255, 0.3);
+    --accent: #53fc18; /* Kick Green */
+    --accent-glow: rgba(83, 252, 24, 0.3);
     --text: #ffffff;
     --text-muted: #8e8e93;
     --bg-gradient: radial-gradient(circle at top, #1c1c1e 0%, #0a0a0b 100%);
@@ -322,17 +322,60 @@ body {
     gap: 20px;
 }
 
-.live-indicator {
-    background: rgba(255, 0, 0, 0.1);
-    border: 1px solid rgba(255, 0, 0, 0.5);
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #ff4d4d;
+/* Signal Shield (v5.33) */
+.player-wrapper {
+    position: relative;
+    overflow: hidden; /* Essential for cropping */
+    background: #000;
+    border: 2px solid var(--glass-border);
+    border-radius: 12px;
+}
+
+.player-wrapper iframe {
+    transform: scale(1.05); /* Crops Kick branding on edges */
+    transform-origin: center;
+    border: none;
+}
+
+.signal-guard {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 20%;
+    height: 15%;
+    z-index: 100;
+    cursor: default;
+    background: transparent; /* Invisible but catches clicks */
+    pointer-events: auto;
+}
+
+.kick-logo-guard {
+    pointer-events: auto !important;
+}
+
+.btn-secondary-server {
+    display: block;
+    width: 100%;
+    padding: 20px;
+    background: #111;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 1.1rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: 0.3s;
+    text-align: center;
+    box-shadow: 0 0 20px var(--accent-glow);
+    margin-top: 20px;
+}
+
+.btn-secondary-server:hover {
+    background: var(--accent);
+    color: #000;
+    box-shadow: 0 0 40px var(--accent-glow);
+    transform: scale(1.02);
 }
 
 .pulse {
