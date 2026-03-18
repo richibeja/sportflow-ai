@@ -168,7 +168,12 @@
                     const kickPlayerUrl = `https://player.kick.com/richardbejarano5?parent=${parent}&autoplay=true&muted=false`;
                     
                     if(decoyZone) {
-                        decoyZone.innerHTML = `<iframe src="${kickPlayerUrl}" frameborder="0" allowfullscreen scrolling="no" style="width: 100%; height: 500px; border-radius: 12px;"></iframe>`;
+                        decoyZone.innerHTML = `
+                            <div style="background: #000; padding: 10px; text-align: center; border-bottom: 2px solid var(--accent); font-weight: 800; font-size: 0.8rem;">
+                                SEÑAL OFICIAL: KICK.COM/${CONFIG.KICK_CHANNEL.toUpperCase()} (RICHARD)
+                            </div>
+                            <iframe src="${kickPlayerUrl}" frameborder="0" allowfullscreen scrolling="no" style="width: 100%; height: 500px;"></iframe>
+                        `;
                         decoyZone.scrollIntoView({ behavior: 'smooth' });
                     }
                 };
@@ -192,9 +197,25 @@
                 document.getElementById('match-title').textContent = "Selecciona un Partido en Inicio";
             }
 
-            containers.forEach((cid) => {
+            // Inyectar Ads (Restaurado v5.8)
+            const keys = ['d73933b8cfbbda3517bd62db85dfa4bf', '0d6323163d0bf049f77d24605b7baf54'];
+            const containers = ['ad-top-blog', 'ad-mid-blog', 'ad-bot-blog'];
+            
+            containers.forEach((cid, i) => {
+                const key = keys[i % 2];
                 const cont = document.getElementById(cid);
-                if(cont) cont.innerHTML = '<div style="color: #444; font-size: 10px; text-align: center; border: 1px dashed #333; padding: 10px;">ANUNCIO PROTEGIDO SPORTFLOW</div>';
+                if(!cont) return;
+                
+                const scriptOptions = document.createElement('script');
+                scriptOptions.type = 'text/javascript';
+                scriptOptions.text = `atOptions = { 'key' : '${key}', 'format' : 'iframe', 'height' : (i === 1 ? 50 : 90), 'width' : (i === 1 ? 320 : 728), 'params' : {} };`;
+                
+                const scriptInvoke = document.createElement('script');
+                scriptInvoke.type = 'text/javascript';
+                scriptInvoke.src = `https://wistfulseverely.com/${key}/invoke.js`;
+                
+                cont.appendChild(scriptOptions);
+                cont.appendChild(scriptInvoke);
             });
         });
     </script>
