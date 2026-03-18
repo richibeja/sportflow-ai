@@ -196,7 +196,11 @@
                 document.getElementById('pred-score').textContent = (match.homeScore || 0) + " - " + (match.awayScore || 0);
                 document.getElementById('info-channel').textContent = match.channel || "ESPN / Fox Sports";
                 document.getElementById('info-time').textContent = match.time || "--:--";
-                if(match.homeLogo) document.getElementById('match-poster').src = match.homeLogo;
+                // v5.44: Branded Poster (SportFlow AI Logo)
+                document.getElementById('match-poster').src = 'obs_logo_esquina.png';
+                document.getElementById('match-poster').style.objectFit = 'contain';
+                document.getElementById('match-poster').style.padding = '40px';
+                document.getElementById('match-poster').style.background = '#0a0a0b';
 
                 // v5.28: VIRAL DOUBLE-DECOY STRATEGY (Richard's Revenue Booster)
                 let clickCount = 0;
