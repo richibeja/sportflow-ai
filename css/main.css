@@ -77,7 +77,7 @@ body {
 }
 
 .blog-ad-slot.top-banner {
-    margin-top: 150px; /* Severe clearance for Adsterra floating bars */
+    margin-top: 100px; /* Reduced from 150px for better density */
     margin-bottom: 25px;
     display: flex;
     justify-content: center;
@@ -378,22 +378,22 @@ body {
     transform: scale(1.02);
 }
 
-/* Elite Match Ticker (v5.40) */
+/* Elite Match Ticker (v5.41 Refined) */
 .match-ticker-container {
     width: 100%;
     overflow: hidden;
-    padding: 15px 0;
-    background: rgba(255,255,255,0.02);
-    border-bottom: 1px solid rgba(83, 252, 24, 0.1);
-    margin-bottom: 20px;
+    padding: 10px 0;
+    background: rgba(0,0,0,0.5);
+    border-bottom: 1px solid rgba(83, 252, 24, 0.2);
+    margin-bottom: 15px;
 }
 
 .match-ticker-scroll {
     display: flex;
-    gap: 15px;
+    gap: 12px;
     overflow-x: auto;
-    padding: 5px 20px;
-    scrollbar-width: none; /* Firefox */
+    padding: 5px 15px;
+    scrollbar-width: none;
 }
 
 .match-ticker-scroll::-webkit-scrollbar {
@@ -401,14 +401,13 @@ body {
 }
 
 .ticker-card {
-    flex: 0 0 160px;
-    background: var(--secondary);
-    border-radius: 10px;
-    padding: 10px;
+    flex: 0 0 140px; /* Smaller cards */
+    background: #111;
+    border-radius: 8px;
+    padding: 8px;
     border: 1px solid rgba(255,255,255,0.05);
     text-decoration: none;
-    transition: 0.3s;
-    position: relative;
+    transition: 0.2s;
 }
 
 .ticker-card:hover {

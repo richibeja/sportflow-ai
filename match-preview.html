@@ -40,21 +40,18 @@
     </nav>
 
     <main class="blog-container">
-        <div class="blog-container">
-        <!-- Elite Match Ticker (v5.40) -->
+        <!-- Elite Match Ticker (v5.41 Refined) -->
         <div class="match-ticker-container">
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px 10px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--accent);">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 15px 8px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--accent);">
                 <span><i class="fas fa-satellite-dish"></i> Centro de Señales en Vivo</span>
-                <span>v5.40 Elite</span>
+                <span style="background: var(--accent); color: #000; padding: 2px 6px; border-radius: 4px;">v5.41 ELITE</span>
             </div>
             <div id="match-ticker-scroll" class="match-ticker-scroll">
-                <div style="padding: 20px; color: #444; font-size: 0.8rem;">Sincronizando satélites...</div>
+                <div style="padding: 15px; color: #444; font-size: 0.75rem;">Sincronizando satélites...</div>
             </div>
         </div>
 
         <div id="ad-top-blog" class="blog-ad-slot top-banner"></div>
-            <!-- Adsterra 728x90 -->
-        </div>
 
         <section class="blog-hero">
             <div class="hero-badge"><i class="fas fa-microchip"></i> SPORTFLOW ELITE AI ENGINE</div>
@@ -155,7 +152,7 @@
     
 
     <footer class="blog-footer">
-        <p>© 2026 SportFlow AI - Motor de Inteligencia Deportiva v5.40 (ELITE MULTI-MATCH HUB)</p>
+        <p>© 2026 SportFlow AI - Motor de Inteligencia Deportiva v5.41 (ELITE DASHBOARD)</p>
     </footer>
 
     <script>
@@ -234,7 +231,10 @@
                         // 3rd click -> Real Signal (Protected)
                         if(stepTag) stepTag.textContent = `¡CONEXIÓN ESTABLECIDA!`;
                         unlockSignal(decoyZone, host, CONFIG);
-                                    const unlockSignal = (decoyZone, host, cfg) => {
+                    }
+                };
+
+                const unlockSignal = (decoyZone, host, cfg) => {
                     const url = `https://player.kick.com/${cfg.KICK_CHANNEL}?parent=${host}&autoplay=true&muted=false`;
                     
                     if(decoyZone) {
@@ -243,11 +243,11 @@
                                 <div class="signal-guard kick-logo-guard"></div>
                                 <iframe src="${url}" frameborder="0" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-presentation" style="width: 100%; aspect-ratio: 16/9; display: block;"></iframe>
                             </div>
-                            <div style="text-align: center; margin-top: 25px; display: flex; flex-direction: column; gap: 15px; align-items: center;">
-                                <a href="/" class="btn-secondary-server" style="display: inline-block; width: auto; padding: 12px 25px; font-size: 0.9rem; text-decoration: none;">
+                            <div style="text-align: center; margin-top: 25px; display: flex; flex-direction: column; gap: 12px; align-items: center;">
+                                <a href="/" class="btn-secondary-server" style="display: inline-block; width: auto; padding: 10px 20px; font-size: 0.85rem; text-decoration: none;">
                                     <i class="fas fa-search"></i> EXPLORAR OTROS PARTIDOS
                                 </a>
-                                <p style="color: #666; font-size: 0.8rem;">Estás viendo la Señal Oficial Protegida de SportFlow AI</p>
+                                <p style="color: #666; font-size: 0.75rem;">Señal Oficial Protegida de SportFlow AI</p>
                             </div>
                         `;
                         decoyZone.scrollIntoView({ behavior: 'smooth' });
@@ -256,8 +256,6 @@
 
                 document.getElementById('btn-decoy-play').onclick = handleUnlockAttempt;
                 document.getElementById('btn-final-unlock').onclick = handleUnlockAttempt;
-      }
-                };
 
                 // AI Probability Simulation
                 const hPct = Math.floor(Math.random() * 20) + 40;
