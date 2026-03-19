@@ -66,15 +66,13 @@ Write-Host "Starting Optimized Deployment to GitHub..."
 
 # Core Files (Always pushed)
 Push-File -localPath "index.html" -remotePath "index.html"
-Push-File -localPath "js/app.js" -remotePath "js/app.js"
-Push-File -localPath "js/app_v562.js" -remotePath "js/app_v562.js"
+Push-File -localPath "master-hub-v564.js" -remotePath "master-hub-v564.js"
 Push-File -localPath "css/main.css" -remotePath "css/main.css"
 Push-File -localPath "vercel.json" -remotePath "vercel.json"
 Push-File -localPath "README.md" -remotePath "README.md"
 Push-File -localPath "js/stream-finder.js" -remotePath "js/stream-finder.js"
 Push-File -localPath "handshake.html" -remotePath "handshake.html"
 Push-File -localPath "match-preview.html" -remotePath "match-preview.html"
-Push-File -localPath "sports-hub.html" -remotePath "sports-hub.html"
 Push-File -localPath "404.html" -remotePath "404.html"
 Push-File -localPath ".gitignore" -remotePath ".gitignore"
 
@@ -89,7 +87,6 @@ if ($IncludeMedia) {
 
     # Images
     Push-File -localPath "sportflow_hero_bg.png" -remotePath "sportflow_hero_bg.png"
-    Push-File -localPath "madrina.png" -remotePath "madrina.png"
     Push-File -localPath "guru_avatar.png" -remotePath "guru_avatar.png"
     Push-File -localPath "favicon.ico" -remotePath "favicon.ico"
 } else {
@@ -99,5 +96,6 @@ if ($IncludeMedia) {
 # Always push metadata
 Push-File -localPath "robots.txt" -remotePath "robots.txt"
 Push-File -localPath "sitemap.xml" -remotePath "sitemap.xml"
+Push-File -localPath "generate_landings.py" -remotePath "generate_landings.py"
 
 Write-Host "Deployment Complete!"

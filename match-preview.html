@@ -13,8 +13,7 @@
     <link rel="stylesheet" href="/css/main.css?v=5.28">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
-    <!-- ADSTERRA SOCIAL BAR -->
-    <script src="https://wistfulseverely.com/d7/b4/d8/d7b4d83e17f56a4aabebc13769bc93a2.js"></script>
+    <meta name="referrer" content="no-referrer">
 </head>
 <body class="blog-body">
     <a href="https://t.me/+eDNK1QZVe-c5MjM5" target="_blank" class="telegram-float">
@@ -42,12 +41,17 @@
     <main class="blog-container">
         <div id="ad-top-blog" class="blog-ad-slot top-banner"></div>
         <section class="upcoming-events" style="margin-bottom: 16px;">
-            <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <h2 class="section-title" style="font-size: 1rem; color: var(--accent); margin: 0;"><i class="fas fa-satellite-dish"></i> COBERTURA EN VIVO</h2>
-                <div class="filter-bar" style="display: flex; gap: 6px;">
-                    <button class="nav-filter active" id="f-all">Todos</button>
-                    <button class="nav-filter" id="f-live"><i class="fas fa-circle" style="color:#ff4b4b;font-size:0.5rem;"></i> En Vivo</button>
+            <div class="section-header" style="display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 12px; gap: 4px;">
+                <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                    <h2 class="section-title" style="font-size: 1rem; color: var(--accent); margin: 0;"><i class="fas fa-satellite-dish"></i> COBERTURA EN VIVO</h2>
+                    <div class="filter-bar" style="display: flex; gap: 6px;">
+                        <button class="nav-filter active" id="f-all">Todos</button>
+                        <button class="nav-filter" id="f-live"><i class="fas fa-circle" style="color:#ff4b4b;font-size:0.5rem;"></i> En Vivo</button>
+                    </div>
                 </div>
+                <p style="font-size: 0.65rem; color: #666; margin: 0; text-transform: uppercase; letter-spacing: 1px;">
+                    <i class="fas fa-lock"></i> Señal Protegida por 2 Capas de Validación
+                </p>
             </div>
             <div class="match-scroll" id="upcoming-matches">
                 <div style="padding: 15px; color: #555; font-size: 0.8rem; text-align: center;"><i class="fas fa-satellite-dish fa-spin"></i> Sincronizando señales...</div>
@@ -62,7 +66,7 @@
                     <div class="decoy-overlay">
                         <div id="decoy-step-tag" class="step-indicator">PASO 1/2: SINCRONIZACIÓN</div>
                         <button id="btn-decoy-play" class="play-decoy-btn">
-                            <i class="fas fa-play"></i>
+                            <svg viewBox="0 0 24 24" width="40" height="40" fill="white" style="margin-left: 5px;"><path d="M8 5v14l11-7z"/></svg>
                         </button>
                         <p style="font-size: 1.1rem; letter-spacing: 1px; margin-top: 15px;">HAZ CLIC PARA VER EN VIVO</p>
                     </div>
@@ -74,16 +78,30 @@
             </div>
 
             <!-- MIDDLE AD BANNER -->
-            <div id="ad-mid-blog" class="blog-ad-slot mid-banner" style="margin-top: 20px;">
+            <div id="ad-mid-blog" class="blog-ad-slot mid-banner" style="margin-top: 20px; min-height: 50px;">
                 <!-- Adsterra 320x50/Responsive -->
             </div>
         </article>
     </main>
     
 
+    <div class="share-section">
+        <button class="btn-share-app" onclick="shareApp()">
+            <i class="fas fa-share-alt"></i> Compartir Aplicación
+        </button>
+    </div>
+
     <footer class="blog-footer">
-        <p>© 2026 SportFlow AI - v5.68 (LIVE COVERAGE)</p>
+        <p>© 2026 SportFlow AI - v5.80 (LIVE COVERAGE)</p>
     </footer>
+
+    <!-- Sticky Footer Ad (v1.9.8) -->
+    <div id="sticky-footer-ad" class="sticky-footer-container hidden">
+        <button id="close-sticky-ad" class="close-sticky-btn"><i class="fas fa-times"></i></button>
+        <div id="ad-container-sticky" class="ad-responsive-container">
+            <!-- Inyectado por JS -->
+        </div>
+    </div>
 
     <script src="/master-hub-v564.js"></script>
 </body>

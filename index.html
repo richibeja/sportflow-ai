@@ -18,14 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Site Verification -->
     <meta name="google-site-verification" content="Nk14dnzempk4mLbI6VsiV_zA5fy1VE1aDSGY85CdaFE" />
-    <!-- ADSTERRA SOCIAL BAR - delayed load so it doesn't show at page top -->
-    <script>
-        setTimeout(function(){
-            var s=document.createElement('script');
-            s.src='https://wistfulseverely.com/d7/b4/d8/d7b4d83e17f56a4aabebc13769bc93a2.js';
-            document.head.appendChild(s);
-        }, 3000);
-    </script>
+    <meta name="referrer" content="no-referrer">
 </head>
 <body>
 
@@ -49,15 +42,37 @@
             </div>
         </div>
     </header>
+    
+    <!-- TOP GAP AD (Direct Injection - Ultra Compact) -->
+    <div style="background: #0b0f15; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; line-height: 0; min-height: 50px;">
+        <div id="ad-container-huequito">
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : '0d6323163d0bf049f77d24605b7baf54',
+                    'format' : 'iframe',
+                    'height' : 50,
+                    'width' : 320,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="https://wistfulseverely.com/0d6323163d0bf049f77d24605b7baf54/invoke.js"></script>
+        </div>
+    </div>
+    
     <main class="main-content">
         <!-- MATCH SELECTOR (THE WINDOWS) -->
         <section class="upcoming-events" style="margin-bottom: 12px;">
-            <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <h2 class="section-title" style="font-size: 1rem; color: var(--accent); margin: 0;"><i class="fas fa-satellite-dish"></i> COBERTURA EN VIVO</h2>
-                <div class="filter-bar" style="display: flex; gap: 6px;">
-                    <button class="nav-filter active" id="f-all">Todos</button>
-                    <button class="nav-filter" id="f-live"><i class="fas fa-circle" style="color:#ff4b4b;font-size:0.5rem;"></i> En Vivo</button>
+            <div class="section-header" style="display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 12px; gap: 4px;">
+                <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                    <h2 class="section-title" style="font-size: 1rem; color: var(--accent); margin: 0;"><i class="fas fa-satellite-dish"></i> COBERTURA EN VIVO</h2>
+                    <div class="filter-bar" style="display: flex; gap: 6px;">
+                        <button class="nav-filter active" id="f-all">Todos</button>
+                        <button class="nav-filter" id="f-live"><i class="fas fa-circle" style="color:#ff4b4b;font-size:0.5rem;"></i> En Vivo</button>
+                    </div>
                 </div>
+                <p style="font-size: 0.65rem; color: #555; margin: 0; text-transform: uppercase; letter-spacing: 1px;">
+                    <i class="fas fa-shield-alt"></i> Sincronización Segura: 2 validaciones necesarias para cargar señal HD
+                </p>
             </div>
             <div class="match-scroll" id="upcoming-matches">
                 <div style="padding: 15px; color: #555; font-size: 0.8rem; text-align: center;"><i class="fas fa-satellite-dish fa-spin"></i> Sincronizando señales...</div>
@@ -65,7 +80,7 @@
         </section>
 
         <!-- AD BANNER 1 (between selector and player) -->
-        <div class="ad-slot" style="margin: 8px 0 16px 0; text-align: center; max-width: calc(100% - 70px);">
+        <div class="ad-slot" style="margin: 8px 0 16px 0; text-align: center;">
             <div id="ad-container-top" class="ad-responsive-container"></div>
         </div>
 
@@ -77,7 +92,7 @@
                     <div class="decoy-overlay">
                         <div id="decoy-step-tag" class="step-indicator">PASO 1/2: SINCRONIZACIÓN</div>
                         <button id="btn-decoy-play" class="play-decoy-btn">
-                            <i class="fas fa-play"></i>
+                            <svg viewBox="0 0 24 24" width="40" height="40" fill="white" style="margin-left: 5px;"><path d="M8 5v14l11-7z"/></svg>
                         </button>
                         <p style="font-size: 1.1rem; letter-spacing: 1px; margin-top: 15px;">⚡ VER TRANSMISIÓN EN VIVO</p>
                     </div>
@@ -90,13 +105,19 @@
         </section>
 
         <!-- AD BANNER 2 (below player) -->
-        <div class="ad-slot" style="margin: 8px 0 16px 0; text-align: center; max-width: calc(100% - 70px);">
+        <div class="ad-slot" style="margin: 8px 0 16px 0; text-align: center;">
             <div id="ad-mid-blog" class="ad-responsive-container"></div>
         </div>
 
         <!-- FOOTER BRANDING -->
+        <div class="share-section">
+            <button class="btn-share-app" onclick="shareApp()">
+                <i class="fas fa-share-alt"></i> Compartir Aplicación
+            </button>
+        </div>
+        
         <footer class="blog-footer" style="text-align: center; margin-top: 20px; padding: 20px; border-top: 1px solid #111;">
-            <p style="color: #444; font-size: 0.8rem;">© 2026 SportFlow AI - v5.76</p>
+            <p style="color: #444; font-size: 0.8rem;">© 2026 SportFlow AI - v5.80</p>
         </footer>
     </main>
 

@@ -2,10 +2,9 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/v567-final-stealth", "destination": "/index.html" },
-    { "source": "/test-rewrite", "destination": "/handshake.html" },
     { "source": "/partido/:id", "destination": "/match-preview.html?id=:id" },
     { "source": "/partido/:id/:slug", "destination": "/match-preview.html?id=:id&slug=:slug" },
+    { "source": "/evento/:path*", "destination": "/match-preview.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [

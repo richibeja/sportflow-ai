@@ -15,22 +15,8 @@
 }
 
 
-/* HEADER AD - hidden, we don't use it */
-#ad-container-header { display: none !important; }
-
-/* SOCIAL BAR - force to bottom so it never blocks top content */
-.socialbar-widget,
-div[id*="social-bar"],
-div[class*="social-bar"],
-iframe[src*="wistfulseverely"] {
-    position: fixed !important;
-    bottom: 0 !important;
-    top: auto !important;
-    left: 0 !important;
-    width: 100% !important;
-    z-index: 9990 !important;
-    margin: 0 !important;
-}
+/* ADSTERRA SOCIAL BAR (Default handled by script) */
+.socialbar-widget { z-index: 10000 !important; }
 
 /* AD SLOTS - transparent, hide when empty */
 .ad-slot { background: transparent !important; }
@@ -54,7 +40,7 @@ iframe[src*="wistfulseverely"] {
 }
 
 .main-content {
-    margin-top: 68px !important; /* Exactly navbar height (60px) + small gap */
+    margin-top: 8px !important;
 }
 
 
@@ -66,6 +52,8 @@ iframe[src*="wistfulseverely"] {
 
 body {
     font-family: 'Outfit', sans-serif;
+    padding-top: 60px; /* Account for fixed header height (60px) */
+    background: var(--bg-dark);
 }
 
 i {
@@ -77,6 +65,7 @@ body {
     color: var(--text-main);
     overflow-x: hidden;
     min-height: 100vh;
+    padding-top: 60px; /* Accounts for fixed navbar height */
 }
 
 /* Blog & Match Preview Styles (v5.31) */
@@ -95,7 +84,7 @@ body {
 }
 
 .blog-ad-slot.top-banner {
-    margin-top: 100px; /* Reduced from 150px for better density */
+    margin-top: 10px; /* Reduced from 100px */
     margin-bottom: 25px;
     display: flex;
     justify-content: center;
@@ -3367,14 +3356,17 @@ body.cinema-mode .navbar, body.cinema-mode .hero-match, body.cinema-mode .match-
     bottom: 0 !important;
     left: 0;
     width: 100%;
-    z-index: 5000 !important; /* Top priority */
+    z-index: 99999 !important; /* Maximum priority */
     background: rgba(0,0,0,0.95);
     backdrop-filter: blur(10px);
     border-top: 1px solid var(--accent);
-    padding: 10px;
+    padding: 8px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    min-height: 60px; /* Ensures visibility even while loading */
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
 }
 
 .close-sticky-btn {
@@ -3396,8 +3388,17 @@ body.cinema-mode .navbar, body.cinema-mode .hero-match, body.cinema-mode .match-
 }
 
 @media (max-width: 768px) {
-    .main-content { margin-top: 140px !important; }
-    .ticker-card { flex: 0 0 160px; }
+    .main-content { margin-top: 5px !important; }
+    .match-ticker-scroll { padding: 15px 5px; gap: 12px; }
+    .ticker-card { flex: 0 0 280px; }
+    
+    /* Navbar compact optimization */
+    .navbar .container { padding: 0 8px; gap: 4px; }
+    .nav-actions { gap: 6px !important; }
+    .live-indicator { font-size: 0.6rem !important; gap: 3px !important; }
+    .logo-text { font-size: 0.9rem !important; }
+    .logo-icon { font-size: 1rem !important; }
+    .btn-telegram { padding: 5px 8px; font-size: 0.65rem; }
 }
 
 /* PREMIUM UNLOCK BUTTON (v5.50 - Green Hook) */
@@ -3479,5 +3480,86 @@ body.cinema-mode .navbar, body.cinema-mode .hero-match, body.cinema-mode .match-
         width: 50px;
         height: 50px;
         font-size: 1.2rem;
+    }
+}
+
+/* --- SIGNAL PROTECTION SYSTEM (v6.0) --- */
+.player-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+}
+
+.signal-guard {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background: transparent;
+    cursor: default;
+    /* Bloquea la interacción directa con el iframe de origen */
+}
+
+.player-wrapper iframe {
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+}
+
+/* --- SHARE BUTTON (v6.1) --- */
+.share-section {
+    text-align: center;
+    margin: 40px 0 20px 0;
+    padding: 20px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.05);
+}
+
+.btn-share-app {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-share-app:hover {
+    background: var(--accent);
+    color: #000;
+    box-shadow: 0 0 20px var(--accent);
+}
+
+/* --- LANDSCAPE OPTIMIZATION (v7.2) --- */
+@media (orientation: landscape) and (max-height: 500px) {
+    .telegram-float {
+        bottom: 15px !important;
+        right: 15px !important;
+        width: 45px !important;
+        height: 45px !important;
+    }
+    .facebook-float {
+        bottom: 15px !important;
+        right: 70px !important;
+        width: 45px !important;
+        height: 45px !important;
+    }
+    .navbar {
+        height: 50px !important;
+    }
+    body {
+        padding-top: 50px !important;
     }
 }
