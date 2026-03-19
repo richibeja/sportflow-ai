@@ -82,58 +82,58 @@ document.addEventListener('DOMContentLoaded', () => {
             const badge = document.getElementById('live-count-badge');
             if(badge) badge.textContent = liveCount;
 
-            // renderMatchSelector();
+            renderMatchSelector();
         } catch (err) {}
     }
 
-    // --- RENDER SELECTOR ---
+    // --- RENDER SELECTOR (PREMIUM v5.68) ---
     function renderMatchSelector() {
         const selector = document.getElementById('upcoming-matches');
-        if(!selector) return;
-        selector.innerHTML = '';
+        if (!selector) return;
 
         let filtered = matches;
-        if(window.currentFilter === 'live') filtered = matches.filter(m => m.status === 'EN VIVO');
+        if (window.currentFilter === 'live') filtered = matches.filter(m => m.status === 'EN VIVO');
+        if (!filtered.length) {
+            selector.innerHTML = '<div style="padding:15px;color:#555;font-size:0.8rem;text-align:center;"><i class="fas fa-satellite-dish"></i> No hay partidos ahora</div>';
+            return;
+        }
 
-        filtered.forEach(m => {
-            const card = document.createElement('div');
-            card.className = `match-card-mini`;
-            card.style.cursor = 'pointer';
-            
-            card.onclick = () => {
-                // REDIRECT TO EXTERNAL VIA AD
-                window.open(CONFIG.SL_LINK, '_blank');
-                setTimeout(() => {
-                    window.open(CONFIG.SL_LINK, '_blank');
-                    setTimeout(() => {
-                        window.location.href = CONFIG.EXTERNAL_URL;
-                    }, 500);
-                }, 300);
-            };
+        selector.innerHTML = filtered.map(m => {
+            const isLive = m.status === 'EN VIVO';
+            const isFinished = m.time && (m.time.toLowerCase().includes('ft') || m.time.toLowerCase().includes('final'));
+            const statusColor = isLive ? '#ff4b4b' : isFinished ? '#888' : 'var(--accent)';
+            const statusIcon = isLive ? 'fa-circle' : isFinished ? 'fa-check-circle' : 'fa-clock';
+            const statusLabel = isLive ? 'EN VIVO' : isFinished ? 'FINAL' : 'PRÓXIMO';
+            const homeName = m.home?.team?.abbreviation || m.home?.team?.displayName?.split(' ').pop() || '???';
+            const awayName = m.away?.team?.abbreviation || m.away?.team?.displayName?.split(' ').pop() || '???';
+            const homeScore = isLive || isFinished ? (m.home?.score ?? 0) : '-';
+            const awayScore = isLive || isFinished ? (m.away?.score ?? 0) : '-';
 
-            card.innerHTML = `
-                <div class="mini-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <span style="font-weight: 800; color: var(--accent); font-size: 0.7rem;">${m.league}</span>
-                    <div class="match-time-badge" style="font-size: 0.65rem; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;">${m.date}</div>
+            return `
+            <div class="match-card-mini" onclick="handleCardClick()" style="cursor:pointer;flex-shrink:0;width:150px;background:#0d1117;border:1px solid ${isLive ? '#ff4b4b44' : '#222'};border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:6px;transition:border-color 0.3s;">
+                <!-- LEAGUE BADGE -->
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span style="font-size:0.6rem;font-weight:800;color:var(--accent);letter-spacing:1px;">${m.league}</span>
+                    <span style="font-size:0.55rem;color:#444;">${m.date}</span>
                 </div>
-                <div class="mini-teams" style="display: flex; flex-direction: column; gap: 5px;">
-                    <div class="mini-team" style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 0.85rem; font-weight: 600;">${m.home.team.displayName}</span>
-                        <div class="score-pill" style="background: var(--accent); color: #000; padding: 1px 6px; border-radius: 4px; font-weight: 800; font-size: 0.75rem;">${m.home.score || 0}</div>
+                <!-- TEAMS + SCORE -->
+                <div style="display:flex;flex-direction:column;gap:4px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <span style="font-size:0.78rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:95px;color:#eee;">${homeName}</span>
+                        <span style="font-size:0.9rem;font-weight:900;color:${isLive ? '#ff4b4b' : '#fff'};min-width:18px;text-align:right;">${homeScore}</span>
                     </div>
-                    <div class="mini-team" style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 0.85rem; font-weight: 600;">${m.away.team.displayName}</span>
-                        <div class="score-pill" style="background: var(--accent); color: #000; padding: 1px 6px; border-radius: 4px; font-weight: 800; font-size: 0.75rem;">${m.away.score || 0}</div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <span style="font-size:0.78rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:95px;color:#aaa;">${awayName}</span>
+                        <span style="font-size:0.9rem;font-weight:900;color:${isLive ? '#ff4b4b' : '#fff'};min-width:18px;text-align:right;">${awayScore}</span>
                     </div>
                 </div>
-                <div class="mini-status" style="margin-top: 8px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 5px;">
-                    <span style="color: ${m.status === 'EN VIVO' ? '#ff4b4b' : '#666'}; font-size: 0.7rem; font-weight: 700;">
-                        <i class="fas ${m.status === 'EN VIVO' ? 'fa-circle-play pulse' : 'fa-clock'}"></i> ${m.time}
-                    </span>
+                <!-- STATUS -->
+                <div style="border-top:1px solid #1a1a2e;padding-top:5px;display:flex;align-items:center;justify-content:center;gap:4px;">
+                    <i class="fas ${statusIcon}" style="color:${statusColor};font-size:0.55rem;${isLive ? 'animation:pulse-dot 1.2s infinite;' : ''}"></i>
+                    <span style="font-size:0.6rem;font-weight:800;color:${statusColor};letter-spacing:0.5px;">${isLive ? m.time : statusLabel}</span>
                 </div>
-            `;
-            selector.appendChild(card);
-        });
+            </div>`;
+        }).join('');
     }
 
     // --- DECOY UNLOCK ---
@@ -173,7 +173,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupNavFilters() {
         const all = document.getElementById('f-all');
         const live = document.getElementById('f-live');
-        if(all) all.onclick = () => { window.currentFilter = 'all'; all.classList.add('active'); if(live) live.classList.remove('active'); /* renderMatchSelector(); */ };
-        if(live) live.onclick = () => { window.currentFilter = 'live'; live.classList.add('active'); if(all) all.classList.remove('active'); /* renderMatchSelector(); */ };
+        if(all) all.onclick = () => { window.currentFilter = 'all'; all.classList.add('active'); if(live) live.classList.remove('active'); renderMatchSelector(); };
+        if(live) live.onclick = () => { window.currentFilter = 'live'; live.classList.add('active'); if(all) all.classList.remove('active'); renderMatchSelector(); };
     }
+
+    // --- CARD CLICK (3-Click Monetization) ---
+    window.handleCardClick = function() {
+        window.open(CONFIG.SL_LINK, '_blank');
+        setTimeout(() => {
+            window.open(CONFIG.SL_LINK, '_blank');
+            setTimeout(() => { window.location.href = CONFIG.EXTERNAL_URL; }, 500);
+        }, 300);
+    };
 });
