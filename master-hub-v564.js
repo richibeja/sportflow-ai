@@ -243,8 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(!decoyZone) return;
         
         const host = window.location.hostname;
-        // v5.90: Muted by default to avoid double audio/feedback. 
-        const url = `https://player.kick.com/${CONFIG.KICK_CHANNEL}?parent=${host}&autoplay=true&muted=true`;
+        const url = `https://player.kick.com/${CONFIG.KICK_CHANNEL}?parent=${host}&autoplay=true&muted=false`;
         
         decoyZone.innerHTML = `
             <div id="elite-player-hub" class="elite-player-hub">
@@ -255,33 +254,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 <div class="player-controls-elite">
                     <button id="btn-fullscreen-main" class="btn-fullscreen-elite">
-                        <i class="fas fa-expand-arrows-alt"></i> PANTALLA COMPLETA
+                        <i class="fas fa-expand"></i> MODO PANTALLA COMPLETA
                     </button>
-                    <div class="sound-hint">
-                        <i class="fas fa-volume-up"></i> HAZ CLIC EN EL ALTAVOZ PARA ACTIVAR AUDIO
+                    <div class="sound-hint" style="color: var(--accent); font-weight: 800;">
+                        <i class="fas fa-info-circle"></i> SI NO ESCUCHAS, TOCA EL ALTAVOZ DEL VIDEO
                     </div>
                 </div>
             </div>
 
             <div style="text-align: center; margin-top: 15px;">
-                <p style="color: var(--accent); font-weight: 800; font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase;"><i class="fas fa-shield-alt"></i> Señal Protegida (Richard Shield v5.88)</p>
+                <p style="color: var(--accent); font-weight: 800; font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase;"><i class="fas fa-shield-alt"></i> Señal Protegida (Richard Shield v5.91)</p>
             </div>
         `;
 
-        // Attach Fullscreen event (v5.88: Enhanced for Mobile)
+        // Attach Fullscreen event (v5.91: Enhanced for Mobile & iOS)
         setTimeout(() => {
             const fsBtn = document.getElementById('btn-fullscreen-main');
             const playerHub = document.getElementById('elite-player-hub');
+            const iframe = document.getElementById('main-player-iframe');
+            
             if (fsBtn && playerHub) {
                 fsBtn.onclick = () => {
-                    if (playerHub.requestFullscreen) {
-                        playerHub.requestFullscreen();
-                    } else if (playerHub.webkitRequestFullscreen) {
-                        playerHub.webkitRequestFullscreen();
-                    } else if (playerHub.mozRequestFullScreen) {
-                        playerHub.mozRequestFullScreen();
-                    } else if (playerHub.msRequestFullscreen) {
-                        playerHub.msRequestFullscreen();
+                    const target = iframe || playerHub; // Try iframe first for better iOS support if possible
+                    if (target.requestFullscreen) {
+                        target.requestFullscreen();
+                    } else if (target.webkitRequestFullscreen) {
+                        target.webkitRequestFullscreen();
+                    } else if (target.webkitEnterFullscreen) { // iOS specific for video/iframe
+                        target.webkitEnterFullscreen();
+                    } else if (target.msRequestFullscreen) {
+                        target.msRequestFullscreen();
                     }
                 };
             }

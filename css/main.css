@@ -363,10 +363,10 @@ body {
 
 .signal-guard {
     position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 15%; /* Reduced from 20% to avoid covering buttons completely */
-    height: 10%; /* Reduced from 15% */
+    top: 10px;
+    right: 10px;
+    width: 10%; 
+    height: 10%;
     z-index: 100;
     cursor: default;
     background: transparent;
