@@ -32,6 +32,16 @@ iframe[src*="wistfulseverely"] {
     margin: 0 !important;
 }
 
+/* AD SLOTS - transparent, hide when empty */
+.ad-slot { background: transparent !important; }
+.ad-responsive-container { background: transparent !important; }
+.ad-responsive-container:empty {
+    display: none !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
 .navbar {
     position: fixed !important;
     top: 0;
