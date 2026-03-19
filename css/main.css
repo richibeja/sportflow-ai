@@ -44,7 +44,7 @@ iframe[src*="wistfulseverely"] {
 }
 
 .main-content {
-    margin-top: 120px !important; /* Added more space for navbar + potential banners */
+    margin-top: 68px !important; /* Exactly navbar height (60px) + small gap */
 }
 
 
