@@ -34,10 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const key320x50 = '0d6323163d0bf049f77d24605b7baf54';
         const key728x90 = 'd73933b8cfbbda3517bd62db85dfa4bf';
 
+        // Solo 2 banners activos: entre partidos/player + sticky footer
         const slots = [
-            ['ad-container-header', isMobile ? key320x50 : key728x90, isMobile ? 320 : 728, isMobile ? 50 : 90],
             ['ad-container-top', isMobile ? key320x50 : key728x90, isMobile ? 320 : 728, isMobile ? 50 : 90],
-            ['ad-mid-blog', isMobile ? key320x50 : key728x90, isMobile ? 320 : 728, isMobile ? 50 : 90],
             ['ad-container-sticky', key320x50, 320, 50]
         ];
 
