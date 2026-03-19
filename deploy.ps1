@@ -67,6 +67,7 @@ Write-Host "Starting Optimized Deployment to GitHub..."
 # Core Files (Always pushed)
 Push-File -localPath "index.html" -remotePath "index.html"
 Push-File -localPath "js/app.js" -remotePath "js/app.js"
+Push-File -localPath "js/app_v562.js" -remotePath "js/app_v562.js"
 Push-File -localPath "css/main.css" -remotePath "css/main.css"
 Push-File -localPath "vercel.json" -remotePath "vercel.json"
 Push-File -localPath "README.md" -remotePath "README.md"

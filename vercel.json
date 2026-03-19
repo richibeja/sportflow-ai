@@ -2,6 +2,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
+    { "source": "/v562-force-nuclear", "destination": "/index.html" },
     { "source": "/test-rewrite", "destination": "/handshake.html" },
     { "source": "/partido/:id", "destination": "/match-preview.html?id=:id" },
     { "source": "/partido/:id/:slug", "destination": "/match-preview.html?id=:id&slug=:slug" },

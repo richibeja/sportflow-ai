@@ -44,194 +44,55 @@
                 </a>
             </div>
         </div>
-    </header>
-
-    <main class="main-content">
-        <!-- Top Ad Slot -->
-
-
-        <div class="ad-slot top-ad">
-            <div id="ad-container-top" class="ad-responsive-container">
-                <!-- Inyectado por JS -->
-            </div>
+    </header>    <main class="main-content" style="padding-top: 20px;">
+        <!-- TOP AD BANNER -->
+        <div class="ad-slot top-ad" style="margin-bottom: 20px;">
+            <div id="ad-container-top" class="ad-responsive-container"></div>
         </div>
 
-        <section class="intl-ticker">
-            <div class="ticker-wrapper">
-                <div class="ticker-item"><i class="fas fa-trophy"></i> Champions League</div>
-                <div class="ticker-item"><i class="fas fa-star"></i> Premier League</div>
-                <div class="ticker-item"><i class="fas fa-globe"></i> Eliminatorias Mundial</div>
-                <div class="ticker-item"><i class="fas fa-fire"></i> La Liga</div>
-            </div>
-        </section>
-
-        <section class="match-selector">
+        <!-- MATCH SELECTOR (THE WINDOWS) -->
+        <section class="match-selector" style="margin-bottom: 20px;">
             <div class="section-header">
                 <h2 class="section-title">Grandes Eventos Hoy</h2>
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="match-search" placeholder="Buscar equipo o liga...">
-                </div>
                 <div class="filter-bar">
-                    <button class="nav-filter active" onclick="filterMatches('all')">Todos</button>
-                    <button class="nav-filter" onclick="filterMatches('live')">En Vivo</button>
-                    <button class="nav-filter viral" onclick="filterMatches('viral')"><i class="fas fa-fire"></i> Viral</button>
-                    <button class="nav-filter" onclick="filterMatches('intl')">Internacional</button>
+                    <button class="nav-filter active" id="f-all">Todos</button>
+                    <button class="nav-filter" id="f-live">En Vivo</button>
                 </div>
             </div>
             <div class="match-scroll" id="upcoming-matches">
-                <!-- Matches will be injected here -->
+                <div style="padding: 20px; color: #666;">Cargando eventos...</div>
             </div>
         </section>
 
-        <section class="hero-match" id="main-match-hero">
-            <div class="match-card">
-                <div id="hero-match-content">
-                    <!-- Dynamic Hero Content -->
-                    <div id="hero-dynamic-title" class="hidden" style="text-align: center; margin-bottom: 20px;">
-                        <h1 style="color: var(--accent); font-weight: 800; font-size: 1.8rem;">CENTRO DE DATOS: <span id="current-context-name">...</span></h1>
+        <!-- DECOY PLAYER (MAIN VIDEO) -->
+        <section class="hero-match" id="main-match-hero" style="margin-bottom: 30px;">
+            <div class="decoy-player-zone">
+                <div class="decoy-cover" style="height: auto; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; border: 1px solid #222;">
+                    <img id="match-poster" src="/sportflow_hero_bg.png" alt="Match Cover" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="decoy-overlay">
+                        <div id="decoy-step-tag" class="step-indicator">PASO 1/2: SINCRONIZACIÓN</div>
+                        <button id="btn-decoy-play" class="play-decoy-btn">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <p style="font-size: 1.1rem; letter-spacing: 1px; margin-top: 15px;">HAZ CLIC PARA VER EN VIVO</p>
                     </div>
-                    <div class="loading-state">Selecciona un partido para ver detalles...</div>
+                </div>
+                <div class="decoy-status" style="margin-top: 10px; display: flex; justify-content: space-between; font-size: 0.75rem; color: #666;">
+                    <span class="bitrate"><i class="fas fa-signal"></i> 8500kbps</span>
+                    <span class="quality"><i class="fas fa-tv"></i> 4K ULTRA HD</span>
                 </div>
             </div>
         </section>
 
-        <section class="match-details">
-            <div class="video-help">
-                <p><i class="fas fa-microchip"></i> <strong>SPORTFLOW AI ENGINE:</strong> Selecciona un encuentro arriba para acceder al análisis premium y la señal en el blog oficial.</p>
-            </div>
+        <!-- MIDDLE AD BANNER -->
+        <div id="ad-mid-blog" class="ad-responsive-container" style="margin: 20px 0; text-align: center;"></div>
 
-                <div class="video-help">
-                    <p><i class="fas fa-info-circle"></i> <strong>SISTEMA DE REDUNDANCIA:</strong> Si una señal falla, intenta cambiar de servidor o abrir el respaldo externo.</p>
-                </div>
-
-                <!-- RESTORED: Dedicated SPORTFLOW ANALYTICS Section (THE HOOK) -->
-                <div class="guru-section-container">
-                    
-                    <div id="guru-locked-state" class="guru-content-box">
-                        <div class="guru-teaser">
-                            <div class="guru-eye">📊</div>
-                            <h3>Análisis de: <span id="guru-match-name">Cargando...</span></h3>
-                            <p>El núcleo de **SportFlow Analytics** ya ha procesado las variables para este duelo de la <strong id="guru-league-name">...</strong></p>
-                            <div id="guru-status-box" class="guru-status-box hidden">
-                                <div class="guru-loader"></div>
-                                <span id="guru-status-text">Consultando redes de datos...</span>
-                            </div>
-                            <button id="guru-unlock-btn" class="btn-guru-reveal">
-                                <i class="fas fa-bolt"></i> VER ANÁLISIS DE SPORTFLOW ANALYTICS
-                            </button>
-                            <!-- Anuncio sutil debajo del botón tras revelar -->
-                            <div id="ad-container-guru" class="ad-responsive-container" style="margin-top: 20px; min-height: 50px; border-radius: 8px; overflow: hidden; opacity: 0.8;"></div>
-                        </div>
-                    </div>
-
-                    <div id="guru-unlocked-state" class="guru-content-box hidden">
-                        <div class="guru-oracle-card">
-                            <div class="oracle-profile">
-                                <div class="oracle-avatar-glow">
-                                    <img src="/guru_avatar.png" alt="ANALYTICS">
-                                </div>
-                                <div class="oracle-badge">AI MATCH ENGINE <i class="fas fa-microchip"></i></div>
-                            </div>
-                            
-                            <div class="oracle-analysis">
-                                <div class="prediction-header">
-                                    <h4 id="guru-result-title" class="striking-title"><i class="fas fa-microchip"></i> INTELIGENCIA ARTIFICIAL: EL ORÁCULO</h4>
-                                    <div class="accuracy-tag">Confidencialidad: 82%</div>
-                                </div>
-                                
-                                <p id="guru-phrase" class="guru-phrase">"Analizando tendencias de flujo de datos..."</p>
-                                
-                                <div class="prediction-stats">
-                                    <div class="pred-group">
-                                        <div class="pred-label"><span id="guru-team-home">Local</span><span id="pred-pct-home">--%</span></div>
-                                        <div class="pred-track"><div id="pred-bar-home" class="p-fill"></div></div>
-                                    </div>
-                                    <div class="pred-group">
-                                        <div class="pred-label"><span>Empate</span><span id="pred-pct-draw">--%</span></div>
-                                        <div class="pred-track"><div id="pred-bar-draw" class="p-fill"></div></div>
-                                    </div>
-                                    <div class="pred-group">
-                                        <div class="pred-label"><span id="guru-team-away">Visita</span><span id="pred-pct-away">--%</span></div>
-                                        <div class="pred-track"><div id="pred-bar-away" class="p-fill"></div></div>
-                                    </div>
-                                </div>
-                                
-                                <div class="likely-score">
-                                    <span>MARCADOR PROBABLE:</span>
-                                    <strong id="guru-score">0 - 0</strong>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                    <!-- Chat Section Removed - Moving to Blog -->
-            </div>
-        </section>
-
-
-
-        <section class="schedule-section">
-            <h2 class="section-title">Programación de TV</h2>
-            <div class="schedule-table-wrapper">
-                <table class="schedule-table">
-                    <thead>
-                        <tr>
-                            <th>Evento</th>
-                            <th>Canal</th>
-                            <th>Hora</th>
-                            <th>Señal</th>
-                        </tr>
-                    </thead>
-                    <tbody id="schedule-body">
-                        <!-- Schedule injected here -->
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section id="league-standings-section" class="schedule-section hidden">
-            <h2 class="section-title">Tabla de Posiciones: <span id="standing-league-name">...</span></h2>
-            <div class="schedule-table-wrapper">
-                <table class="schedule-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Equipo</th>
-                            <th>PJ</th>
-                            <th>G</th>
-                            <th>E</th>
-                            <th>P</th>
-                            <th>Pts</th>
-                        </tr>
-                    </thead>
-                    <tbody id="standings-body">
-                        <!-- Statistically generated by SportFlow AI -->
-                    </tbody>
-                </table>
-                <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 10px; text-align: center;">PROCESADO POR SPORTFLOW AI ENGINE v5.24</p>
-            </div>
-        </section>
-
-        <!-- MADRINA VIP - ELITE MODELS (Adsterra Strategy) -->
-        <section class="madrina-vip-section">
-            <div class="madrina-card">
-                <div class="madrina-badge viral-tag">SECCIÓN ELITE 💎</div>
-                <div class="madrina-content">
-                    <div class="madrina-img">
-                        <img src="/madrina.png" alt="Madrina VIP">
-                    </div>
-                    <div class="madrina-info">
-                        <h3>MADRINA VIP: CONTENIDO EXCLUSIVO</h3>
-                        <p>Únete a nuestra Madrina en su canal oficial y no te pierdas nada del evento.</p>
-                        <a href="https://t.me/+eDNK1QZVe-c5MjM5" target="_blank" class="btn-madrina">
-                            <i class="fas fa-heart"></i> UNIRSE AL VIP
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- FOOTER BRANDING -->
+        <footer class="blog-footer" style="text-align: center; margin-top: 40px; padding: 20px; border-top: 1px solid #111;">
+            <p style="color: #444; font-size: 0.8rem;">© 2026 SportFlow AI - v5.62 (ULTRA-SIMPLIFIED HUB)</p>
+        </footer>
+    </main>
+ REMOVED -->
     </main>
 
     </footer>
@@ -254,7 +115,6 @@
                 <div class="social-nav" style="display: flex; gap: 15px; align-items: center;">
                     <a href="https://facebook.com/SportFlowAI" target="_blank" style="color: #1877f2; font-size: 1.2rem;"><i class="fab fa-facebook"></i></a>
                     <button id="show-guide-btn" class="guide-btn"><i class="fas fa-question-circle"></i> Guía</button>
-                    <button class="nav-madrina">MADRINA VIP</button>
                 </div>
             <div class="premium-video-frame">
                 <video id="ai-guide-video" loop playsinline controls style="width: 100%; background: #000;">
@@ -282,15 +142,15 @@
     </a>
 
     <!-- Botón Flotante de Facebook (v1.0) -->
-    <a href="https://facebook.com/SportFlowAI" target="_blank" class="facebook-float" style="position: fixed; bottom: 100px; right: 20px; background: #1877f2; color: #fff; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; text-decoration: none; box-shadow: 0 4px 15px rgba(24, 119, 242, 0.4); z-index: 9999; transition: 0.3s;">
+    <a href="https://facebook.com/SportFlowAI" target="_blank" class="facebook-float">
         <i class="fab fa-facebook-f"></i>
     </a>
 
     <script src="/js/stream-finder.js?v=2.4.2"></script>
     <!-- Dynamic SEO Crawler Magnet (Automated) -->
-    <section id="seo-crawler-magnet" style="display: none; visibility: hidden;"></section>
+    <!-- SEO CRAWLER REMOVED -->
 
-    <script src="/js/app.js?v=5.24"></script>
+    <script src="/js/app_v562.js"></script>
     
     <!-- Safety Guard: No Social Bar redirects allowed -->
     

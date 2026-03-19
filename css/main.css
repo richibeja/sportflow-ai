@@ -36,7 +36,7 @@
 }
 
 .main-content {
-    margin-top: 80px !important; /* Just space for navbar */
+    margin-top: 120px !important; /* Added more space for navbar + potential banners */
 }
 
 
@@ -265,6 +265,23 @@ body {
     font-weight: 600;
 }
 
+.score-pill {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    min-width: 25px;
+    text-align: center;
+    border: 1px solid rgba(83, 252, 24, 0.2);
+}
+
+.match-card-mini.active .score-pill {
+    background: var(--accent);
+    color: #000;
+}
+
 /* Navbar */
 .navbar {
     background: rgba(10, 14, 20, 0.8);
@@ -378,22 +395,23 @@ body {
     transform: scale(1.02);
 }
 
-/* Elite Match Ticker (v5.41 Refined) */
+/* Elite Match Ticker (v5.50 Refined) */
 .match-ticker-container {
     width: 100%;
     overflow: hidden;
     padding: 10px 0;
     background: rgba(0,0,0,0.5);
-    border-bottom: 1px solid rgba(83, 252, 24, 0.2);
+    border-bottom: 2px solid rgba(83, 252, 24, 0.3);
     margin-bottom: 15px;
 }
 
 .match-ticker-scroll {
     display: flex;
-    gap: 12px;
+    gap: 15px; /* Increased gap */
     overflow-x: auto;
-    padding: 5px 15px;
+    padding: 10px 20px;
     scrollbar-width: none;
+    -ms-overflow-style: none; /* IE/Edge */
 }
 
 .match-ticker-scroll::-webkit-scrollbar {
@@ -401,24 +419,21 @@ body {
 }
 
 .ticker-card {
-    flex: 0 0 140px; /* Smaller cards */
-    background: #111;
-    border-radius: 8px;
-    padding: 8px;
-    border: 1px solid rgba(255,255,255,0.05);
+    flex: 0 0 180px; /* Richard's Windows-style width */
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 15px;
+    border: 1px solid rgba(255,255,255,0.1);
     text-decoration: none;
-    transition: 0.2s;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
 }
 
-.ticker-card:hover {
+.ticker-card:hover, .ticker-card.active {
     border-color: var(--accent);
-    transform: translateY(-3px);
-    background: #1a1a1c;
-}
-
-.ticker-card.active {
-    border-color: var(--accent);
-    background: rgba(83, 252, 24, 0.05);
+    transform: translateY(-8px);
+    background: rgba(83, 252, 24, 0.08);
+    box-shadow: 0 10px 30px rgba(83, 252, 24, 0.15);
 }
 
 .ticker-teams {
@@ -1954,6 +1969,35 @@ body.cinema-mode .navbar, body.cinema-mode .hero-match, body.cinema-mode .match-
     }
 }
 
+.btn-unlock-premium {
+    background: linear-gradient(45deg, #FFD700, #FFA500); /* Gold to Orange gradient */
+    color: #1a1a1a; /* Dark text for contrast */
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-unlock-premium:hover {
+    background: linear-gradient(45deg, #FFC700, #FF8C00); /* Slightly brighter on hover */
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+    transform: translateY(-2px);
+}
+
+.btn-unlock-premium:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+}
+
 /* Fullscreen VIP Support */
 .branded-player-zone:fullscreen {
     padding: 20px;
@@ -3297,4 +3341,124 @@ body.cinema-mode .navbar, body.cinema-mode .hero-match, body.cinema-mode .match-
 @keyframes neon-glow {
     from { box-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent); }
     to { box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent); }
+}
+/* STICKY FOOTER OVERLAP FIX (v5.50) */
+.sticky-footer-container {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0;
+    width: 100%;
+    z-index: 5000 !important; /* Top priority */
+    background: rgba(0,0,0,0.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--accent);
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.close-sticky-btn {
+    position: absolute;
+    top: -15px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
+    background: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 5001;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 15px rgba(255, 71, 87, 0.4);
+}
+
+@media (max-width: 768px) {
+    .main-content { margin-top: 140px !important; }
+    .ticker-card { flex: 0 0 160px; }
+}
+
+/* PREMIUM UNLOCK BUTTON (v5.50 - Green Hook) */
+.btn-unlock-premium {
+    width: 100%;
+    padding: 22px;
+    background: linear-gradient(135deg, #39ff14 0%, #2ecc71 100%);
+    color: #000;
+    border: none;
+    border-radius: 18px;
+    font-weight: 800;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-decoration: none;
+    box-shadow: 0 10px 30px rgba(57, 255, 20, 0.4);
+    text-transform: uppercase;
+    margin: 20px 0;
+}
+
+
+.btn-unlock-premium:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 45px rgba(57, 255, 20, 0.6);
+}
+
+/* --- FLOATING BUTTONS (v5.61) --- */
+.telegram-float {
+    position: fixed;
+    bottom: 30px;
+    right: 20px;
+    background: #0088cc;
+    color: #fff;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
+    z-index: 9999;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.facebook-float {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    background: #1877f2;
+    color: #fff;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 15px rgba(24, 119, 242, 0.4);
+    z-index: 9999;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .telegram-float {
+        bottom: 85px; /* Above the 50px sticky ad */
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+    .facebook-float {
+        bottom: 145px;
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
 }
