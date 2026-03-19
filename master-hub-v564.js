@@ -42,6 +42,17 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
 
         slots.forEach(slot => renderAd(...slot));
+
+        // Auto-hide empty ad slots after 5s if Adsterra didn't inject an iframe
+        setTimeout(() => {
+            document.querySelectorAll('.ad-responsive-container').forEach(container => {
+                if (!container.querySelector('iframe')) {
+                    const wrapper = container.closest('.ad-slot');
+                    if (wrapper) wrapper.style.display = 'none';
+                    container.style.cssText += 'display:none!important;min-height:0!important;height:0!important;';
+                }
+            });
+        }, 5000);
     }
 
     // --- SYNC MATCHES ---
