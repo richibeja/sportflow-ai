@@ -73,6 +73,7 @@ Push-File -localPath "README.md" -remotePath "README.md"
 Push-File -localPath "js/stream-finder.js" -remotePath "js/stream-finder.js"
 Push-File -localPath "handshake.html" -remotePath "handshake.html"
 Push-File -localPath "match-preview.html" -remotePath "match-preview.html"
+Push-File -localPath "sports-hub.html" -remotePath "sports-hub.html"
 Push-File -localPath "404.html" -remotePath "404.html"
 Push-File -localPath ".gitignore" -remotePath ".gitignore"
 

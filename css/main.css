@@ -365,13 +365,94 @@ body {
     position: absolute;
     bottom: 0;
     right: 0;
-    width: 20%;
-    height: 15%;
+    width: 15%; /* Reduced from 20% to avoid covering buttons completely */
+    height: 10%; /* Reduced from 15% */
     z-index: 100;
     cursor: default;
-    background: transparent; /* Invisible but catches clicks */
+    background: transparent;
     pointer-events: auto;
 }
+
+/* Elite Player Controls (v5.85) */
+.player-controls-elite {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 15px;
+    padding: 0 10px;
+}
+
+.btn-fullscreen-elite {
+    background: linear-gradient(135deg, var(--accent), #2ecc71);
+    color: #000;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 5px 15px rgba(83, 252, 24, 0.4);
+    transition: 0.3s;
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+    text-transform: uppercase;
+}
+
+.btn-fullscreen-elite:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 25px rgba(83, 252, 24, 0.6);
+}
+
+.sound-hint {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 8px 15px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    color: #aaa;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: fadeIn 1s;
+}
+
+.sound-hint i {
+    color: var(--accent);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.elite-player-hub:fullscreen {
+    background: #000;
+    padding: 0;
+}
+
+.elite-player-hub:fullscreen .player-wrapper {
+    height: 100%;
+    border-radius: 0;
+    border: none;
+}
+
+.elite-player-hub:fullscreen .player-wrapper iframe {
+    height: 100%;
+}
+
+.elite-player-hub:fullscreen .player-controls-elite {
+    display: none; /* Hide controls in fullscreen to let native player take over */
+}
+
+/* Also for Webkit (Safari, Chrome Mobile) */
+.elite-player-hub:-webkit-full-screen { background: #000; }
+.elite-player-hub:-webkit-full-screen .player-wrapper { height: 100%; border-radius: 0; }
+.elite-player-hub:-webkit-full-screen .player-controls-elite { display: none; }
 
 .kick-logo-guard {
     pointer-events: auto !important;

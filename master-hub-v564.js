@@ -233,20 +233,59 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function unlockSignal() {
+        // Anti-Double Audio Guard (v5.89)
+        if (document.getElementById('main-player-iframe')) {
+            console.log("Signal already active. Syncing...");
+            return;
+        }
+
         const decoyZone = document.querySelector('.decoy-player-zone');
+        if(!decoyZone) return;
+        
         const host = window.location.hostname;
-        const url = `https://player.kick.com/${CONFIG.KICK_CHANNEL}?parent=${host}&autoplay=true&muted=false`;
-        if(decoyZone) {
-            decoyZone.innerHTML = `
+        // v5.90: Muted by default to avoid double audio/feedback. 
+        const url = `https://player.kick.com/${CONFIG.KICK_CHANNEL}?parent=${host}&autoplay=true&muted=true`;
+        
+        decoyZone.innerHTML = `
+            <div id="elite-player-hub" class="elite-player-hub">
                 <div class="player-wrapper">
                     <div class="signal-guard"></div>
-                    <iframe src="${url}" frameborder="0" allowfullscreen referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-forms allow-presentation" style="width: 100%; aspect-ratio: 16/9; display: block; border-radius: 12px; border: 1px solid #111;"></iframe>
+                    <iframe id="main-player-iframe" src="${url}" frameborder="0" allow="autoplay; fullscreen; encrypted-media; picture-in-picture;" allowfullscreen referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-forms allow-presentation" style="width: 100%; aspect-ratio: 16/9; display: block; border-radius: 12px; border: 1px solid #111;"></iframe>
                 </div>
-                <div style="text-align: center; margin-top: 20px;">
-                    <p style="color: var(--accent); font-weight: 800; font-size: 0.9rem;"><i class="fas fa-signal"></i> SEÑAL PROTEGIDA ACTIVA (HACKER MODE)</p>
+                
+                <div class="player-controls-elite">
+                    <button id="btn-fullscreen-main" class="btn-fullscreen-elite">
+                        <i class="fas fa-expand-arrows-alt"></i> PANTALLA COMPLETA
+                    </button>
+                    <div class="sound-hint">
+                        <i class="fas fa-volume-up"></i> HAZ CLIC EN EL ALTAVOZ PARA ACTIVAR AUDIO
+                    </div>
                 </div>
-            `;
-        }
+            </div>
+
+            <div style="text-align: center; margin-top: 15px;">
+                <p style="color: var(--accent); font-weight: 800; font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase;"><i class="fas fa-shield-alt"></i> Señal Protegida (Richard Shield v5.88)</p>
+            </div>
+        `;
+
+        // Attach Fullscreen event (v5.88: Enhanced for Mobile)
+        setTimeout(() => {
+            const fsBtn = document.getElementById('btn-fullscreen-main');
+            const playerHub = document.getElementById('elite-player-hub');
+            if (fsBtn && playerHub) {
+                fsBtn.onclick = () => {
+                    if (playerHub.requestFullscreen) {
+                        playerHub.requestFullscreen();
+                    } else if (playerHub.webkitRequestFullscreen) {
+                        playerHub.webkitRequestFullscreen();
+                    } else if (playerHub.mozRequestFullScreen) {
+                        playerHub.mozRequestFullScreen();
+                    } else if (playerHub.msRequestFullscreen) {
+                        playerHub.msRequestFullscreen();
+                    }
+                };
+            }
+        }, 300);
     }
 
     const playBtn = document.getElementById('btn-decoy-play');
