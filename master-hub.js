@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const badge = document.getElementById('live-count-badge');
             if(badge) badge.textContent = liveCount;
 
-            renderMatchSelector();
+            // renderMatchSelector();
         } catch (err) {}
     }
 
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupNavFilters() {
         const all = document.getElementById('f-all');
         const live = document.getElementById('f-live');
-        if(all) all.onclick = () => { window.currentFilter = 'all'; all.classList.add('active'); if(live) live.classList.remove('active'); renderMatchSelector(); };
-        if(live) live.onclick = () => { window.currentFilter = 'live'; live.classList.add('active'); if(all) all.classList.remove('active'); renderMatchSelector(); };
+        if(all) all.onclick = () => { window.currentFilter = 'all'; all.classList.add('active'); if(live) live.classList.remove('active'); /* renderMatchSelector(); */ };
+        if(live) live.onclick = () => { window.currentFilter = 'live'; live.classList.add('active'); if(all) all.classList.remove('active'); /* renderMatchSelector(); */ };
     }
 });
