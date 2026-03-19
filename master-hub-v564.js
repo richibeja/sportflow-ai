@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div id="elite-player-hub" class="elite-player-hub">
                 <div class="player-wrapper">
                     <div class="signal-guard"></div>
-                    <iframe id="main-player-iframe" src="${url}" frameborder="0" allow="autoplay; fullscreen; encrypted-media; picture-in-picture;" allowfullscreen referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-forms allow-presentation" style="width: 100%; aspect-ratio: 16/9; display: block; border-radius: 12px; border: 1px solid #111;"></iframe>
+                    <iframe id="main-player-iframe" src="${url}" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="width: 100%; aspect-ratio: 16/9; display: block; border-radius: 12px; border: 1px solid #111;"></iframe>
                 </div>
                 
                 <div class="player-controls-elite">
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
 
             <div style="text-align: center; margin-top: 15px;">
-                <p style="color: var(--accent); font-weight: 800; font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase;"><i class="fas fa-shield-alt"></i> Señal Protegida (Richard Shield v5.91)</p>
+                <p style="color: var(--accent); font-weight: 800; font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase;"><i class="fas fa-shield-alt"></i> Señal Protegida (Richard Shield v5.92)</p>
             </div>
         `;
 
